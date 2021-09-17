@@ -16,6 +16,7 @@ public class ExpenseConverter {
         expense.setDate(dto.getDate());
         expense.setExpenseLines(dto.getExpenseLines().stream().map(ExpenseConverter::toExpenseLine).collect(Collectors.toList()));
         expense.setComment(dto.getComment());
+        expense.setAuthor(dto.getAuthor());
         return expense;
     }
 
@@ -35,6 +36,7 @@ public class ExpenseConverter {
         dto.setId(expense.getId());
         dto.setDate(expense.getDate());
         dto.setComment(expense.getComment());
+        dto.setAuthor(expense.getAuthor());
         dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO).collect(Collectors.toList()));
         return dto;
     }

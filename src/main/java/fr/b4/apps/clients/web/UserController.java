@@ -18,7 +18,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @ApiOperation(value = "Get list of users (clients) in the System ", response = Iterable.class, tags = "Users")
+    @ApiOperation(value = "Get list of users (clients) in the System ", response = User[].class, tags = "Users")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success|OK", response = User[].class) })
     @GetMapping
@@ -26,7 +26,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @ApiOperation(value = "Add new users to database", response = Iterable.class, tags = "Users")
+    @ApiOperation(value = "Add new users to database", response = User[].class, tags = "Users")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "User added success", response = User.class) })
     @PostMapping

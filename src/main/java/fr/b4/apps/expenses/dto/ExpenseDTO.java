@@ -15,4 +15,5 @@ public class ExpenseDTO {
     private String comment;
     private LocalDate date;
     private User author;
+    private User user;
 }
