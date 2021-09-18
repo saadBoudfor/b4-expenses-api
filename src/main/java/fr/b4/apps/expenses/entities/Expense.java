@@ -19,7 +19,7 @@ public class Expense {
     private String name;
 
     @ApiModelProperty(value = "Purchased product", required = true)
-    @OneToMany
+    @OneToMany(mappedBy = "expense")
     private List<ExpenseLine> expenseLines;
 
     @ApiModelProperty(value = "Purchase date", example = "12/09/2021")

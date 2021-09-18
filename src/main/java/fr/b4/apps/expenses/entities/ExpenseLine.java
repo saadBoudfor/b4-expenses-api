@@ -29,4 +29,7 @@ public class ExpenseLine {
 
     @ApiModelProperty(value = "Client comment")
     private String comment;
+
+    @ManyToOne
+    private Expense expense;
 }

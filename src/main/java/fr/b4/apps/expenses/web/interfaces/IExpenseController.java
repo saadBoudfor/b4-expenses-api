@@ -1,6 +1,7 @@
 package fr.b4.apps.expenses.web.interfaces;
 
 import fr.b4.apps.expenses.dto.ExpenseDTO;
+import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -10,5 +11,7 @@ public interface IExpenseController {
     @ApiOperation(value = "Add new expense to user expenses list", response = Expense.class, tags = "Expenses")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Expense saved success", response = Expense.class) })
-    public ResponseEntity<Object> save(@ApiParam(required = true, example = "sboudfor", value = "username") String accessToken, ExpenseDTO expenseDTO);
+    public ResponseEntity<Object> save(@ApiParam(required = true, example = "15", value = "user id") String accessToken, ExpenseDTO expenseDTO);
+
+    public ResponseEntity<Object> get(@ApiParam(required = true, example = "15", value = "user id") String accessToken);
 }

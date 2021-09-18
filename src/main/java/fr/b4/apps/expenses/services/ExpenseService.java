@@ -6,7 +6,8 @@ import fr.b4.apps.expenses.repositories.ExpenseLineRepository;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import static fr.b4.apps.expenses.util.ExpenseUtils.getCurrentTargetDate;
+
 
 @Component
 public class ExpenseService {
@@ -19,9 +20,15 @@ public class ExpenseService {
     }
 
     public Expense save(Expense expense) {
-
-        List<ExpenseLine> saved = expenseLineRepository.saveAll(expense.getExpenseLines());
-        expense.setExpenseLines(saved);
+        expense = expenseRepository.save(expense);
+        for(ExpenseLine expenseLine: expense.getExpenseLines()) {
+            expenseLine.setExpense(expense);
+        }
+        expenseLineRepository.saveAll(expense.getExpenseLines());
         return expenseRepository.save(expense);
+    }
+
+    public Float getTotal(Long userID) {
+        return expenseRepository.getAmountExpense(userID, getCurrentTargetDate());
     }
 }

@@ -1,5 +1,6 @@
 package fr.b4.apps.expenses.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class ExpenseDTO {
     private String name;
     private List<ExpenseLineDTO> expenseLines;
     private String comment;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     private User author;
     private User user;

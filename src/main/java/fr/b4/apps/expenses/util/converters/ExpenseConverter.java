@@ -1,4 +1,4 @@
-package fr.b4.apps.expenses.converters;
+package fr.b4.apps.expenses.util.converters;
 
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseLineDTO;
@@ -43,6 +43,7 @@ public class ExpenseConverter {
 
     public static ExpenseLineDTO toDTO(ExpenseLine expenseLine) {
         ExpenseLineDTO dto = new ExpenseLineDTO();
+        dto.setId(expenseLine.getId());
         dto.setProduct(expenseLine.getProduct());
         dto.setPrice(expenseLine.getPrice());
         dto.setQuantity(expenseLine.getQuantity());
