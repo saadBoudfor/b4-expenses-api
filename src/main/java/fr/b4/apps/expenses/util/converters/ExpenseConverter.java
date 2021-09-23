@@ -6,6 +6,7 @@ import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -37,6 +38,7 @@ public class ExpenseConverter {
         dto.setDate(expense.getDate());
         dto.setComment(expense.getComment());
         dto.setAuthor(expense.getAuthor());
+        dto.setPlace(expense.getPlace());
         dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO).collect(Collectors.toList()));
         return dto;
     }
@@ -49,5 +51,9 @@ public class ExpenseConverter {
         dto.setQuantity(expenseLine.getQuantity());
         dto.setComment(expenseLine.getComment());
         return dto;
+    }
+
+    public static List<ExpenseDTO> toDTO(List<Expense> expenses) {
+        return expenses.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 }

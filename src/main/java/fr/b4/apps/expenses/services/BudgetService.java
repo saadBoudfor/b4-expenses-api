@@ -42,5 +42,7 @@ public class BudgetService {
         return CollectionUtils.isEmpty(found) ? 0.0f : found.get(0).getTarget();
     }
 
-
+    public List<Budget> getByUserID(Long userID) {
+        return budgetRepository.getByUserId(userID);
+    }
 }

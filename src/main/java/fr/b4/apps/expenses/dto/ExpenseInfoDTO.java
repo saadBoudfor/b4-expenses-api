@@ -6,4 +6,8 @@ import lombok.Data;
 public class ExpenseInfoDTO {
     private Float total;
     private Float target;
+    private Float totalRestaurant;
+    private Float totalStore;
+    private int countRestaurant;
+    private int countStore;
 }

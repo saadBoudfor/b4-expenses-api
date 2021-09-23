@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static fr.b4.apps.expenses.util.converters.ExpenseConverter.toDTO;
 import static fr.b4.apps.expenses.util.converters.ExpenseConverter.toExpense;
 
@@ -24,21 +26,22 @@ public class ExpenseController implements IExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestHeader("access-token") String accessToken,
+    public ExpenseDTO save(@RequestHeader("access-token") String accessToken,
                                        @RequestBody ExpenseDTO expenseDTO) {
-        Expense saved = expenseProcess.save(toExpense(expenseDTO), accessToken);
-        return ObjectUtils.isEmpty(saved) ?
-                ResponseEntity.status(403).body(new MessageDTO("Token missing in headers"))
-                : ResponseEntity.ok(toDTO(saved));
+        return toDTO(expenseProcess.save(toExpense(expenseDTO), accessToken));
     }
 
     @GetMapping("/info")
     @Override
-    public ResponseEntity<Object> get(@RequestHeader("access-token") String accessToken) {
-        ExpenseInfoDTO expenseInfoDTO = expenseProcess.getInfo(accessToken);
-        return ObjectUtils.isEmpty(expenseInfoDTO) ?
-                ResponseEntity.status(403).body(new MessageDTO("Token missing in headers"))
-                : ResponseEntity.ok(expenseInfoDTO);
+    public ExpenseInfoDTO get(@RequestHeader("access-token") String accessToken) {
+        return expenseProcess.getInfo(accessToken);
+    }
+
+    @GetMapping
+    public List<ExpenseDTO> getAll(@RequestHeader("access-token") String accessToken,
+                                   @RequestParam(value = "page", required = false) Integer page,
+                                   @RequestParam(value = "size", required = false) Integer size) {
+        return expenseProcess.findByUserID(accessToken, page, size);
     }
 
 }
