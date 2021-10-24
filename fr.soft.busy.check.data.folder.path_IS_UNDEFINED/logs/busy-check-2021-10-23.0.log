@@ -1,0 +1,22 @@
+2021-10-23 00:07:16.482  INFO 30324 --- [http-nio-9090-exec-9] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:07:18.881  INFO 30324 --- [http-nio-9090-exec-10] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:07:21.005  INFO 30324 --- [http-nio-9090-exec-1] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:07:24.934  INFO 30324 --- [http-nio-9090-exec-2] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:10:34.139  INFO 30324 --- [http-nio-9090-exec-4] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:11:48.344  INFO 30324 --- [http-nio-9090-exec-6] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:13:38.281  INFO 30324 --- [http-nio-9090-exec-8] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:16:29.677  INFO 30324 --- [http-nio-9090-exec-10] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:19:03.016  INFO 30324 --- [http-nio-9090-exec-2] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:19:24.099  INFO 30324 --- [http-nio-9090-exec-3] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:19:43.829  INFO 30324 --- [http-nio-9090-exec-4] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:20:38.983  INFO 30324 --- [http-nio-9090-exec-5] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:20:46.046  INFO 30324 --- [http-nio-9090-exec-6] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:20:48.257  INFO 30324 --- [http-nio-9090-exec-7] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:21:55.737  INFO 30324 --- [http-nio-9090-exec-9] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:22:03.390  INFO 30324 --- [http-nio-9090-exec-10] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 00:22:11.138  INFO 30324 --- [http-nio-9090-exec-1] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 10:03:17.764  WARN 30324 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9h40m40s633ms550µs700ns).
+2021-10-23 17:11:40.121  INFO 30324 --- [http-nio-9090-exec-3] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 17:11:48.865  INFO 30324 --- [http-nio-9090-exec-4] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 17:11:58.894  INFO 30324 --- [http-nio-9090-exec-5] f.b.apps.common.services.ProductService  : search product null
+2021-10-23 17:12:23.948  INFO 30324 --- [http-nio-9090-exec-6] f.b.apps.common.services.ProductService  : search product null

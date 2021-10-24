@@ -1,6 +1,5 @@
-package fr.b4.apps.expenses.entities;
+package fr.b4.apps.common.entities;
 
-import fr.b4.apps.common.entities.Address;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

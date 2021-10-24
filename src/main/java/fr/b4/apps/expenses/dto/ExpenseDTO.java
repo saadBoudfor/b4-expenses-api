@@ -2,7 +2,7 @@ package fr.b4.apps.expenses.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.b4.apps.clients.entities.User;
-import fr.b4.apps.expenses.entities.Place;
+import fr.b4.apps.common.entities.Place;
 import lombok.Data;
 
 import java.time.LocalDate;

@@ -1,9 +1,13 @@
 package fr.b4.apps.expenses.services;
 
 import fr.b4.apps.clients.entities.User;
+import fr.b4.apps.common.entities.Address;
+import fr.b4.apps.common.entities.Place;
+import fr.b4.apps.common.repositories.AddressRepository;
+import fr.b4.apps.common.repositories.PlaceRepository;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
-import fr.b4.apps.expenses.entities.PlaceType;
+import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.expenses.repositories.ExpenseLineRepository;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +27,28 @@ import static fr.b4.apps.expenses.util.ExpenseUtils.getCurrentTargetDate;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ExpenseLineRepository expenseLineRepository;
+    private final PlaceRepository placeRepository;
+    private final AddressRepository addressRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, ExpenseLineRepository expenseLineRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository,
+                          ExpenseLineRepository expenseLineRepository,
+                          PlaceRepository placeRepository,
+                          AddressRepository addressRepository) {
         this.expenseRepository = expenseRepository;
         this.expenseLineRepository = expenseLineRepository;
+        this.placeRepository = placeRepository;
+        this.addressRepository = addressRepository;
     }
 
     public Expense save(Expense expense) {
+        if (!ObjectUtils.isEmpty(expense.getPlace()) && ObjectUtils.isEmpty(expense.getPlace().getId())) {
+            // create place first
+            Address saved = addressRepository.save(expense.getPlace().getAddress());
+            expense.getPlace().setAddress(saved);
+
+            Place savedPlace = placeRepository.save(expense.getPlace());
+            expense.setPlace(savedPlace);
+        }
         expense = expenseRepository.save(expense);
         for (ExpenseLine expenseLine : expense.getExpenseLines()) {
             expenseLine.setExpense(expense);

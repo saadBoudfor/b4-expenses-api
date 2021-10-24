@@ -4,22 +4,31 @@ import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
-import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.services.BudgetService;
 import fr.b4.apps.expenses.services.ExpenseService;
 import fr.b4.apps.expenses.util.converters.ExpenseConverter;
-import fr.b4.apps.expenses.web.ExpenseController;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class ExpenseProcess {
+    @Value("${working.dir}")
+    String workingDir;
+
+    @Value("${expenses.photos.dir}")
+    String expenseBillDir;
+
+
     private final UserRepository userRepository;
     private final BudgetService budgetService;
     private final ExpenseService expenseService;
@@ -30,10 +39,14 @@ public class ExpenseProcess {
         this.expenseService = expenseService;
     }
 
-    public Expense save(Expense expense, String userID) {
-        User authenticated = getUser(userID);
-        expense.setUser(authenticated);
-        return ObjectUtils.isEmpty(authenticated) ? null : expenseService.save(expense);
+    public Expense save(String expenseStr, MultipartFile file) throws IOException {
+        Expense expense = ExpenseConverter.valueOf(expenseStr);
+        if (!ObjectUtils.isEmpty(file)) {
+            String photoURL = workingDir + expenseBillDir + file.getOriginalFilename();
+            file.transferTo(Path.of(photoURL));
+            expense.setBill(file.getOriginalFilename());
+        }
+        return expenseService.save(expense);
     }
 
     private User getUser(String userID) {
@@ -45,7 +58,7 @@ public class ExpenseProcess {
 
     public ExpenseInfoDTO getInfo(String userID) {
         User authenticated = getUser(userID);
-        if(ObjectUtils.isEmpty(authenticated))
+        if (ObjectUtils.isEmpty(authenticated))
             return null;
 
         ExpenseInfoDTO expenseInfoDTO = new ExpenseInfoDTO();
@@ -60,7 +73,7 @@ public class ExpenseProcess {
 
     public List<ExpenseDTO> findByUserID(String userID, Integer page, Integer size) {
         User authenticated = getUser(userID);
-        if(ObjectUtils.isEmpty(authenticated))
+        if (ObjectUtils.isEmpty(authenticated))
             return null;
         return ExpenseConverter.toDTO(expenseService.findByUser(authenticated, page, size));
     }

@@ -1,11 +1,16 @@
 package fr.b4.apps.expenses.util.converters;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseLineDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +44,7 @@ public class ExpenseConverter {
         dto.setComment(expense.getComment());
         dto.setAuthor(expense.getAuthor());
         dto.setPlace(expense.getPlace());
+        dto.setUser(expense.getUser());
         dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO).collect(Collectors.toList()));
         return dto;
     }
@@ -55,5 +61,12 @@ public class ExpenseConverter {
 
     public static List<ExpenseDTO> toDTO(List<Expense> expenses) {
         return expenses.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
+    }
+
+    public static Expense valueOf(String expenseStr) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        mapper.setDateFormat(df);
+        return mapper.readValue(expenseStr, Expense.class);
     }
 }

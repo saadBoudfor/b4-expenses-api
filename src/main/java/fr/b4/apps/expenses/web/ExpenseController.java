@@ -1,20 +1,25 @@
 package fr.b4.apps.expenses.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
 import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.process.ExpenseProcess;
+import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import fr.b4.apps.expenses.web.interfaces.IExpenseController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static fr.b4.apps.expenses.util.converters.ExpenseConverter.toDTO;
-import static fr.b4.apps.expenses.util.converters.ExpenseConverter.toExpense;
 
+
+@CrossOrigin("*")
 @RequestMapping("expenses")
 @RestController
 public class ExpenseController implements IExpenseController {
@@ -26,9 +31,9 @@ public class ExpenseController implements IExpenseController {
     }
 
     @PostMapping
-    public ExpenseDTO save(@RequestHeader("access-token") String accessToken,
-                                       @RequestBody ExpenseDTO expenseDTO) {
-        return toDTO(expenseProcess.save(toExpense(expenseDTO), accessToken));
+    public ExpenseDTO save(@RequestParam(value = "file", required = false) MultipartFile file,
+                           @RequestParam(value = "expense", required = true) String expenseStr) throws IOException {
+        return toDTO(expenseProcess.save(expenseStr, file));
     }
 
     @GetMapping("/info")

@@ -19,15 +19,17 @@ public class Product {
     private String name;
 
     @ApiModelProperty(value = "Product Bar code", example = "7622210449283")
-    private String codeBarre;
+    private String qrCode;
 
     @ApiModelProperty(value = "Client comment", example = "Contains chemical ingredient")
     private String comment;
 
     @ApiModelProperty(value = "Amount of calories by 100g or 100ml", example = "396")
-    private Integer calorie;
+    private Integer calories;
 
     @ApiModelProperty(value = "Product catergory. Value must be in defined range bellow", example = "DRINK")
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+
+    private String photo;
 }
