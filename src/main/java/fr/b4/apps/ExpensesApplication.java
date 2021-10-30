@@ -44,6 +44,7 @@ public class ExpensesApplication {
 	}
 	@PostConstruct
 	public void setUp() {
+		System.out.println("B4 expense API version: " + appVersion);
 		openFoodFactClient.updateProductCategories();
 		objectMapper.registerModule(new JavaTimeModule());
 	}
