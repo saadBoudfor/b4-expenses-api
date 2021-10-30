@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,4 +33,17 @@ public class Product {
     private ProductCategory category;
 
     private String photo;
+
+    @ManyToOne
+    private Unit unit;
+
+    private String displayQuantity;
+
+    private String brand;
+
+    private String dataPer;
+
+
+    @ManyToMany
+    private List<Category> categories;
 }

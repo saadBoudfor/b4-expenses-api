@@ -45,4 +45,8 @@ public class BudgetService {
     public List<Budget> getByUserID(Long userID) {
         return budgetRepository.getByUserId(userID);
     }
+
+    public Budget getCurrentByUserID(Long userID) {
+        return budgetRepository.getByUserId(userID).get(0);
+    }
 }

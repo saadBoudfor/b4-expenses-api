@@ -2,6 +2,8 @@ package fr.b4.apps.expenses.process;
 
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
+import fr.b4.apps.common.entities.Place;
+import fr.b4.apps.common.services.PlaceService;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
 import fr.b4.apps.expenses.entities.Expense;
@@ -32,11 +34,13 @@ public class ExpenseProcess {
     private final UserRepository userRepository;
     private final BudgetService budgetService;
     private final ExpenseService expenseService;
+    private final PlaceService placeService;
 
-    public ExpenseProcess(UserRepository userRepository, BudgetService budgetService, ExpenseService expenseService) {
+    public ExpenseProcess(UserRepository userRepository, BudgetService budgetService, ExpenseService expenseService, PlaceService placeService) {
         this.userRepository = userRepository;
         this.budgetService = budgetService;
         this.expenseService = expenseService;
+        this.placeService = placeService;
     }
 
     public Expense save(String expenseStr, MultipartFile file) throws IOException {
@@ -68,6 +72,7 @@ public class ExpenseProcess {
         expenseInfoDTO.setCountStore(expenseService.getStoreCount(Long.valueOf(userID)));
         expenseInfoDTO.setTotalRestaurant(expenseService.getTotalRestaurant(Long.valueOf(userID)));
         expenseInfoDTO.setTotalStore(expenseService.getTotalStore(Long.valueOf(userID)));
+        expenseInfoDTO.setWeekCount(expenseService.getCurrentWeekTotal(Long.valueOf(userID)));
         return expenseInfoDTO;
     }
 
@@ -76,5 +81,17 @@ public class ExpenseProcess {
         if (ObjectUtils.isEmpty(authenticated))
             return null;
         return ExpenseConverter.toDTO(expenseService.findByUser(authenticated, page, size));
+    }
+
+    public List<ExpenseDTO> findByPlaceID(String userID, String placeID) {
+        User authenticated = getUser(userID);
+        Place place = placeService.get(Long.valueOf(placeID));
+        if (ObjectUtils.isEmpty(authenticated))
+            return null;
+        return ExpenseConverter.toDTO(expenseService.findByPlaceID(authenticated, place));
+    }
+
+    public ExpenseDTO find(Long id) {
+        return ExpenseConverter.toDTO(expenseService.findByID(id));
     }
 }

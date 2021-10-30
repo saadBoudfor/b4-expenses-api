@@ -19,4 +19,6 @@ public class ExpenseDTO {
     private User author;
     private User user;
     private Place place;
+    private String bill;
+
 }

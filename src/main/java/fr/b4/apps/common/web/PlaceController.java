@@ -3,6 +3,7 @@ package fr.b4.apps.common.web;
 import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.common.services.PlaceService;
+import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,16 @@ public class PlaceController {
     @GetMapping("stores/{search}")
     public List<Place> filterStores(@PathVariable(value = "search", required = true) String search) {
         return placeService.filter(search, PlaceType.STORE);
+    }
+
+    @GetMapping("/restaurants/ranking")
+    public List<ExpensePlaceDTO> getRestaurantRanking() {
+        return placeService.getPlaceRanking(PlaceType.RESTAURANT.toString());
+    }
+
+    @GetMapping("/stores/ranking")
+    public List<ExpensePlaceDTO> getStoreRanking() {
+        return placeService.getPlaceRanking(PlaceType.STORE.toString());
     }
 
 }

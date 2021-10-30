@@ -1,6 +1,7 @@
 package fr.b4.apps.expenses.repositories;
 
 import fr.b4.apps.clients.entities.User;
+import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.expenses.entities.Expense;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,11 +20,17 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     public List<Expense> findByUser(User user, Pageable pageable);
 
+    public List<Expense> findByUser(User user);
+
+    public List<Expense> findByUserAndPlace(User user, Place place);
+
     @Query(value = "select count(*) from expense inner join place on expense.place_id=place.id where place.type=:type and expense.user_id=:userID", nativeQuery = true)
     public int countExpenses(@Param("userID") long userID, @Param("type") String type);
 
     @Query(value = "select sum(price) from expense inner join place on expense.place_id=place.id inner join expense_line on expense.id=expense_line.expense_id  where place.type=:type and expense.user_id=:userID", nativeQuery = true)
     public Float sumExpenses(@Param("userID") long userID, @Param("type") String type);
 
+    @Query(value = "select count(*) from expense  where expense.user_id=:userID and expense.date <=:firstDayOfCurrentWeek", nativeQuery = true)
+    int getCurrentWeekTotal(@Param("userID") Long id, @Param("firstDayOfCurrentWeek") LocalDate firstDayOfCurrentWeek);
 
 }

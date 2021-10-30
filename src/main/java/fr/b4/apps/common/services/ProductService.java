@@ -2,7 +2,8 @@ package fr.b4.apps.common.services;
 
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.repositories.ProductRepository;
-import io.swagger.annotations.Api;
+import fr.b4.apps.openfoodfact.apis.OpenFoodFactClient;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,22 +21,22 @@ import java.util.List;
 @Component
 public class ProductService {
     @Value("${working.dir}")
-    String workingDir;
+    private String workingDir;
 
     @Value("${products.photos.dir}")
-    String productsPhotoDir;
+    private String productsPhotoDir;
 
     private final ProductRepository productRepository;
+    private final OpenFoodFactClient openFoodFactClient;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, OpenFoodFactClient openFoodFactClient) {
         this.productRepository = productRepository;
+        this.openFoodFactClient = openFoodFactClient;
     }
 
-    public List<Product> find(String name) {
+    public List<Product> find( String name) {
         log.info("search product {}", name);
-        if (StringUtils.hasLength(name))
-            return productRepository.findByNameContains(name);
-        return productRepository.findAll();
+        return openFoodFactClient.search(name);
     }
 
     public Product save(Product product) {

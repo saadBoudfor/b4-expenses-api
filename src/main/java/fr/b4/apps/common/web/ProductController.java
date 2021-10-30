@@ -23,7 +23,7 @@ public class ProductController implements IProductController {
     }
 
     @GetMapping("/{name}")
-    public List<Product> find(@PathVariable(value = "name", required = false) String name) {
+    public List<Product> find(@PathVariable(value = "name", required = true) String name) {
         return productService.find(name);
     }
 

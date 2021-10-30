@@ -2,13 +2,15 @@ package fr.b4.apps.expenses.util.converters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.b4.apps.common.entities.Product;
+import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseLineDTO;
+import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,7 +30,7 @@ public class ExpenseConverter {
 
     public static ExpenseLine toExpenseLine(ExpenseLineDTO dto) {
         ExpenseLine expenseLine = new ExpenseLine();
-        expenseLine.setProduct(dto.getProduct());
+        expenseLine.setProduct(ProductConverter.toProduct(dto.getProduct()));
         expenseLine.setPrice(dto.getPrice());
         expenseLine.setQuantity(dto.getQuantity());
         expenseLine.setComment(dto.getComment());
@@ -45,6 +47,7 @@ public class ExpenseConverter {
         dto.setAuthor(expense.getAuthor());
         dto.setPlace(expense.getPlace());
         dto.setUser(expense.getUser());
+        dto.setBill(expense.getBill());
         dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO).collect(Collectors.toList()));
         return dto;
     }
@@ -52,7 +55,7 @@ public class ExpenseConverter {
     public static ExpenseLineDTO toDTO(ExpenseLine expenseLine) {
         ExpenseLineDTO dto = new ExpenseLineDTO();
         dto.setId(expenseLine.getId());
-        dto.setProduct(expenseLine.getProduct());
+        dto.setProduct(ProductConverter.toDTO(expenseLine.getProduct()));
         dto.setPrice(expenseLine.getPrice());
         dto.setQuantity(expenseLine.getQuantity());
         dto.setComment(expenseLine.getComment());
@@ -68,5 +71,15 @@ public class ExpenseConverter {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         mapper.setDateFormat(df);
         return mapper.readValue(expenseStr, Expense.class);
+    }
+
+    public static ExpensePlaceDTO convertToPlace(Object[] item) {
+        ExpensePlaceDTO expensePlaceDTO = new ExpensePlaceDTO();
+        Place place = new Place();
+        place.setId(((BigInteger) item[0]).longValue());
+        expensePlaceDTO.setPlace(place);
+        expensePlaceDTO.setTotal(((Double) item[1]).longValue());
+        expensePlaceDTO.setCount(((BigInteger) item[2]).longValue());
+        return expensePlaceDTO;
     }
 }

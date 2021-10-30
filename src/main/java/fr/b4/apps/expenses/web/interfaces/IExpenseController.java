@@ -5,6 +5,7 @@ import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import io.swagger.annotations.*;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,4 +26,8 @@ public interface IExpenseController {
     List<ExpenseDTO> getAll(@RequestHeader("access-token") String accessToken,
                             @RequestParam(value = "page", required = false) Integer page,
                             @RequestParam(value = "size", required = false) Integer size);
+
+    List<ExpenseDTO> getByPlace(@RequestHeader("access-token") String accessToken,
+                                @PathVariable("placeID") String placeID);
+
 }

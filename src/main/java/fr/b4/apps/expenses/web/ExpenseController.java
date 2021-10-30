@@ -1,15 +1,9 @@
 package fr.b4.apps.expenses.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
-import fr.b4.apps.expenses.dto.MessageDTO;
-import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.process.ExpenseProcess;
-import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import fr.b4.apps.expenses.web.interfaces.IExpenseController;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +41,19 @@ public class ExpenseController implements IExpenseController {
                                    @RequestParam(value = "page", required = false) Integer page,
                                    @RequestParam(value = "size", required = false) Integer size) {
         return expenseProcess.findByUserID(accessToken, page, size);
+    }
+
+
+    @GetMapping("/{id}")
+    public ExpenseDTO getByID(@PathVariable("id") String id) {
+        return expenseProcess.find(Long.valueOf(id));
+    }
+
+
+    @GetMapping("/place/{placeID}")
+    public List<ExpenseDTO> getByPlace(@RequestHeader("access-token") String accessToken,
+                                       @PathVariable("placeID") String placeID) {
+        return expenseProcess.findByPlaceID(accessToken, placeID);
     }
 
 }

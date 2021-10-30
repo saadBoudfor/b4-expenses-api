@@ -7,7 +7,7 @@ import lombok.Data;
 public class ExpenseLineDTO {
 
     private Long id;
-    private Product product;
+    private ProductDTO product;
     private Float price;
     private Float quantity;
     private String comment;

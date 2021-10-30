@@ -1,0 +1,85 @@
+package fr.b4.apps.openfoodfact.apis;
+
+import fr.b4.apps.common.entities.Product;
+import fr.b4.apps.common.services.CategoryService;
+import fr.b4.apps.common.util.converters.CategoryConverter;
+import fr.b4.apps.openfoodfact.models.OFCategory;
+import fr.b4.apps.openfoodfact.models.OFProduct;
+import fr.b4.apps.openfoodfact.models.ProductResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriTemplate;
+
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Slf4j
+@Component
+public class OpenFoodFactClient {
+    private RestTemplate restTemplate = new RestTemplate();
+    private final CategoryService categoryService;
+
+    public OpenFoodFactClient(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    public List<Product> search(String search) {
+        String url;
+        restTemplate = new RestTemplate();
+        if (ObjectUtils.isEmpty(search)) {
+            url = "https://world.openfoodfacts.org/cgi/search.pl?&search_simple=1&action=process&json=1";
+        } else {
+            url = "https://world.openfoodfacts.org/cgi/search.pl?search_terms={search}&search_simple=1&action=process&json=1";
+        }
+        URI expanded = new UriTemplate(url).expand(search);
+        url = URLDecoder.decode(expanded.toString(), StandardCharsets.UTF_8);
+        ResponseEntity<ProductResponse> response = restTemplate.getForEntity(url, ProductResponse.class);
+        if (ObjectUtils.isEmpty(response.getBody()) || ObjectUtils.isEmpty(response.getBody().getProducts()))
+            return new ArrayList<>();
+        return response.getBody().getProducts().stream().map(OpenFoodFactClient::convert).collect(Collectors.toList());
+    }
+
+    public void updateProductCategories() {
+        final String url = "https://world.openfoodfacts.org/data/taxonomies/categories.json";
+        ParameterizedTypeReference<LinkedHashMap<String, OFCategory>> typeRef = new ParameterizedTypeReference<>() {
+        };
+        ResponseEntity<LinkedHashMap<String, OFCategory>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), typeRef);
+        if (!CollectionUtils.isEmpty(response.getBody())) {
+            response.getBody().forEach(categoryService::updateCategory);
+            log.info("update all categories success");
+        }
+    }
+
+    private static Product convert(OFProduct openOFProduct) {
+        Product product = new Product();
+        product.setName(openOFProduct.getProductName());
+        product.setPhoto(openOFProduct.getImageFrontUrl());
+        product.setQrCode(openOFProduct.getCode());
+        if (StringUtils.hasLength(openOFProduct.getProductQuantity()))
+            product.setQuantity(Float.valueOf(openOFProduct.getProductQuantity()));
+        product.setDisplayQuantity(openOFProduct.getQuantity());
+        product.setCalories(openOFProduct.getNutriments().getEnergyKcal());
+        product.setBrand(openOFProduct.getBrands());
+        product.setDataPer(openOFProduct.getNutritionDataPer());
+        product.setCategories(Arrays.stream(openOFProduct.getCategoriesTags())
+                .map(CategoryConverter::convert)
+                .collect(Collectors.toList()));
+        return product;
+    }
+
+
+}

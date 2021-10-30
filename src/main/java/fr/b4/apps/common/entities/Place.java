@@ -5,8 +5,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity
 @Data
+@Entity
 public class Place {
     @Id
     @GeneratedValue

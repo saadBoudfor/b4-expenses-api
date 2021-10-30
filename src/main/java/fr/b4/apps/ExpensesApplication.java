@@ -2,9 +2,9 @@ package fr.b4.apps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import fr.b4.apps.openfoodfact.apis.OpenFoodFactClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -20,7 +20,10 @@ import java.util.function.Predicate;
 public class ExpensesApplication {
 
 	@Autowired
-	ObjectMapper objectMapper;
+	private OpenFoodFactClient openFoodFactClient;
+
+	@Autowired
+	public ObjectMapper objectMapper;
 
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedMethods("PUT", "GET", "DELETE", "OPTIONS", "PATCH", "POST");
@@ -37,6 +40,7 @@ public class ExpensesApplication {
 	}
 	@PostConstruct
 	public void setUp() {
+//		openFoodFactClient.updateProductCategories();
 		objectMapper.registerModule(new JavaTimeModule());
 	}
 	public static void main(String[] args) {

@@ -29,7 +29,12 @@ public class BudgetController implements IBudgetController {
 
     @Override
     @GetMapping
-    public List<Budget> getAll(@RequestHeader("access-token") String accessToken) {
+    public List<Budget> getAll(String accessToken) {
         return budgetService.getByUserID(Long.valueOf(accessToken));
+    }
+
+    @GetMapping("/current")
+    public Budget get(@RequestHeader("access-token") String accessToken) {
+        return budgetService.getCurrentByUserID(Long.valueOf(accessToken));
     }
 }

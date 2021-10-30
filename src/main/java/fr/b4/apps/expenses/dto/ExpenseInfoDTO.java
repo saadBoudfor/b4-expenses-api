@@ -10,4 +10,5 @@ public class ExpenseInfoDTO {
     private Float totalStore;
     private int countRestaurant;
     private int countStore;
+    private int weekCount;
 }
