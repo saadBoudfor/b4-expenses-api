@@ -3,6 +3,7 @@ package fr.b4.apps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.b4.apps.openfoodfact.apis.OpenFoodFactClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import javax.annotation.PostConstruct;
 import java.util.function.Predicate;
 
+@Slf4j
 @SpringBootApplication
 public class ExpensesApplication {
 
@@ -44,10 +46,11 @@ public class ExpensesApplication {
 	}
 	@PostConstruct
 	public void setUp() {
-		System.out.println("B4 expense API version: " + appVersion);
+		log.info("B4 expense API version: " + appVersion);
 		openFoodFactClient.updateProductCategories();
 		objectMapper.registerModule(new JavaTimeModule());
 	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(ExpensesApplication.class, args);
 	}

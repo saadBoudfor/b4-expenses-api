@@ -54,14 +54,8 @@ public class OpenFoodFactClient {
     }
 
     public void updateProductCategories() {
-        final String url = "https://world.openfoodfacts.org/data/taxonomies/categories.json";
-        ParameterizedTypeReference<LinkedHashMap<String, OFCategory>> typeRef = new ParameterizedTypeReference<>() {
-        };
-        ResponseEntity<LinkedHashMap<String, OFCategory>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), typeRef);
-        if (!CollectionUtils.isEmpty(response.getBody())) {
-            response.getBody().forEach(categoryService::updateCategory);
-            log.info("update all categories success");
-        }
+        Thread thread = new Thread(new CategoryUpdater(categoryService));
+        thread.start();
     }
 
     private static Product convert(OFProduct openOFProduct) {
