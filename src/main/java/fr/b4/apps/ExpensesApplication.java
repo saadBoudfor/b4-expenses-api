@@ -16,42 +16,66 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.function.Predicate;
 
 @Slf4j
 @SpringBootApplication
 public class ExpensesApplication {
 
-	@Autowired
-	private OpenFoodFactClient openFoodFactClient;
+    @Autowired
+    private OpenFoodFactClient openFoodFactClient;
 
-	@Autowired
-	public ObjectMapper objectMapper;
+    @Value("${products.photos.dir}")
+    private String productPhotoDir;
 
-	@Value("${app.version}")
-	private String appVersion;
+    @Value("${expenses.photos.dir}")
+    private String expensePhotoDir;
 
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedMethods("PUT", "GET", "DELETE", "OPTIONS", "PATCH", "POST");
-	}
+    @Autowired
+    public ObjectMapper objectMapper;
 
-	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any())
-				.paths(Predicate.not(PathSelectors.regex("/error.*")))
-				.build();
-	}
-	@PostConstruct
-	public void setUp() {
-		log.info("B4 expense API version: " + appVersion);
-		openFoodFactClient.updateProductCategories();
-		objectMapper.registerModule(new JavaTimeModule());
-	}
+    @Value("${app.version}")
+    private String appVersion;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ExpensesApplication.class, args);
-	}
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("PUT", "GET", "DELETE", "OPTIONS", "PATCH", "POST");
+    }
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .paths(Predicate.not(PathSelectors.regex("/error.*")))
+                .build();
+    }
+
+    @PostConstruct
+    public void setUp() {
+        log.info("B4 expense API version: " + appVersion);
+        openFoodFactClient.updateProductCategories();
+        objectMapper.registerModule(new JavaTimeModule());
+        createRequirementAssetsFolders();
+    }
+
+    private void createRequirementAssetsFolders() {
+        createFolder(productPhotoDir);
+        createFolder(expensePhotoDir);
+    }
+
+    private static void createFolder(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            boolean created = file.mkdirs();
+            if (created) {
+                log.info("create required folder: {}", path);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ExpensesApplication.class, args);
+    }
 }

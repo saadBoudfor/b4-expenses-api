@@ -39,13 +39,17 @@ public class ProductService {
         return openFoodFactClient.search(name);
     }
 
+    public Product searchByCode(String barCode) {
+        return openFoodFactClient.searchByCode(barCode);
+    }
+
     public Product save(Product product) {
         return productRepository.save(product);
     }
 
     public Product save(Product product, MultipartFile file) throws IOException {
         if (!ObjectUtils.isEmpty(file)) {
-            String photoURL = workingDir + productsPhotoDir + file.getOriginalFilename();
+            String photoURL = productsPhotoDir + file.getOriginalFilename();
             file.transferTo(Path.of(photoURL));
             product.setPhoto(file.getOriginalFilename());
         }

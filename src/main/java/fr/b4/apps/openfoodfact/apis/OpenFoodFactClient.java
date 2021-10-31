@@ -53,6 +53,15 @@ public class OpenFoodFactClient {
         return response.getBody().getProducts().stream().map(OpenFoodFactClient::convert).collect(Collectors.toList());
     }
 
+    public Product searchByCode(String barCode) {
+        String url = "https://world.openfoodfacts.org/api/v2/search?code=" + barCode;
+        restTemplate = new RestTemplate();
+        ResponseEntity<ProductResponse> response = restTemplate.getForEntity(url, ProductResponse.class);
+        if (ObjectUtils.isEmpty(response.getBody()) || ObjectUtils.isEmpty(response.getBody().getProducts()))
+            return null;
+        return response.getBody().getProducts().stream().map(OpenFoodFactClient::convert).collect(Collectors.toList()).get(0);
+    }
+
     public void updateProductCategories() {
         Thread thread = new Thread(new CategoryUpdater(categoryService));
         thread.start();

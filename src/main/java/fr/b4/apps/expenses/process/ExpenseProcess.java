@@ -46,7 +46,7 @@ public class ExpenseProcess {
     public Expense save(String expenseStr, MultipartFile file) throws IOException {
         Expense expense = ExpenseConverter.valueOf(expenseStr);
         if (!ObjectUtils.isEmpty(file)) {
-            String photoURL = workingDir + expenseBillDir + file.getOriginalFilename();
+            String photoURL = expenseBillDir + file.getOriginalFilename();
             file.transferTo(Path.of(photoURL));
             expense.setBill(file.getOriginalFilename());
         }
