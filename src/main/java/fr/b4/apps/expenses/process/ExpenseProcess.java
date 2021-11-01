@@ -53,6 +53,16 @@ public class ExpenseProcess {
         return expenseService.save(expense);
     }
 
+    public ExpenseDTO save(Long expenseID, MultipartFile file) throws IOException {
+        Expense expense = expenseService.findByID(expenseID);
+        if (!ObjectUtils.isEmpty(file)) {
+            String photoURL = expenseBillDir + file.getOriginalFilename();
+            file.transferTo(Path.of(photoURL));
+            expense.setBill(file.getOriginalFilename());
+        }
+        return ExpenseConverter.toDTO(expenseService.save(expense));
+    }
+
     private User getUser(String userID) {
         if (!StringUtils.hasLength(userID))
             return null;

@@ -61,4 +61,10 @@ public class ExpenseController implements IExpenseController {
         expenseProcess.delete(expenseID);
     }
 
+    @PutMapping("/{expenseID}")
+    public ExpenseDTO addBill(@PathVariable("expenseID") Long expenseID,
+                        @RequestParam(value = "file", required = true) MultipartFile file) throws IOException {
+        return expenseProcess.save(expenseID, file);
+    }
+
 }
