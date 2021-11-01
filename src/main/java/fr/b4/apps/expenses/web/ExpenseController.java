@@ -56,4 +56,9 @@ public class ExpenseController implements IExpenseController {
         return expenseProcess.findByPlaceID(accessToken, placeID);
     }
 
+    @DeleteMapping("/{expenseID}")
+    public void delete(@PathVariable("expenseID") Long expenseID) {
+        expenseProcess.delete(expenseID);
+    }
+
 }

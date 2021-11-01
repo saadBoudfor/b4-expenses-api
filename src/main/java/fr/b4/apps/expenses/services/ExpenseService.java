@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -136,5 +137,11 @@ public class ExpenseService {
 
     public Expense findByID(Long id) {
         return expenseRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void delete(Long expenseID) {
+        expenseLineRepository.deleteAllByExpenseId(expenseID);
+        expenseRepository.deleteById(expenseID);
     }
 }

@@ -94,4 +94,8 @@ public class ExpenseProcess {
     public ExpenseDTO find(Long id) {
         return ExpenseConverter.toDTO(expenseService.findByID(id));
     }
+
+    public void delete(Long expenseID) {
+        expenseService.delete(expenseID);
+    }
 }
