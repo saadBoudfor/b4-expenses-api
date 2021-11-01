@@ -90,7 +90,8 @@ public class ExpenseService {
     }
 
     public Float getTotal(Long userID) {
-        return expenseRepository.getAmountExpense(userID, getCurrentTargetDate());
+        Float total = expenseRepository.getAmountExpense(userID, getCurrentTargetDate());
+        return ObjectUtils.isEmpty(total) ? 0 : total;
     }
 
     public int getRestaurantCount(Long userID) {
