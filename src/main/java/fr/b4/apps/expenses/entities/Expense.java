@@ -25,7 +25,7 @@ public class Expense {
     private String name;
 
     @ApiModelProperty(value = "Purchased product", required = true)
-    @OneToMany(mappedBy = "expense")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "expense", cascade = CascadeType.ALL)
     private List<ExpenseLine> expenseLines;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)

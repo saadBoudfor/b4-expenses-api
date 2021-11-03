@@ -144,4 +144,8 @@ public class ExpenseService {
         expenseLineRepository.deleteAllByExpenseId(expenseID);
         expenseRepository.deleteById(expenseID);
     }
+
+    public List<Expense> findAll() {
+        return expenseRepository.findAll();
+    }
 }

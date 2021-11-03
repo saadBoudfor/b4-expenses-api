@@ -93,6 +93,10 @@ public class ExpenseProcess {
         return ExpenseConverter.toDTO(expenseService.findByUser(authenticated, page, size));
     }
 
+    public List<Expense> findByUserID(Long userID) {
+        return expenseService.findAll();
+    }
+
     public List<ExpenseDTO> findByPlaceID(String userID, String placeID) {
         User authenticated = getUser(userID);
         Place place = placeService.get(Long.valueOf(placeID));
