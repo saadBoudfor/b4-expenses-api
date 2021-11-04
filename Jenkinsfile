@@ -1,4 +1,4 @@
-spring {
+pipeline  {
     def app
 
     stage('Clone repository') {
