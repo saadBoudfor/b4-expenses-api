@@ -41,8 +41,6 @@ pipeline {
             }
         }
 
-        stage('')
-
 //         stage ('Send jar to b4-server') {
 //             steps {
 //                 sshPublisher(publishers: [sshPublisherDesc(configName: 'my ssh server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'backend', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
