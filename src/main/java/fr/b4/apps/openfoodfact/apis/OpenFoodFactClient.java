@@ -17,6 +17,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.net.URI;
 import java.net.URLDecoder;
@@ -78,9 +79,12 @@ public class OpenFoodFactClient {
         product.setCalories(openOFProduct.getNutriments().getEnergyKcal());
         product.setBrand(openOFProduct.getBrands());
         product.setDataPer(openOFProduct.getNutritionDataPer());
-        product.setCategories(Arrays.stream(openOFProduct.getCategoriesTags())
-                .map(CategoryConverter::convert)
-                .collect(Collectors.toList()));
+        if (!ObjectUtils.isEmpty(openOFProduct.getCategoriesTags())) {
+            product.setCategories(Arrays.stream(openOFProduct.getCategoriesTags())
+                    .map(CategoryConverter::convert)
+                    .collect(Collectors.toList()));
+        }
+
         return product;
     }
 

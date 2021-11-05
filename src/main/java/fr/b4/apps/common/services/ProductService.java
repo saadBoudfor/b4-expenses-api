@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,9 +36,19 @@ public class ProductService {
         this.openFoodFactClient = openFoodFactClient;
     }
 
-    public List<Product> find( String name) {
+    public List<Product> find(String name) {
         log.info("search product {}", name);
-        return openFoodFactClient.search(name);
+        List<Product> products = new ArrayList<>();
+        if (StringUtils.hasLength(name))
+            execLocalSearch(name, products);
+        products.addAll(openFoodFactClient.search(name));
+        return products;
+    }
+
+    private void execLocalSearch(String name, List<Product> products) {
+        List<Product> localSearchResult = productRepository.findByNameContains(name);
+        if (!CollectionUtils.isEmpty(localSearchResult))
+            products.addAll(localSearchResult);
     }
 
     public Product searchByCode(String barCode) {
