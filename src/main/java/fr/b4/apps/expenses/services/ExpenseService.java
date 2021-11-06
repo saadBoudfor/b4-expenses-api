@@ -64,7 +64,6 @@ public class ExpenseService {
             Place savedPlace = placeRepository.save(expense.getPlace());
             expense.setPlace(savedPlace);
         }
-        expense = expenseRepository.save(expense);
         for (ExpenseLine expenseLine : expense.getExpenseLines()) {
             expenseLine.setExpense(expense);
         }
@@ -77,6 +76,8 @@ public class ExpenseService {
         products.forEach(product -> categoryService.saveAll(product.getCategories()));
         if (!CollectionUtils.isEmpty(products))
             productRepository.saveAll(products);
+
+        expense = expenseRepository.save(expense);
         expenseLineRepository.saveAll(expense.getExpenseLines());
         return expenseRepository.save(expense);
     }

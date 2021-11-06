@@ -6,11 +6,13 @@ import fr.b4.apps.common.util.converters.ProductConverter;
 import fr.b4.apps.common.web.interfaces.IProductController;
 import fr.b4.apps.expenses.dto.MessageDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.spi.ExceptionConverter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ProductController implements IProductController {
     }
 
     @GetMapping
-    public List<Product> find() {
+    public List<Product> find() throws IOException{
         return productService.find(null);
     }
 
@@ -50,4 +52,17 @@ public class ProductController implements IProductController {
         Product product = ProductConverter.valueOf(data);
         return productService.save(product, file);
     }
+}
+
+
+class  P extends ProductController {
+
+    public P(ProductService productService) {
+        super(productService);
+    }
+
+    public List<Product> find() {
+        return null;
+    }
+
 }
