@@ -71,12 +71,7 @@ public class ExpenseService {
         expense.getExpenseLines()
                 .stream()
                 .filter(this::isProductValid)
-                .map(this::checkProduct)
-                .forEach(product -> {
-                    if (!CollectionUtils.isEmpty(product.getCategories())) {
-                        categoryService.saveAll(product.getCategories());
-                    }
-                });
+                .forEach(this::checkProduct);
 
         expense = expenseRepository.save(expense);
         expenseLineRepository.saveAll(expense.getExpenseLines());
@@ -87,17 +82,18 @@ public class ExpenseService {
         return !ObjectUtils.isEmpty(expenseLine) && !ObjectUtils.isEmpty(expenseLine.getProduct());
     }
 
-    private Product checkProduct(ExpenseLine expenseLine) {
+    private void checkProduct(ExpenseLine expenseLine) {
         Product found = productRepository.findFirstByName(expenseLine.getProduct().getName());
         if (!ObjectUtils.isEmpty(found)) {
             // to prevent update product stored in db
             expenseLine.setProduct(found);
         } else {
             Product saved = productRepository.save(expenseLine.getProduct());
-            categoryService.saveAll(saved.getCategories());
+            if (!CollectionUtils.isEmpty(saved.getCategories())) {
+                categoryService.saveAll(saved.getCategories());
+            }
             expenseLine.setProduct(saved);
         }
-        return expenseLine.getProduct();
     }
 
     public Float getTotal(Long userID) {
