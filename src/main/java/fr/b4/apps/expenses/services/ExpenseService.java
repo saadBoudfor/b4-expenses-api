@@ -73,7 +73,9 @@ public class ExpenseService {
                 .filter(this::isProductValid)
                 .map(this::checkProduct)
                 .forEach(product -> {
-                    categoryService.saveAll(product.getCategories());
+                    if (!CollectionUtils.isEmpty(product.getCategories())) {
+                        categoryService.saveAll(product.getCategories());
+                    }
                 });
 
         expense = expenseRepository.save(expense);
