@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -18,7 +15,7 @@ public class ExpenseLine {
     private Long id;
 
     @ApiModelProperty(value = "Purchased product", required = true)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
 
     @ApiModelProperty(value = "Purchased product price in euros", example = "34.3")
