@@ -89,9 +89,9 @@ public class ExpenseService {
             expenseLine.setProduct(found);
         } else {
             Product saved = productRepository.save(expenseLine.getProduct());
-            if (!CollectionUtils.isEmpty(saved.getCategories())) {
-                categoryService.saveAll(saved.getCategories());
-            }
+//            if (!CollectionUtils.isEmpty(saved.getCategories())) {
+//                categoryService.saveAll(saved.getCategories());
+//            }
             expenseLine.setProduct(saved);
         }
     }
