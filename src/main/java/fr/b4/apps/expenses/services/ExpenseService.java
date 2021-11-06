@@ -67,27 +67,34 @@ public class ExpenseService {
         for (ExpenseLine expenseLine : expense.getExpenseLines()) {
             expenseLine.setExpense(expense);
         }
-        List<Product> products = expense
-                .getExpenseLines()
+
+        expense.getExpenseLines()
                 .stream()
+                .filter(this::isProductValid)
                 .map(this::checkProduct)
-                .filter(product -> !ObjectUtils.isEmpty(product))
-                .collect(Collectors.toList());
-        products.forEach(product -> categoryService.saveAll(product.getCategories()));
-        if (!CollectionUtils.isEmpty(products))
-            productRepository.saveAll(products);
+                .forEach(product -> {
+                    categoryService.saveAll(product.getCategories());
+                });
 
         expense = expenseRepository.save(expense);
         expenseLineRepository.saveAll(expense.getExpenseLines());
         return expenseRepository.save(expense);
     }
 
+    private boolean isProductValid(ExpenseLine expenseLine) {
+        return !ObjectUtils.isEmpty(expenseLine) && !ObjectUtils.isEmpty(expenseLine.getProduct());
+    }
+
     private Product checkProduct(ExpenseLine expenseLine) {
-        if (ObjectUtils.isEmpty(expenseLine.getProduct()))
-            return null;
         Product found = productRepository.findFirstByName(expenseLine.getProduct().getName());
-        if (!ObjectUtils.isEmpty(found))
+        if (!ObjectUtils.isEmpty(found)) {
+            // to prevent update product stored in db
             expenseLine.getProduct().setId(found.getId());
+        } else {
+            Product saved = productRepository.save(expenseLine.getProduct());
+            categoryService.saveAll(saved.getCategories());
+            expenseLine.setProduct(saved);
+        }
         return expenseLine.getProduct();
     }
 
