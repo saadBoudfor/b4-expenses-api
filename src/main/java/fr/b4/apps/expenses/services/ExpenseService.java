@@ -89,7 +89,7 @@ public class ExpenseService {
         Product found = productRepository.findFirstByName(expenseLine.getProduct().getName());
         if (!ObjectUtils.isEmpty(found)) {
             // to prevent update product stored in db
-            expenseLine.getProduct().setId(found.getId());
+            expenseLine.setProduct(found);
         } else {
             Product saved = productRepository.save(expenseLine.getProduct());
             categoryService.saveAll(saved.getCategories());
