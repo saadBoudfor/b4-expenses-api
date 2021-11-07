@@ -13,6 +13,7 @@ import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -47,35 +48,37 @@ public class ExcelService {
 
         userRepository.findAll().forEach(user -> {
             List<Expense> expenses = expenseProcess.findByUserID(user.getId());
-            Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Dépenses");
-            sheet.setColumnWidth(0, 6000);
-            sheet.setColumnWidth(1, 4000);
+            if (!CollectionUtils.isEmpty(expenses)) {
+                Workbook workbook = new XSSFWorkbook();
+                Sheet sheet = workbook.createSheet("Dépenses");
+                sheet.setColumnWidth(0, 6000);
+                sheet.setColumnWidth(1, 4000);
 
-            defineHeaders(workbook, sheet);
-            writeExpenses(expenses, workbook, sheet);
+                defineHeaders(workbook, sheet);
+                writeExpenses(expenses, workbook, sheet);
 
-            try {
-                log.info("saving report for user {}", user.getId());
-                String reportPath = workingDir + "/report_" + user.getId() + "_" + LocalDate.now().toString().replaceAll("/", "_") + ".xlsx";
-                FileOutputStream outputStream = new FileOutputStream(reportPath);
-                workbook.write(outputStream);
-                workbook.close();
+                try {
+                    log.info("saving report for user {}", user.getId());
+                    String reportPath = workingDir + "/report_" + user.getId() + "_" + LocalDate.now().toString().replaceAll("/", "_") + ".xlsx";
+                    FileOutputStream outputStream = new FileOutputStream(reportPath);
+                    workbook.write(outputStream);
+                    workbook.close();
 
-                ExpenseInfoDTO info = expenseProcess.getInfo(user.getId().toString());
-                log.info("sending report for: {}", user.getEmail());
-                gmailService.sendMailWithAttachment(user.getEmail(),
-                        "Rapport dépense " + LocalDate.now(),
-                        TemplateProvider.getReportMailTemplate(user.getName(), info.getTarget().toString(), info.getTotal().toString(), LocalDate.now().toString()),
-                        "report.xlsx",
-                        reportPath);
+                    ExpenseInfoDTO info = expenseProcess.getInfo(user.getId().toString());
+                    log.info("sending report for: {}", user.getEmail());
+                    gmailService.sendMailWithAttachment(user.getEmail(),
+                            "Rapport dépense " + LocalDate.now(),
+                            TemplateProvider.getReportMailTemplate(user.getName(), info.getTarget().toString(), info.getTotal().toString(), LocalDate.now().toString()),
+                            "report.xlsx",
+                            reportPath);
 
-            } catch (IOException e) {
-                log.error("failed to save excel report file for user {}", user.getId());
-                e.printStackTrace();
-            } catch (MessagingException e) {
-                log.error("failed to send report email for user {} ", user.getId());
-                e.printStackTrace();
+                } catch (IOException e) {
+                    log.error("failed to save excel report file for user {}", user.getId());
+                    e.printStackTrace();
+                } catch (MessagingException e) {
+                    log.error("failed to send report email for user {} ", user.getId());
+                    e.printStackTrace();
+                }
             }
 
         });

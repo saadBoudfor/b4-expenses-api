@@ -18,19 +18,24 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query(value = "select sum(el.price) from expense join expense_line el on expense.id = el.expense_id where expense.user_id=:userID and expense.date>=:targetDate", nativeQuery = true)
     public Float getAmountExpense(@Param("userID") long userID, @Param("targetDate") LocalDate targetDate);
 
-    public List<Expense> findByUser(User user, Pageable pageable);
+    public List<Expense> findByUserOrderByDateDesc(User user, Pageable pageable);
 
-    public List<Expense> findByUser(User user);
+    public List<Expense> findByUserOrderByDateDesc(User user);
+
+    public List<Expense> findTop5ByUserOrderByDateDesc(User user);
 
     public List<Expense> findByUserAndPlace(User user, Place place);
 
     @Query(value = "select count(*) from expense inner join place on expense.place_id=place.id where place.type=:type and expense.user_id=:userID", nativeQuery = true)
-    public int countExpenses(@Param("userID") long userID, @Param("type") String type);
+    public Float countExpenses(@Param("userID") long userID, @Param("type") String type);
 
     @Query(value = "select sum(price) from expense inner join place on expense.place_id=place.id inner join expense_line on expense.id=expense_line.expense_id  where place.type=:type and expense.user_id=:userID", nativeQuery = true)
     public Float sumExpenses(@Param("userID") long userID, @Param("type") String type);
 
-    @Query(value = "select count(*) from expense  where expense.user_id=:userID and expense.date <=:firstDayOfCurrentWeek", nativeQuery = true)
-    int getCurrentWeekTotal(@Param("userID") Long id, @Param("firstDayOfCurrentWeek") LocalDate firstDayOfCurrentWeek);
+    @Query(value = "select sum(price) from expense  inner join expense_line on expense.id=expense_line.expense_id where expense.user_id=:userID and expense.date >=:firstDayOfCurrentWeek", nativeQuery = true)
+    Float getCurrentWeekTotal(@Param("userID") Long id, @Param("firstDayOfCurrentWeek") LocalDate firstDayOfCurrentWeek);
 
+
+    @Query(value = "select count(*) from expense where expense.user_id=:userID and expense.date >=:firstDayOfCurrentWeek", nativeQuery = true)
+    Integer getCurrentWeekCount(@Param("userID") Long id, @Param("firstDayOfCurrentWeek") LocalDate firstDayOfCurrentWeek);
 }

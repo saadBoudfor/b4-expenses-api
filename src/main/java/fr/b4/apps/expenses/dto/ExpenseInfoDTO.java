@@ -8,7 +8,8 @@ public class ExpenseInfoDTO {
     private Float target;
     private Float totalRestaurant;
     private Float totalStore;
-    private int countRestaurant;
-    private int countStore;
-    private int weekCount;
+    private Float countRestaurant;
+    private Float countStore;
+    private Integer weekCount;
+    private Float weekTotal;
 }

@@ -103,11 +103,11 @@ public class ExpenseService {
         return ObjectUtils.isEmpty(total) ? 0 : total;
     }
 
-    public int getRestaurantCount(Long userID) {
+    public Float getRestaurantCount(Long userID) {
         return expenseRepository.countExpenses(userID, PlaceType.RESTAURANT.toString());
     }
 
-    public int getStoreCount(Long userID) {
+    public Float getStoreCount(Long userID) {
         return expenseRepository.countExpenses(userID, PlaceType.STORE.toString());
     }
 
@@ -121,21 +121,35 @@ public class ExpenseService {
 
     public List<Expense> findByUser(User user, Integer page, Integer size) {
         if (ObjectUtils.isEmpty(size))
-            return expenseRepository.findByUser(user);
+            return expenseRepository.findByUserOrderByDateDesc(user);
         Pageable pageable = Pageable.unpaged();
         if (!ObjectUtils.isEmpty(page) && !ObjectUtils.isEmpty(size)) {
-            pageable = PageRequest.of(page, size, Sort.by("date").descending());
+            pageable = PageRequest.of(page, size);
         }
-        List<Expense> results = expenseRepository.findByUser(user, pageable);
+        List<Expense> results = expenseRepository.findByUserOrderByDateDesc(user, pageable);
         return CollectionUtils.isEmpty(results) ? new ArrayList<>() : results;
     }
 
-    public int getCurrentWeekTotal(Long userID) {
+
+    public List<Expense> findTop5ByUser(User user) {
+        return expenseRepository.findTop5ByUserOrderByDateDesc(user);
+    }
+
+    public Float getCurrentWeekTotal(Long userID) {
         LocalDate now = LocalDate.now();
         TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
         LocalDate firstDayOfCurrentWeek = now.with(fieldISO, 1);
 
         return expenseRepository.getCurrentWeekTotal(userID, firstDayOfCurrentWeek);
+    }
+
+
+    public Integer getCurrentWeekCount(Long userID) {
+        LocalDate now = LocalDate.now();
+        TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
+        LocalDate firstDayOfCurrentWeek = now.with(fieldISO, 1);
+
+        return expenseRepository.getCurrentWeekCount(userID, firstDayOfCurrentWeek);
     }
 
     public List<Expense> findByPlaceID(User user, Place place) {

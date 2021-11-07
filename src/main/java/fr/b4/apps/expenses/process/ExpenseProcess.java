@@ -82,7 +82,8 @@ public class ExpenseProcess {
         expenseInfoDTO.setCountStore(expenseService.getStoreCount(Long.valueOf(userID)));
         expenseInfoDTO.setTotalRestaurant(expenseService.getTotalRestaurant(Long.valueOf(userID)));
         expenseInfoDTO.setTotalStore(expenseService.getTotalStore(Long.valueOf(userID)));
-        expenseInfoDTO.setWeekCount(expenseService.getCurrentWeekTotal(Long.valueOf(userID)));
+        expenseInfoDTO.setWeekCount(expenseService.getCurrentWeekCount(Long.valueOf(userID)));
+        expenseInfoDTO.setWeekTotal(expenseService.getCurrentWeekTotal(Long.valueOf(userID)));
         return expenseInfoDTO;
     }
 
@@ -91,6 +92,11 @@ public class ExpenseProcess {
         if (ObjectUtils.isEmpty(authenticated))
             return null;
         return ExpenseConverter.toDTO(expenseService.findByUser(authenticated, page, size));
+    }
+
+    public List<ExpenseDTO> findTop5ByUser(String userID) {
+        User authenticated = getUser(userID);
+        return ExpenseConverter.toDTO(expenseService.findTop5ByUser(authenticated));
     }
 
     public List<Expense> findByUserID(Long userID) {

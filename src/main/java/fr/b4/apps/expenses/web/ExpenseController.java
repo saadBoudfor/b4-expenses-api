@@ -43,6 +43,10 @@ public class ExpenseController implements IExpenseController {
         return expenseProcess.findByUserID(accessToken, page, size);
     }
 
+    @GetMapping("last")
+    List<ExpenseDTO> findTop5ByUser(@RequestHeader("access-token") String userID) {
+        return expenseProcess.findTop5ByUser(userID);
+    }
 
     @GetMapping("/{id}")
     public ExpenseDTO getByID(@PathVariable("id") String id) {
