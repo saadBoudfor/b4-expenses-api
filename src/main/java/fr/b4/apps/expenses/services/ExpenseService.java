@@ -144,6 +144,24 @@ public class ExpenseService {
     }
 
 
+    public Float getCurrentWeekTotalByPlaceType(Long userID, PlaceType type) {
+        LocalDate now = LocalDate.now();
+        TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
+        LocalDate firstDayOfCurrentWeek = now.with(fieldISO, 1);
+
+        return expenseRepository.getCurrentWeekTotalByPlaceType(userID, firstDayOfCurrentWeek, type.toString());
+    }
+
+
+    public Integer getCurrentWeekCountByPlaceType(Long userID, PlaceType type) {
+        LocalDate now = LocalDate.now();
+        TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
+        LocalDate firstDayOfCurrentWeek = now.with(fieldISO, 1);
+
+        return expenseRepository.getCurrentWeekCountByPlaceType(userID, firstDayOfCurrentWeek, type.toString());
+    }
+
+
     public Integer getCurrentWeekCount(Long userID) {
         LocalDate now = LocalDate.now();
         TemporalField fieldISO = WeekFields.of(Locale.FRANCE).dayOfWeek();
@@ -151,6 +169,7 @@ public class ExpenseService {
 
         return expenseRepository.getCurrentWeekCount(userID, firstDayOfCurrentWeek);
     }
+
 
     public List<Expense> findByPlaceID(User user, Place place) {
         List<Expense> results = expenseRepository.findByUserAndPlace(user, place);

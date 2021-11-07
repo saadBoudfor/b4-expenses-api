@@ -3,6 +3,7 @@ package fr.b4.apps.expenses.process;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
 import fr.b4.apps.common.entities.Place;
+import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.common.services.PlaceService;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
@@ -84,6 +85,14 @@ public class ExpenseProcess {
         expenseInfoDTO.setTotalStore(expenseService.getTotalStore(Long.valueOf(userID)));
         expenseInfoDTO.setWeekCount(expenseService.getCurrentWeekCount(Long.valueOf(userID)));
         expenseInfoDTO.setWeekTotal(expenseService.getCurrentWeekTotal(Long.valueOf(userID)));
+
+
+        expenseInfoDTO.setWeekCountForRestaurant(expenseService.getCurrentWeekCountByPlaceType(Long.valueOf(userID), PlaceType.RESTAURANT));
+        expenseInfoDTO.setWeekCountForStore(expenseService.getCurrentWeekCountByPlaceType(Long.valueOf(userID), PlaceType.STORE));
+
+        expenseInfoDTO.setWeekTotalForRestaurant(expenseService.getCurrentWeekTotalByPlaceType(Long.valueOf(userID), PlaceType.RESTAURANT));
+        expenseInfoDTO.setWeekTotalForStore(expenseService.getCurrentWeekTotalByPlaceType(Long.valueOf(userID), PlaceType.STORE));
+
         return expenseInfoDTO;
     }
 
