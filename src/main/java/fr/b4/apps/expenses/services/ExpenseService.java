@@ -13,6 +13,7 @@ import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.expenses.repositories.ExpenseLineRepository;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 
 import static fr.b4.apps.expenses.util.ExpenseUtils.getCurrentTargetDate;
 
-
+@Slf4j
 @Component
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
@@ -89,6 +90,7 @@ public class ExpenseService {
             expenseLine.setProduct(found);
         } else {
             Product saved = productRepository.save(expenseLine.getProduct());
+            // TODO: Manage categories
 //            if (!CollectionUtils.isEmpty(saved.getCategories())) {
 //                categoryService.saveAll(saved.getCategories());
 //            }

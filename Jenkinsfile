@@ -4,11 +4,14 @@ pipeline {
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "mvn"
-        docker "docker"
     }
 
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('dockerhub_sboudfor')
+	}
+
     stages {
-        stage('Build and tests') {
+        stage('Build mvn and tests') {
 
             when {
                 expression { tests == 'true' }
@@ -20,7 +23,7 @@ pipeline {
             }
         }
 
-       stage('Build') {
+       stage('Build mvn') {
 
             when {
                 expression { tests == 'false' }
@@ -41,21 +44,25 @@ pipeline {
                 sh "mvn sonar:sonar -Dsonar.projectKey=b4_expenses_api  -Dsonar.host.url=http://apps.boudfor.fr:9000 -Dsonar.login=8e7c7c6425e13db538fbc7801998937ba0b6e9ef"
             }
         }
-
-//         stage ('Send jar to b4-server') {
-//             steps {
-//                 sshPublisher(publishers: [sshPublisherDesc(configName: 'my ssh server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'backend', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-//             }
-//         }
-        stage('Build image') {
+        stage('Build docker') {
             steps {
-                echo 'Starting to build docker image'
-
-                script {
-                    def customImage = docker.build("b4-expenses/api")
-                    customImage.push()
-                }
+                sh "docker build -t sboudfor/b4-expenses-api:prod ."
             }
         }
+
+		stage('Login') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+
+		stage('Push') {
+
+			steps {
+				sh 'docker push sboudfor/b4-expenses-api:prod'
+			}
+		}
+
     }
 }
