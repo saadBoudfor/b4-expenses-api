@@ -1,5 +1,6 @@
 package fr.b4.apps.common.services.excel;
 
+import com.sun.mail.util.MailConnectException;
 import fr.b4.apps.clients.repositories.UserRepository;
 import fr.b4.apps.common.services.email.GmailService;
 import fr.b4.apps.common.services.email.TemplateProvider;
@@ -11,6 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -19,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -73,11 +76,9 @@ public class ExcelService {
                             reportPath);
 
                 } catch (IOException e) {
-                    log.error("failed to save excel report file for user {}", user.getId());
-                    e.printStackTrace();
-                } catch (MessagingException e) {
-                    log.error("failed to send report email for user {} ", user.getId());
-                    e.printStackTrace();
+                    log.error("failed to save excel report file for user {}, error {}", user.getId(), e.getMessage());
+                } catch (MailSendException | MessagingException e) {
+                    log.error("failed to send report email for user {}, error : {} ", user.getId(), e.getMessage());
                 }
             }
 

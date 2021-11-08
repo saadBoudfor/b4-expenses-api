@@ -1,4 +1,4 @@
-package fr.b4.apps.common;
+package fr.b4.apps.common.dto;
 
 import lombok.Data;
 

@@ -1,9 +1,11 @@
 package fr.b4.apps.openfoodfact.apis;
 
+import fr.b4.apps.common.entities.NutrientLevels;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.services.CategoryService;
 import fr.b4.apps.common.util.converters.CategoryConverter;
 import fr.b4.apps.openfoodfact.models.OFCategory;
+import fr.b4.apps.openfoodfact.models.OFNutrientLevels;
 import fr.b4.apps.openfoodfact.models.OFProduct;
 import fr.b4.apps.openfoodfact.models.ProductResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +78,9 @@ public class OpenFoodFactClient {
         if (StringUtils.hasLength(openOFProduct.getProductQuantity()))
             product.setQuantity(Float.valueOf(openOFProduct.getProductQuantity()));
         product.setDisplayQuantity(openOFProduct.getQuantity());
-        product.setCalories(openOFProduct.getNutriments().getEnergyKcal());
+        if (!ObjectUtils.isEmpty(openOFProduct.getNutriments())) {
+            product.setCalories(openOFProduct.getNutriments().getEnergyKcal());
+        }
         product.setBrand(openOFProduct.getBrands());
         product.setDataPer(openOFProduct.getNutritionDataPer());
         if (!ObjectUtils.isEmpty(openOFProduct.getCategoriesTags())) {
@@ -85,8 +89,20 @@ public class OpenFoodFactClient {
                     .collect(Collectors.toList()));
         }
 
+        if (!ObjectUtils.isEmpty(openOFProduct.getNutrientLevels())) {
+            product.setNutrientLevels(convert(openOFProduct.getNutrientLevels()));
+        }
+        product.setScore(openOFProduct.getNutritionGrades());
         return product;
     }
 
+    private static NutrientLevels convert(OFNutrientLevels ofNutrientLevels) {
+        NutrientLevels nutrientLevels = new NutrientLevels();
+        nutrientLevels.setFat(ofNutrientLevels.getFat());
+        nutrientLevels.setSalt(ofNutrientLevels.getSalt());
+        nutrientLevels.setSaturatedFat(ofNutrientLevels.getSaturatedFat());
+        nutrientLevels.setSugars(ofNutrientLevels.getSaturatedFat());
+        return nutrientLevels;
+    }
 
 }

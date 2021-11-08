@@ -43,6 +43,10 @@ public class Product {
 
     private String dataPer;
 
+    @OneToOne
+    private NutrientLevels nutrientLevels;
+
+    private String score;
 
     @ManyToMany
     private List<Category> categories;

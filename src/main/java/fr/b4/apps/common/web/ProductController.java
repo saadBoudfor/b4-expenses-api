@@ -1,18 +1,16 @@
 package fr.b4.apps.common.web;
 
+import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.services.ProductService;
 import fr.b4.apps.common.util.converters.ProductConverter;
-import fr.b4.apps.common.web.interfaces.IProductController;
 import fr.b4.apps.expenses.dto.MessageDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.spi.ExceptionConverter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/products")
-public class ProductController implements IProductController {
+public class ProductController {
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -28,21 +26,21 @@ public class ProductController implements IProductController {
     }
 
     @GetMapping("/{name}")
-    public List<Product> find(@PathVariable(value = "name", required = true) String name) {
+    public List<Product> searchByTerm(@PathVariable(value = "name", required = true) String name) {
         return productService.find(name);
     }
 
     @GetMapping("/code/{code-bar}")
-    public ResponseEntity<Object> searchByCode(@PathVariable(value = "code-bar", required = true) String codeBar) {
+    public ResponseEntity<Object> searchByBarCode(@PathVariable(value = "code-bar", required = true) String codeBar) {
         Product found = productService.searchByCode(codeBar);
         if (ObjectUtils.isEmpty(found))
             return ResponseEntity.status(404).body(new MessageDTO("Product unknonwn"));
         return ResponseEntity.ok(found);
     }
 
-    @GetMapping
-    public List<Product> find() throws IOException{
-        return productService.find(null);
+    @GetMapping("/last")
+    public List<ProductDTO> getAllFromDB() {
+        return productService.getAllFromDB();
     }
 
     @PostMapping
@@ -54,15 +52,3 @@ public class ProductController implements IProductController {
     }
 }
 
-
-class  P extends ProductController {
-
-    public P(ProductService productService) {
-        super(productService);
-    }
-
-    public List<Product> find() {
-        return null;
-    }
-
-}

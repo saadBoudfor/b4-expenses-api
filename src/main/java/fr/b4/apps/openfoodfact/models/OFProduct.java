@@ -17,7 +17,7 @@ public class OFProduct {
     private LanguagesCodes languagesCodes;
 
     @JsonProperty("nutrient_levels")
-    private NutrientLevels nutrientLevels;
+    private OFNutrientLevels nutrientLevels;
 
     private Nutriments nutriments;
 
