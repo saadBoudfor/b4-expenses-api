@@ -8,6 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    public List<Budget> getBudgetByDateAndUser(LocalDate date, User user);
+    public List<Budget> getBudgetByDateAndUserId(LocalDate date, Long user);
     public List<Budget> getByUserId(Long userID);
 }

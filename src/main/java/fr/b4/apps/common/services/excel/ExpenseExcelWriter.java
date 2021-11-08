@@ -1,5 +1,7 @@
 package fr.b4.apps.common.services.excel;
 
+import fr.b4.apps.expenses.dto.ExpenseDTO;
+import fr.b4.apps.expenses.dto.ExpenseLineDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import org.apache.poi.ss.usermodel.*;
@@ -11,10 +13,10 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 public class ExpenseExcelWriter {
-    static void writeExpenses(List<Expense> expenses, Workbook workbook, Sheet sheet) {
+    static void writeExpenses(List<ExpenseDTO> expenses, Workbook workbook, Sheet sheet) {
         int $rowIndex = 1;
-        for (Expense expense : expenses) {
-            for (ExpenseLine expenseLine : expense.getExpenseLines()) {
+        for (ExpenseDTO expense : expenses) {
+            for (ExpenseLineDTO expenseLine : expense.getExpenseLines()) {
                 CellStyle style = workbook.createCellStyle();
                 style.setWrapText(true);
                 Row row = sheet.createRow($rowIndex);

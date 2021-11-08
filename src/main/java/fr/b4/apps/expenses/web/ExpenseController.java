@@ -1,73 +1,81 @@
 package fr.b4.apps.expenses.web;
 
+import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
-import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
+import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.process.ExpenseProcess;
-import fr.b4.apps.expenses.web.interfaces.IExpenseController;
+import fr.b4.apps.expenses.services.ExpenseService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
-import static fr.b4.apps.expenses.util.converters.ExpenseConverter.toDTO;
-
-
-@CrossOrigin("*")
 @RequestMapping("expenses")
 @RestController
-public class ExpenseController implements IExpenseController {
+public class ExpenseController {
 
     private final ExpenseProcess expenseProcess;
+    private final ExpenseService expenseService;
 
-    public ExpenseController(ExpenseProcess expenseProcess) {
+    public ExpenseController(ExpenseProcess expenseProcess,
+                             ExpenseService expenseService) {
         this.expenseProcess = expenseProcess;
+        this.expenseService = expenseService;
     }
 
-    @PostMapping
-    public ExpenseDTO save(@RequestParam(value = "file", required = false) MultipartFile file,
-                           @RequestParam(value = "expense", required = true) String expenseStr) throws IOException {
-        return toDTO(expenseProcess.save(expenseStr, file));
+    @GetMapping("/basic-stats")
+    public ExpenseBasicStatsDTO getBasicStats(@RequestHeader("access-token") String accessToken) {
+        return expenseProcess.getBasicStats(Long.valueOf(accessToken));
     }
 
-    @GetMapping("/info")
-    @Override
-    public ExpenseInfoDTO get(@RequestHeader("access-token") String accessToken) {
-        return expenseProcess.getInfo(accessToken);
+    @GetMapping("/basic-stats/restaurants")
+    public ExpenseBasicStatsDTO getRestaurantBasicStats(@RequestHeader("access-token") String accessToken) {
+        return expenseService.getExpenseStatsByPlace(Long.valueOf(accessToken), PlaceType.RESTAURANT);
+    }
+
+    @GetMapping("/basic-stats/stores")
+    public ExpenseBasicStatsDTO getStoresBasicStats(@RequestHeader("access-token") String accessToken) {
+        return expenseService.getExpenseStatsByPlace(Long.valueOf(accessToken), PlaceType.STORE);
     }
 
     @GetMapping
-    public List<ExpenseDTO> getAll(@RequestHeader("access-token") String accessToken,
+    public List<ExpenseDTO> getAll(@RequestHeader("access-token") String userID,
                                    @RequestParam(value = "page", required = false) Integer page,
                                    @RequestParam(value = "size", required = false) Integer size) {
-        return expenseProcess.findByUserID(accessToken, page, size);
+        return expenseService.findByUser(Long.valueOf(userID), page, size);
     }
 
-    @GetMapping("last")
+    @GetMapping("/last")
     List<ExpenseDTO> findTop5ByUser(@RequestHeader("access-token") String userID) {
-        return expenseProcess.findTop5ByUser(userID);
+        return expenseService.findTop5ByUser(Long.valueOf(userID));
     }
 
     @GetMapping("/{id}")
     public ExpenseDTO getByID(@PathVariable("id") String id) {
-        return expenseProcess.find(Long.valueOf(id));
+        return expenseService.findDTOByID(Long.valueOf(id));
     }
 
-
     @GetMapping("/place/{placeID}")
-    public List<ExpenseDTO> getByPlace(@RequestHeader("access-token") String accessToken,
+    public List<ExpenseDTO> getByPlace(@RequestHeader("access-token") String userID,
                                        @PathVariable("placeID") String placeID) {
-        return expenseProcess.findByPlaceID(accessToken, placeID);
+        return expenseService.findByPlaceID(Long.valueOf(userID), Long.valueOf(placeID));
+    }
+
+    @PostMapping
+    public ExpenseDTO save(@RequestParam(value = "file", required = false) MultipartFile file,
+                           @RequestParam(value = "expense") String expenseStr) throws IOException {
+        return expenseProcess.save(expenseStr, file);
     }
 
     @DeleteMapping("/{expenseID}")
     public void delete(@PathVariable("expenseID") Long expenseID) {
-        expenseProcess.delete(expenseID);
+        expenseService.delete(expenseID);
     }
 
     @PutMapping("/{expenseID}")
     public ExpenseDTO addBill(@PathVariable("expenseID") Long expenseID,
-                        @RequestParam(value = "file", required = true) MultipartFile file) throws IOException {
+                              @RequestParam(value = "file", required = true) MultipartFile file) throws IOException {
         return expenseProcess.save(expenseID, file);
     }
 

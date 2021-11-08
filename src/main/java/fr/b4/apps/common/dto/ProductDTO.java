@@ -1,13 +1,9 @@
 package fr.b4.apps.common.dto;
 
-import fr.b4.apps.common.entities.Category;
-import fr.b4.apps.common.entities.NutrientLevels;
 import fr.b4.apps.common.entities.ProductCategory;
 import fr.b4.apps.common.entities.Unit;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -40,5 +36,5 @@ public class ProductDTO {
 
     private String score;
 
-    private List<Category> categories;
+    private List<String> categories;
 }

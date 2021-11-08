@@ -1,5 +1,6 @@
 package fr.b4.apps.expenses.dto;
 
+import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import lombok.Data;
 

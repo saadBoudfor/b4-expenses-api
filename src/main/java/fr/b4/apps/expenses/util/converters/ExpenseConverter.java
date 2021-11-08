@@ -3,12 +3,15 @@ package fr.b4.apps.expenses.util.converters;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.b4.apps.common.entities.Place;
+import fr.b4.apps.common.util.converters.ProductConverter;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseLineDTO;
 import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -37,7 +40,10 @@ public class ExpenseConverter {
         return expenseLine;
     }
 
-    public static ExpenseDTO toDTO(Expense expense) {
+    public static ExpenseDTO toDTO(@Nullable Expense expense) {
+        if (ObjectUtils.isEmpty(expense)) {
+            return null;
+        }
         ExpenseDTO dto = new ExpenseDTO();
         dto.setAuthor(expense.getAuthor());
         dto.setName(expense.getName());
@@ -55,7 +61,7 @@ public class ExpenseConverter {
     public static ExpenseLineDTO toDTO(ExpenseLine expenseLine) {
         ExpenseLineDTO dto = new ExpenseLineDTO();
         dto.setId(expenseLine.getId());
-        dto.setProduct(ProductConverter.toDTO(expenseLine.getProduct()));
+        dto.setProduct(ProductConverter.toDto(expenseLine.getProduct()));
         dto.setPrice(expenseLine.getPrice());
         dto.setQuantity(expenseLine.getQuantity());
         dto.setComment(expenseLine.getComment());

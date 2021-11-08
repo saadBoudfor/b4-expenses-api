@@ -1,12 +1,6 @@
 package fr.b4.apps.expenses.process;
-
-import fr.b4.apps.clients.entities.User;
-import fr.b4.apps.clients.repositories.UserRepository;
-import fr.b4.apps.common.entities.Place;
-import fr.b4.apps.common.entities.PlaceType;
-import fr.b4.apps.common.services.PlaceService;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
-import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
+import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.services.BudgetService;
 import fr.b4.apps.expenses.services.ExpenseService;
@@ -15,13 +9,10 @@ import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ExpenseProcess {
@@ -31,27 +22,22 @@ public class ExpenseProcess {
     @Value("${expenses.photos.dir}")
     String expenseBillDir;
 
-
-    private final UserRepository userRepository;
     private final BudgetService budgetService;
     private final ExpenseService expenseService;
-    private final PlaceService placeService;
 
-    public ExpenseProcess(UserRepository userRepository, BudgetService budgetService, ExpenseService expenseService, PlaceService placeService) {
-        this.userRepository = userRepository;
+    public ExpenseProcess(BudgetService budgetService, ExpenseService expenseService) {
         this.budgetService = budgetService;
         this.expenseService = expenseService;
-        this.placeService = placeService;
     }
 
-    public Expense save(String expenseStr, MultipartFile file) throws IOException {
+    public ExpenseDTO save(String expenseStr, MultipartFile file) throws IOException {
         Expense expense = ExpenseConverter.valueOf(expenseStr);
         if (!ObjectUtils.isEmpty(file)) {
             String photoURL = expenseBillDir + file.getOriginalFilename();
             file.transferTo(Path.of(photoURL));
             expense.setBill(file.getOriginalFilename());
         }
-        return expenseService.save(expense);
+        return ExpenseConverter.toDTO(expenseService.save(expense));
     }
 
     public ExpenseDTO save(Long expenseID, MultipartFile file) throws IOException {
@@ -64,67 +50,10 @@ public class ExpenseProcess {
         return ExpenseConverter.toDTO(expenseService.save(expense));
     }
 
-    private User getUser(String userID) {
-        if (!StringUtils.hasLength(userID))
-            return null;
-        Optional<User> userOptional = userRepository.findById(Long.valueOf(userID));
-        return userOptional.orElse(null);
+    public ExpenseBasicStatsDTO getBasicStats(Long userID) {
+        ExpenseBasicStatsDTO expenseBasicStatsDTO = expenseService.getExpenseStats(userID);
+        expenseBasicStatsDTO.setTarget(budgetService.getTarget(userID));
+        return expenseBasicStatsDTO;
     }
 
-    public ExpenseInfoDTO getInfo(String userID) {
-        User authenticated = getUser(userID);
-        if (ObjectUtils.isEmpty(authenticated))
-            return null;
-
-        ExpenseInfoDTO expenseInfoDTO = new ExpenseInfoDTO();
-        expenseInfoDTO.setTarget(budgetService.getTarget(authenticated));
-        expenseInfoDTO.setTotal(expenseService.getTotal(Long.valueOf(userID)));
-        expenseInfoDTO.setCountRestaurant(expenseService.getRestaurantCount(Long.valueOf(userID)));
-        expenseInfoDTO.setCountStore(expenseService.getStoreCount(Long.valueOf(userID)));
-        expenseInfoDTO.setTotalRestaurant(expenseService.getTotalRestaurant(Long.valueOf(userID)));
-        expenseInfoDTO.setTotalStore(expenseService.getTotalStore(Long.valueOf(userID)));
-        expenseInfoDTO.setWeekCount(expenseService.getCurrentWeekCount(Long.valueOf(userID)));
-        expenseInfoDTO.setWeekTotal(expenseService.getCurrentWeekTotal(Long.valueOf(userID)));
-
-
-        expenseInfoDTO.setWeekCountForRestaurant(expenseService.getCurrentWeekCountByPlaceType(Long.valueOf(userID), PlaceType.RESTAURANT));
-        expenseInfoDTO.setWeekCountForStore(expenseService.getCurrentWeekCountByPlaceType(Long.valueOf(userID), PlaceType.STORE));
-
-        expenseInfoDTO.setWeekTotalForRestaurant(expenseService.getCurrentWeekTotalByPlaceType(Long.valueOf(userID), PlaceType.RESTAURANT));
-        expenseInfoDTO.setWeekTotalForStore(expenseService.getCurrentWeekTotalByPlaceType(Long.valueOf(userID), PlaceType.STORE));
-
-        return expenseInfoDTO;
-    }
-
-    public List<ExpenseDTO> findByUserID(String userID, Integer page, Integer size) {
-        User authenticated = getUser(userID);
-        if (ObjectUtils.isEmpty(authenticated))
-            return null;
-        return ExpenseConverter.toDTO(expenseService.findByUser(authenticated, page, size));
-    }
-
-    public List<ExpenseDTO> findTop5ByUser(String userID) {
-        User authenticated = getUser(userID);
-        return ExpenseConverter.toDTO(expenseService.findTop5ByUser(authenticated));
-    }
-
-    public List<Expense> findByUserID(Long userID) {
-        return expenseService.findAll();
-    }
-
-    public List<ExpenseDTO> findByPlaceID(String userID, String placeID) {
-        User authenticated = getUser(userID);
-        Place place = placeService.get(Long.valueOf(placeID));
-        if (ObjectUtils.isEmpty(authenticated))
-            return null;
-        return ExpenseConverter.toDTO(expenseService.findByPlaceID(authenticated, place));
-    }
-
-    public ExpenseDTO find(Long id) {
-        return ExpenseConverter.toDTO(expenseService.findByID(id));
-    }
-
-    public void delete(Long expenseID) {
-        expenseService.delete(expenseID);
-    }
 }

@@ -1,16 +1,16 @@
 package fr.b4.apps.common.services.excel;
 
-import com.sun.mail.util.MailConnectException;
 import fr.b4.apps.clients.repositories.UserRepository;
 import fr.b4.apps.common.services.email.GmailService;
 import fr.b4.apps.common.services.email.TemplateProvider;
-import fr.b4.apps.expenses.dto.ExpenseInfoDTO;
+import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
+import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.process.ExpenseProcess;
+import fr.b4.apps.expenses.services.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,21 +35,23 @@ public class ExcelService {
     private String workingDir;
 
     private final ExpenseProcess expenseProcess;
+    private final ExpenseService expenseService;
     private final GmailService gmailService;
     private final UserRepository userRepository;
 
-    public ExcelService(ExpenseProcess expenseProcess, GmailService gmailService, UserRepository userRepository) {
+    public ExcelService(ExpenseProcess expenseProcess, ExpenseService expenseService, GmailService gmailService, UserRepository userRepository) {
         this.expenseProcess = expenseProcess;
+        this.expenseService = expenseService;
         this.gmailService = gmailService;
         this.userRepository = userRepository;
     }
 
-    @PostConstruct
-    @Scheduled(cron = "0 0 6 * * *")
+//    @PostConstruct
+//    @Scheduled(cron = "0 0 6 * * *")
     public void exportExcel() {
 
         userRepository.findAll().forEach(user -> {
-            List<Expense> expenses = expenseProcess.findByUserID(user.getId());
+            List<ExpenseDTO> expenses = expenseService.findByUser(user.getId(), 0, null);
             if (!CollectionUtils.isEmpty(expenses)) {
                 Workbook workbook = new XSSFWorkbook();
                 Sheet sheet = workbook.createSheet("Dépenses");
@@ -67,7 +68,7 @@ public class ExcelService {
                     workbook.write(outputStream);
                     workbook.close();
 
-                    ExpenseInfoDTO info = expenseProcess.getInfo(user.getId().toString());
+                    ExpenseBasicStatsDTO info = expenseProcess.getBasicStats(user.getId());
                     log.info("sending report for: {}", user.getEmail());
                     gmailService.sendMailWithAttachment(user.getEmail(),
                             "Rapport dépense " + LocalDate.now(),

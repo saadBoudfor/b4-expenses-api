@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 import java.time.LocalDate;
 import java.util.List;
 
-import static fr.b4.apps.expenses.util.ExpenseUtils.getCurrentTargetDate;
+import static fr.b4.apps.expenses.util.ExpenseUtils.getFistDayOfCurrentMonth;
 
 @Component
 public class BudgetService {
@@ -20,8 +20,8 @@ public class BudgetService {
     }
 
     public Budget saveCurrentMonthBudget(Float target, User user) {
-        LocalDate currentTargetDate = getCurrentTargetDate();
-        List<Budget> found = budgetRepository.getBudgetByDateAndUser(currentTargetDate, user);
+        LocalDate currentTargetDate = getFistDayOfCurrentMonth();
+        List<Budget> found = budgetRepository.getBudgetByDateAndUserId(currentTargetDate, user.getId());
         Budget budget;
         if (CollectionUtils.isEmpty(found)) {
             budget = new Budget();
@@ -36,9 +36,9 @@ public class BudgetService {
 
     }
 
-    public Float getTarget(User user) {
-        LocalDate currentTargetDate = getCurrentTargetDate();
-        List<Budget> found = budgetRepository.getBudgetByDateAndUser(currentTargetDate, user);
+    public Float getTarget(Long userID) {
+        LocalDate currentTargetDate = getFistDayOfCurrentMonth();
+        List<Budget> found = budgetRepository.getBudgetByDateAndUserId(currentTargetDate, userID);
         return CollectionUtils.isEmpty(found) ? 0.0f : found.get(0).getTarget();
     }
 
