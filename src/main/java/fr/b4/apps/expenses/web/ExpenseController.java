@@ -75,7 +75,7 @@ public class ExpenseController {
 
     @PutMapping("/{expenseID}")
     public ExpenseDTO addBill(@PathVariable("expenseID") Long expenseID,
-                              @RequestParam(value = "file", required = true) MultipartFile file) throws IOException {
+                              @RequestParam(value = "file") MultipartFile file) throws IOException {
         return expenseProcess.save(expenseID, file);
     }
 
