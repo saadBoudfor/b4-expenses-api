@@ -52,7 +52,8 @@ public class ExpenseService {
         this.productRepository = productRepository;
     }
 
-    public Expense save(Expense expense) {
+    public Expense save(ExpenseDTO dto) {
+        Expense expense = ExpenseConverter.toExpense(dto);
         if (!ObjectUtils.isEmpty(expense.getPlace()) && ObjectUtils.isEmpty(expense.getPlace().getId())) {
             // create place first
             Address saved = addressRepository.save(expense.getPlace().getAddress());

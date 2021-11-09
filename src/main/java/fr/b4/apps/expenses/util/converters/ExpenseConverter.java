@@ -72,11 +72,11 @@ public class ExpenseConverter {
         return expenses.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 
-    public static Expense valueOf(String expenseStr) throws JsonProcessingException {
+    public static ExpenseDTO valueOf(String expenseStr) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         mapper.setDateFormat(df);
-        return mapper.readValue(expenseStr, Expense.class);
+        return mapper.readValue(expenseStr, ExpenseDTO.class);
     }
 
     public static ExpensePlaceDTO convertToPlace(Object[] item) {

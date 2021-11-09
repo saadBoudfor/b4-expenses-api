@@ -31,7 +31,7 @@ public class ExpenseProcess {
     }
 
     public ExpenseDTO save(String expenseStr, MultipartFile file) throws IOException {
-        Expense expense = ExpenseConverter.valueOf(expenseStr);
+        ExpenseDTO expense = ExpenseConverter.valueOf(expenseStr);
         if (!ObjectUtils.isEmpty(file)) {
             String photoURL = expenseBillDir + file.getOriginalFilename();
             file.transferTo(Path.of(photoURL));
@@ -47,7 +47,7 @@ public class ExpenseProcess {
             file.transferTo(Path.of(photoURL));
             expense.setBill(file.getOriginalFilename());
         }
-        return ExpenseConverter.toDTO(expenseService.save(expense));
+        return ExpenseConverter.toDTO(expenseService.save(ExpenseConverter.toDTO(expense)));
     }
 
     public ExpenseBasicStatsDTO getBasicStats(Long userID) {
