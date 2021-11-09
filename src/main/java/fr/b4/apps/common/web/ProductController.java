@@ -26,13 +26,13 @@ public class ProductController {
     }
 
     @GetMapping("/{name}")
-    public List<Product> searchByTerm(@PathVariable(value = "name", required = true) String name) {
+    public List<ProductDTO> searchByTerm(@PathVariable(value = "name", required = true) String name) {
         return productService.find(name);
     }
 
     @GetMapping("/code/{code-bar}")
     public ResponseEntity<Object> searchByBarCode(@PathVariable(value = "code-bar", required = true) String codeBar) {
-        Product found = productService.searchByCode(codeBar);
+        ProductDTO found = productService.searchByCode(codeBar);
         if (ObjectUtils.isEmpty(found))
             return ResponseEntity.status(404).body(new MessageDTO("Product unknonwn"));
         return ResponseEntity.ok(found);

@@ -83,13 +83,13 @@ public class ProductService {
         return productRepository.findAll().stream().map(ProductConverter::toDto).collect(Collectors.toList());
     }
 
-    public List<Product> find(String name) {
+    public List<ProductDTO> find(String name) {
         log.info("search product {}", name);
         List<Product> products = new ArrayList<>();
         if (StringUtils.hasLength(name))
             execLocalSearch(name, products);
         products.addAll(openFoodFactClient.search(name));
-        return products;
+        return products.stream().map(ProductConverter::toDto).collect(Collectors.toList());
     }
 
     private void execLocalSearch(String name, List<Product> products) {
@@ -98,8 +98,8 @@ public class ProductService {
             products.addAll(localSearchResult);
     }
 
-    public Product searchByCode(String barCode) {
-        return openFoodFactClient.searchByCode(barCode);
+    public ProductDTO searchByCode(String barCode) {
+        return ProductConverter.toDto(openFoodFactClient.searchByCode(barCode));
     }
 
     public Product save(Product product) {
