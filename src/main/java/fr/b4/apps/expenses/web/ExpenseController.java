@@ -3,6 +3,7 @@ package fr.b4.apps.expenses.web;
 import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
+import fr.b4.apps.expenses.dto.NutrientStatRecapDTO;
 import fr.b4.apps.expenses.process.ExpenseProcess;
 import fr.b4.apps.expenses.services.ExpenseService;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,11 @@ public class ExpenseController {
     @GetMapping("/basic-stats/stores")
     public ExpenseBasicStatsDTO getStoresBasicStats(@RequestHeader("access-token") String accessToken) {
         return expenseService.getExpenseStatsByPlace(Long.valueOf(accessToken), PlaceType.STORE);
+    }
+
+    @GetMapping("/basic-stats/nutrients")
+    public NutrientStatRecapDTO getNutrientStats() {
+        return expenseService.getNutrientStats();
     }
 
     @GetMapping
@@ -78,5 +84,6 @@ public class ExpenseController {
                               @RequestParam(value = "file") MultipartFile file) throws IOException {
         return expenseProcess.save(expenseID, file);
     }
+
 
 }

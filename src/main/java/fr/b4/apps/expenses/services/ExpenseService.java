@@ -8,6 +8,8 @@ import fr.b4.apps.common.repositories.PlaceRepository;
 import fr.b4.apps.common.repositories.ProductRepository;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
+import fr.b4.apps.expenses.dto.NutrientStatDTO;
+import fr.b4.apps.expenses.dto.NutrientStatRecapDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.common.entities.PlaceType;
@@ -22,14 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.b4.apps.expenses.util.ExpenseUtils.getFistDayOfCurrentMonth;
-import static fr.b4.apps.expenses.util.ExpenseUtils.getFistDayOfCurrentWeek;
+import static fr.b4.apps.expenses.util.ExpenseUtils.*;
 
 @Slf4j
 @Component
@@ -144,6 +146,11 @@ public class ExpenseService {
         final ExpenseBasicStatsDTO basicStatsDTO = new ExpenseBasicStatsDTO();
         setStatsForAllExpensesByPlace(basicStatsDTO, userID, firstDayOfCurrentMonth, firstDayOfCurrentWeek, placeType);
         return basicStatsDTO;
+    }
+
+    public NutrientStatRecapDTO getNutrientStats() {
+        List<Object[]> rawData = expenseLineRepository.getNutrientStats();
+        return extractStats(rawData);
     }
 
     private void setStatsForAllExpenses(ExpenseBasicStatsDTO basicStatsDTO,
