@@ -4,6 +4,8 @@ import fr.b4.apps.common.entities.Product;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -15,7 +17,8 @@ public class ExpenseLine {
     private Long id;
 
     @ApiModelProperty(value = "Purchased product", required = true)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Product product;
 
     @ApiModelProperty(value = "Purchased product price in euros", example = "34.3")

@@ -9,6 +9,8 @@ import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.Place;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,7 +27,8 @@ public class Expense {
     private String name;
 
     @ApiModelProperty(value = "Purchased product", required = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "expense", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "expense")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ExpenseLine> expenseLines;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)

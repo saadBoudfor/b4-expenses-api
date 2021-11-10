@@ -23,4 +23,5 @@ public interface IProductController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success|OK", response = Product[].class) })
     public List<Product> find(String name);
+
 }

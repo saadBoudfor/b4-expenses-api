@@ -28,6 +28,9 @@ public class ExpenseConverter {
         expense.setExpenseLines(dto.getExpenseLines().stream().map(ExpenseConverter::toExpenseLine).collect(Collectors.toList()));
         expense.setComment(dto.getComment());
         expense.setAuthor(dto.getAuthor());
+        expense.setPlace(dto.getPlace());
+        expense.setUser(dto.getUser());
+        expense.setBill(dto.getBill());
         return expense;
     }
 

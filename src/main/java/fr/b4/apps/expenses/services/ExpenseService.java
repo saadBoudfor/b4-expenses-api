@@ -6,10 +6,7 @@ import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.repositories.AddressRepository;
 import fr.b4.apps.common.repositories.PlaceRepository;
 import fr.b4.apps.common.repositories.ProductRepository;
-import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
-import fr.b4.apps.expenses.dto.ExpenseDTO;
-import fr.b4.apps.expenses.dto.NutrientStatDTO;
-import fr.b4.apps.expenses.dto.NutrientStatRecapDTO;
+import fr.b4.apps.expenses.dto.*;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.common.entities.PlaceType;
@@ -128,8 +125,12 @@ public class ExpenseService {
 
     @Transactional
     public void delete(Long expenseID) {
-        expenseLineRepository.deleteAllByExpenseId(expenseID);
-        expenseRepository.deleteById(expenseID);
+        Integer isDeleted = expenseLineRepository.deleteAllByExpenseId(expenseID);
+        if (!ObjectUtils.isEmpty(isDeleted)) {
+            log.warn("{} expense line deleted for expense id: {}", isDeleted, expenseID);
+            expenseRepository.deleteById(expenseID);
+            log.warn("expense {} deleted success", expenseID);
+        }
     }
 
     public ExpenseBasicStatsDTO getExpenseStats(Long userID) {

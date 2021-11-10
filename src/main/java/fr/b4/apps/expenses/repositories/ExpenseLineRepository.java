@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ExpenseLineRepository extends JpaRepository<ExpenseLine, Long> {
-    public void deleteAllByExpenseId(Long id);
+    public Integer deleteAllByExpenseId(Long id);
     @Query(value = "select score, count(score)  from (select nutrient_levels.*, score from expense_line join product on product.id=expense_line.product_id join nutrient_levels on  product.nutrient_levels_id=nutrient_levels.id) as nutrient_stats group by score", nativeQuery = true)
     public List<Object[]> getNutrientStats();
 }
