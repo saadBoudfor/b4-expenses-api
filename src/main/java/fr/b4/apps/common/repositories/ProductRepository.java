@@ -5,8 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    public List<Product> findByNameContains(String name);
-    public boolean existsByName(String name);
-    public Product findFirstByName(String name);
+ public interface ProductRepository extends JpaRepository<Product, Long> {
+     /**
+      * Filter products by name
+      *
+      * @param name searched product name
+      * @return products with  given name
+      */
+    List<Product> findByNameContains(String name);
+    Product findFirstByName(String name);
 }

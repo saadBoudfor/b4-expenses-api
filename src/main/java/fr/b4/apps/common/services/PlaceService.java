@@ -29,8 +29,8 @@ public class PlaceService {
     public List<ExpensePlaceDTO> getPlaceRanking(String placeType) {
         List<Object[]> rankingRaw = placeRepository.getPlacesRanking(placeType);
         return rankingRaw.stream()
-                .map(ExpenseConverter::convertToPlace)
-                .map(this::updatePlace)
+                .map(ExpenseConverter::convertToExpensePlaceRanking)
+                .map(this::updatePlace) // return Place object instead of Place name
                 .collect(Collectors.toList());
     }
 

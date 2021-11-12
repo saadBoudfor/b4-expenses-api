@@ -1,11 +1,13 @@
-package fr.b4.apps.common.services.email;
+package fr.b4.apps.common.services.excel.utils;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+@UtilityClass
 public class TemplateProvider {
     public static String getReportMailTemplate(String name, String target, String total, String date) throws IOException {
 

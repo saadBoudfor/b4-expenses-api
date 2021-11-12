@@ -1,4 +1,5 @@
 package fr.b4.apps.expenses.process;
+
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.entities.Expense;
@@ -30,24 +31,20 @@ public class ExpenseProcess {
         this.expenseService = expenseService;
     }
 
-    public ExpenseDTO save(String expenseStr, MultipartFile file) throws IOException {
+    public ExpenseDTO addBill(String expenseStr, MultipartFile bill) throws IOException {
         ExpenseDTO expense = ExpenseConverter.valueOf(expenseStr);
-        if (!ObjectUtils.isEmpty(file)) {
-            String photoURL = expenseBillDir + file.getOriginalFilename();
-            file.transferTo(Path.of(photoURL));
-            expense.setBill(file.getOriginalFilename());
+        if (!ObjectUtils.isEmpty(bill)) {
+            String photoURL = expenseBillDir + bill.getOriginalFilename();
+            bill.transferTo(Path.of(photoURL));
+            expense.setBill(bill.getOriginalFilename());
         }
         return ExpenseConverter.toDTO(expenseService.save(expense));
     }
 
-    public ExpenseDTO save(Long expenseID, MultipartFile file) throws IOException {
-        Expense expense = expenseService.findByID(expenseID);
-        if (!ObjectUtils.isEmpty(file)) {
-            String photoURL = expenseBillDir + file.getOriginalFilename();
-            file.transferTo(Path.of(photoURL));
-            expense.setBill(file.getOriginalFilename());
-        }
-        return ExpenseConverter.toDTO(expenseService.save(ExpenseConverter.toDTO(expense)));
+    public ExpenseDTO addBill(Long expenseID, MultipartFile bill) throws IOException {
+        String photoURL = expenseBillDir + bill.getOriginalFilename();
+        bill.transferTo(Path.of(photoURL));
+        return expenseService.updateException(expenseID, bill.getOriginalFilename());
     }
 
     public ExpenseBasicStatsDTO getBasicStats(Long userID) {

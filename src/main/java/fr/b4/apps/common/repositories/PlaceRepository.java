@@ -8,8 +8,23 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
+
+    /**
+     * Filter place by name
+     *
+     * @param search searched place name
+     * @return places with  given name
+     */
     List<Place> findByNameContains(String search);
 
+
+    /**
+     * Get Top 5 Places ranking
+     *
+     * @param place_type restaurant/store
+     * @return TOP 5 places where the user spent the most money.
+     * Get the total and count of expenses for each place in ranking
+     */
     @Query(value = "select place_id, sum(total), count(expense_id) as total " +
             " from (select expense.id as expense_id, date , place_id, sum(price) as total " +
             " from expense inner join expense_line on expense_line.expense_id = expense.id " +

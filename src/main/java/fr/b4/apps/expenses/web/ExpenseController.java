@@ -71,7 +71,7 @@ public class ExpenseController {
     @PostMapping
     public ExpenseDTO save(@RequestParam(value = "file", required = false) MultipartFile file,
                            @RequestParam(value = "expense") String expenseStr) throws IOException {
-        return expenseProcess.save(expenseStr, file);
+        return expenseProcess.addBill(expenseStr, file);
     }
 
     @DeleteMapping("/{expenseID}")
@@ -81,8 +81,8 @@ public class ExpenseController {
 
     @PutMapping("/{expenseID}")
     public ExpenseDTO addBill(@PathVariable("expenseID") Long expenseID,
-                              @RequestParam(value = "file") MultipartFile file) throws IOException {
-        return expenseProcess.save(expenseID, file);
+                              @RequestParam(value = "file") MultipartFile expenseBill) throws IOException {
+        return expenseProcess.addBill(expenseID, expenseBill);
     }
 
 

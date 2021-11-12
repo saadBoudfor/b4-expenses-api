@@ -75,6 +75,12 @@ public class ExpenseService {
         return expenseRepository.save(expense);
     }
 
+    public ExpenseDTO updateException(Long userID, String billName) {
+        Expense expense = expenseRepository.getById(userID);
+        expense.setBill(billName);
+        return ExpenseConverter.toDTO(expense);
+    }
+
     private boolean isProductValid(ExpenseLine expenseLine) {
         return !ObjectUtils.isEmpty(expenseLine) && !ObjectUtils.isEmpty(expenseLine.getProduct());
     }

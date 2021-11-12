@@ -82,7 +82,7 @@ public class ExpenseConverter {
         return mapper.readValue(expenseStr, ExpenseDTO.class);
     }
 
-    public static ExpensePlaceDTO convertToPlace(Object[] item) {
+    public static ExpensePlaceDTO convertToExpensePlaceRanking(Object[] item) {
         ExpensePlaceDTO expensePlaceDTO = new ExpensePlaceDTO();
         Place place = new Place();
         place.setId(((BigInteger) item[0]).longValue());

@@ -1,4 +1,4 @@
-package fr.b4.apps.expenses;
+package fr.b4.apps;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
