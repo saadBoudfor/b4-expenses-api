@@ -1,6 +1,8 @@
 package fr.b4.apps.common.repositories;
 
 import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
+import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.Address;
 import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.common.entities.PlaceType;
@@ -91,5 +93,19 @@ public class DataGenerator {
             products.add(generateProduct());
         }
         return products;
+    }
+
+    public static List<User> generateUser(int number) {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            User user = new User();
+            Name fakeUser = faker.name();
+            user.setLastname(fakeUser.lastName());
+            user.setName(fakeUser.firstName());
+            user.setUsername(fakeUser.username());
+            user.setEmail(fakeUser.username() + "@gmail.com");
+            users.add(user);
+        }
+        return users;
     }
 }

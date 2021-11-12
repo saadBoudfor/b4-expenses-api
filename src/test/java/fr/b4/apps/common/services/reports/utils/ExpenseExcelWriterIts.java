@@ -1,4 +1,4 @@
-package fr.b4.apps.common.services.excel.utils;
+package fr.b4.apps.common.services.reports.utils;
 
 import fr.b4.apps.common.repositories.DataGenerator;
 import fr.b4.apps.expenses.entities.Expense;
@@ -8,13 +8,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+
 
 import java.util.List;
 
 
-public class ExpenseExcelWriterIT {
+public class ExpenseExcelWriterIts {
     @Test
     public void shouldWriteExpenseSuccess() {
         List<Expense> expenseList = DataGenerator.generateExpenses(10);

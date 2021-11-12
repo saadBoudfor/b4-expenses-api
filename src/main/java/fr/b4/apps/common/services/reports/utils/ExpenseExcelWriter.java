@@ -1,8 +1,7 @@
-package fr.b4.apps.common.services.excel.utils;
+package fr.b4.apps.common.services.reports.utils;
 
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseLineDTO;
-import lombok.experimental.UtilityClass;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

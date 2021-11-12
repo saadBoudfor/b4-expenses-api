@@ -1,8 +1,8 @@
-package fr.b4.apps.common.services.excel;
+package fr.b4.apps.common.services.reports;
 
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
-import fr.b4.apps.common.services.excel.utils.TemplateProvider;
+import fr.b4.apps.common.services.reports.utils.TemplateProvider;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.process.ExpenseProcess;
@@ -27,11 +27,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static fr.b4.apps.common.services.excel.utils.ExpenseExcelWriter.*;
+import static fr.b4.apps.common.services.reports.utils.ExpenseExcelWriter.*;
 
 @Slf4j
 @Component
-public class ExcelService {
+public class ReportingService {
 
     @Value("${working.dir}")
     private String workingDir;
@@ -41,10 +41,10 @@ public class ExcelService {
     private final UserRepository userRepository;
     private final JavaMailSender emailSender;
 
-    public ExcelService(ExpenseProcess expenseProcess,
-                        ExpenseService expenseService,
-                        UserRepository userRepository,
-                        JavaMailSender emailSender) {
+    public ReportingService(ExpenseProcess expenseProcess,
+                            ExpenseService expenseService,
+                            UserRepository userRepository,
+                            JavaMailSender emailSender) {
         this.expenseProcess = expenseProcess;
         this.expenseService = expenseService;
         this.userRepository = userRepository;
