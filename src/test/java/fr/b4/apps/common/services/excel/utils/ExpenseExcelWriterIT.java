@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+
 public class ExpenseExcelWriterIT {
     @Test
     public void shouldWriteExpenseSuccess() {

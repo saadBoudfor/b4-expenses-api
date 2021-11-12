@@ -11,9 +11,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-@UtilityClass
 public class ExpenseExcelWriter {
 
+    private ExpenseExcelWriter() {
+    }
 
     /**
      * Save expense list as Excel File.
