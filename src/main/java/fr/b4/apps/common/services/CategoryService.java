@@ -32,7 +32,7 @@ public class CategoryService {
         list.forEach(this::save);
     }
 
-    private void save(Category created) {
+    public void save(Category created) {
         if (categoryRepository.existsById(created.getId())) {
             if (StringUtils.hasLength(created.getEn()) || StringUtils.hasLength(created.getFr())) {
                 categoryRepository.save(created);

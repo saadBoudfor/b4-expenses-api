@@ -3,10 +3,7 @@ package fr.b4.apps;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import fr.b4.apps.clients.entities.User;
-import fr.b4.apps.common.entities.Address;
-import fr.b4.apps.common.entities.Place;
-import fr.b4.apps.common.entities.PlaceType;
-import fr.b4.apps.common.entities.Product;
+import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
@@ -21,6 +18,25 @@ import java.util.List;
 @UtilityClass
 public class DataGenerator {
     private static final Faker faker = new Faker();
+
+
+    public List<Category> generateCategories(int num) throws IllegalArgumentException {
+        if (num <= 0) {
+            throw new IllegalArgumentException("num must be > 0");
+        }
+        List<Category> categories = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            categories.add(generateOneCategory(i));
+        }
+        return categories;
+    }
+
+    public Category generateOneCategory(int id) {
+        Category category = new Category();
+        category.setFr(faker.cat().name());
+        category.setId(id + "");
+        return category;
+    }
 
     public ExpenseBasicStatsDTO generateBasicStats() {
         ExpenseBasicStatsDTO statsDTO = new ExpenseBasicStatsDTO();

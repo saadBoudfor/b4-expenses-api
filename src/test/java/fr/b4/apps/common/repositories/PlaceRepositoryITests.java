@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-public class PlaceRepositoryTests {
+public class PlaceRepositoryITests {
 
     @Autowired
     private PlaceRepository placeRepository;

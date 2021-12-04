@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 @TestPropertySource(locations = "classpath:application.properties")
-public class ReportingServiceIts {
+public class ReportingServiceTests {
 
     @Mock
     private ExpenseProcess expenseProcess;

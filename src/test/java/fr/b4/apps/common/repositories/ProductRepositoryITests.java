@@ -20,7 +20,7 @@ import java.util.List;
 @AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application.properties")
-public class ProductRepositoryTests {
+public class ProductRepositoryITests {
     @Autowired
     private ProductRepository productRepository;
 
