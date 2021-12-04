@@ -5,12 +5,14 @@ import com.github.javafaker.Name;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
+import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
 import lombok.experimental.UtilityClass;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -75,6 +77,30 @@ public class DataGenerator {
         return place;
     }
 
+    public List<Place> generatePlaces(PlaceType placeType, int num) {
+        List<Place> places = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            places.add(generateOnePlace(placeType));
+        }
+        return places;
+    }
+
+    public ExpensePlaceDTO generateExpensePlace(PlaceType placeType) {
+        ExpensePlaceDTO expensePlaceDTO = new ExpensePlaceDTO();
+        expensePlaceDTO.setPlace(generateOnePlace(placeType));
+        expensePlaceDTO.setCount(faker.number().numberBetween(1L, 9023456L));
+        expensePlaceDTO.setCount(faker.number().numberBetween(1L, 6978546L));
+        return expensePlaceDTO;
+    }
+
+    public List<ExpensePlaceDTO> generateExpensePlaces(PlaceType placeType, int num) {
+        List<ExpensePlaceDTO> expensePlaceDTOS = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            expensePlaceDTOS.add(generateExpensePlace(placeType));
+        }
+        return expensePlaceDTOS;
+    }
+
     public List<Expense> generateExpenses(int num) {
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < num; i++) {
@@ -94,6 +120,18 @@ public class DataGenerator {
             expense.setExpenseLines(generateExpenseLines(faker.number().numberBetween(1, 12)));
         });
         return expenses;
+    }
+
+    public List<Object[]> generateExpensePlaceRawData(int num) {
+        List<Object[]> objects = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Object[] data = new Object[3];
+            data[0] = new BigInteger(faker.number().numberBetween(1, 789645L) + "");
+            data[1] = Double.valueOf(faker.number().numberBetween(1, 789645L) + "");
+            data[2] = new BigInteger(faker.number().numberBetween(1, 989645L) + "");
+            objects.add(data);
+        }
+        return objects;
     }
 
     public static List<ExpenseLine> generateExpenseLines(int num) {
@@ -148,7 +186,7 @@ public class DataGenerator {
 
     public static List<String> generateStrings(int num) {
         List<String> names = new ArrayList<>();
-        for(int i=0; i <num; i++) {
+        for (int i = 0; i < num; i++) {
             names.add(faker.cat().name());
         }
         return names;
