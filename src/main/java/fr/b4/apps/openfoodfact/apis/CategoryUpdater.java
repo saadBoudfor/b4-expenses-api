@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
@@ -24,13 +25,18 @@ public class CategoryUpdater implements Runnable{
 
     @Override
     public void run() {
-        final String url = "https://world.openfoodfacts.org/data/taxonomies/categories.json";
-        ParameterizedTypeReference<LinkedHashMap<String, OFCategory>> typeRef = new ParameterizedTypeReference<>() {
-        };
-        ResponseEntity<LinkedHashMap<String, OFCategory>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), typeRef);
-        if (!CollectionUtils.isEmpty(response.getBody())) {
-            response.getBody().forEach(categoryService::updateCategory);
-            log.info("update all categories success");
+        try {
+            final String url = "https://world.openfoodfacts.org/data/taxonomies/categories.json";
+            ParameterizedTypeReference<LinkedHashMap<String, OFCategory>> typeRef = new ParameterizedTypeReference<>() {
+            };
+            ResponseEntity<LinkedHashMap<String, OFCategory>> response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(null), typeRef);
+            if (!CollectionUtils.isEmpty(response.getBody())) {
+                response.getBody().forEach(categoryService::updateCategory);
+                log.info("update all categories success");
+            }
+        } catch (ResourceAccessException e) {
+            log.error("Failed to request Open Food Fact Server. Error: {}", e.getMessage());
         }
+
     }
 }

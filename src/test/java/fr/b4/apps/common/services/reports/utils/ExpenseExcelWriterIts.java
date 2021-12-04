@@ -1,6 +1,6 @@
 package fr.b4.apps.common.services.reports.utils;
 
-import fr.b4.apps.common.repositories.DataGenerator;
+import fr.b4.apps.DataGenerator;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import org.apache.poi.ss.usermodel.Sheet;

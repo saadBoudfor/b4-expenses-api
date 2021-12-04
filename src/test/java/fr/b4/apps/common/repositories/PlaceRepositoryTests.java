@@ -1,5 +1,6 @@
 package fr.b4.apps.common.repositories;
 
+import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.expenses.dto.ExpensePlaceDTO;

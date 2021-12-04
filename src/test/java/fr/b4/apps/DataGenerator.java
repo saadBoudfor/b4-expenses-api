@@ -1,4 +1,4 @@
-package fr.b4.apps.common.repositories;
+package fr.b4.apps;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
@@ -7,6 +7,7 @@ import fr.b4.apps.common.entities.Address;
 import fr.b4.apps.common.entities.Place;
 import fr.b4.apps.common.entities.PlaceType;
 import fr.b4.apps.common.entities.Product;
+import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
@@ -20,6 +21,15 @@ import java.util.List;
 @UtilityClass
 public class DataGenerator {
     private static final Faker faker = new Faker();
+
+    public ExpenseBasicStatsDTO generateBasicStats() {
+        ExpenseBasicStatsDTO statsDTO = new ExpenseBasicStatsDTO();
+        statsDTO.setCountForCurrentWeek(2);
+        statsDTO.setTotal(5f);
+        statsDTO.setTarget(6f);
+        statsDTO.setTotalForCurrentWeek(8f);
+        return statsDTO;
+    }
 
     public Address generateOneAddress() {
         Address address = new Address();

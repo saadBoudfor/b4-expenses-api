@@ -10,6 +10,7 @@ import fr.b4.apps.expenses.services.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailSendException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +36,7 @@ import static fr.b4.apps.common.services.reports.utils.ExpenseExcelWriter.*;
 public class ReportingService {
 
     @Value("${working.dir}")
-    private String workingDir;
+    private String workingDir = "";
 
     private final ExpenseProcess expenseProcess;
     private final ExpenseService expenseService;
@@ -50,6 +52,7 @@ public class ReportingService {
         this.userRepository = userRepository;
         this.emailSender = emailSender;
     }
+
 
     @Scheduled(cron = "0 0 6 * * *")
     public void exportExcel() {
@@ -67,11 +70,12 @@ public class ReportingService {
 
                 try {
                     log.info("saving report for user {}", user.getId());
-                    String reportPath = workingDir + "/report_" + user.getId() + ".xlsx";
+                    String reportPath = workingDir + "report_" + user.getId() + ".xlsx";
                     FileOutputStream outputStream = new FileOutputStream(reportPath);
                     workbook.write(outputStream);
                     workbook.close();
-                    emailSender.send(getExpenseReportMail(user, reportPath));
+                    MimeMessage mimeMessage = getExpenseReportMail(user, reportPath);
+                    emailSender.send(mimeMessage);
                 } catch (IOException e) {
                     log.error("failed to save excel report file for user {}, error {}", user.getId(), e.getMessage());
                 } catch (MailSendException | MessagingException e) {
@@ -83,7 +87,6 @@ public class ReportingService {
     }
 
     private MimeMessage getExpenseReportMail(User user, String pathToAttachment) throws MessagingException, IOException {
-
         ExpenseBasicStatsDTO info = expenseProcess.getBasicStats(user.getId());
         log.info("sending report for: {}", user.getEmail());
         String mailBody = TemplateProvider.getReportMailTemplate(user.getName(),
@@ -93,7 +96,6 @@ public class ReportingService {
 
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
         helper.setFrom("noreplay@b4expenses.com");
         helper.setTo(user.getEmail());
         helper.setSubject("Rapport dépense " + LocalDate.now());

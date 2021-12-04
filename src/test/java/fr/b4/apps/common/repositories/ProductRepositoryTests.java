@@ -1,7 +1,7 @@
 package fr.b4.apps.common.repositories;
 
+import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.entities.Product;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;

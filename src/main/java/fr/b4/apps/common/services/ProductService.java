@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -47,21 +48,25 @@ public class ProductService {
 
     @PostConstruct
     public void updateProduct() {
-        List<Product> products = productRepository.findAll();
-        products.forEach(product -> {
-            if (ObjectUtils.isEmpty(product.getQrCode())) {
-                log.warn("cannot update product {}, barCode missing", product.getName());
-            } else {
-                log.info("check for local product update: {} ({})", product.getName(), product.getQrCode());
-                Product found = openFoodFactClient.searchByCode(product.getQrCode());
-                if (!ObjectUtils.isEmpty(found)) {
-                    log.info("Product {} updated", found.getQrCode());
-                    updateNutrimentLevels(found, product);
-                    updateNutrimentScore(found, product);
-                    productRepository.save(product);
+        try {
+            List<Product> products = productRepository.findAll();
+            products.forEach(product -> {
+                if (ObjectUtils.isEmpty(product.getQrCode())) {
+                    log.warn("cannot update product {}, barCode missing", product.getName());
+                } else {
+                    log.info("check for local product update: {} ({})", product.getName(), product.getQrCode());
+                    Product found = openFoodFactClient.searchByCode(product.getQrCode());
+                    if (!ObjectUtils.isEmpty(found)) {
+                        log.info("Product {} updated", found.getQrCode());
+                        updateNutrimentLevels(found, product);
+                        updateNutrimentScore(found, product);
+                        productRepository.save(product);
+                    }
                 }
-            }
-        });
+            });
+        }catch (ResourceAccessException exception) {
+            log.error("failed perform search request on Open Food Fact API. Error: {}", exception.getMessage());
+        }
     }
 
     private void updateNutrimentScore(Product found, Product product) {
