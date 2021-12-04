@@ -7,6 +7,8 @@ import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
+import fr.b4.apps.openfoodfact.models.LanguagesCodes;
+import fr.b4.apps.openfoodfact.models.OFCategory;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -36,6 +38,15 @@ public class DataGenerator {
         category.setFr(faker.cat().name());
         category.setId(id + "");
         return category;
+    }
+
+
+    public OFCategory generateOneOFCategory(int id) {
+        OFCategory ofCategory = new OFCategory();
+        LanguagesCodes languagesCodes = new LanguagesCodes();
+        languagesCodes.setFr(faker.cat().name());
+        ofCategory.setName(languagesCodes);
+        return ofCategory;
     }
 
     public ExpenseBasicStatsDTO generateBasicStats() {
@@ -133,5 +144,13 @@ public class DataGenerator {
             users.add(user);
         }
         return users;
+    }
+
+    public static List<String> generateStrings(int num) {
+        List<String> names = new ArrayList<>();
+        for(int i=0; i <num; i++) {
+            names.add(faker.cat().name());
+        }
+        return names;
     }
 }
