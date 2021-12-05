@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-@TestPropertySource(locations = "classpath:application.properties")
 public class PlaceServiceTests {
     @Mock
     PlaceRepository placeRepository;

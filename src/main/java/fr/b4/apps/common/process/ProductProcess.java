@@ -1,4 +1,4 @@
-package fr.b4.apps.common;
+package fr.b4.apps.common.process;
 
 import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.NutrientLevels;
@@ -9,14 +9,13 @@ import fr.b4.apps.common.util.converters.ProductConverter;
 import fr.b4.apps.openfoodfact.apis.OpenFoodFactClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.ResourceAccessException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -34,23 +33,50 @@ public class ProductProcess {
         this.nutrientLevelsRepository = nutrientLevelsRepository;
     }
 
-    public List<ProductDTO> find(String name) {
-        log.info("search product {}", name);
-        List<Product> products = new ArrayList<>();
-        if (StringUtils.hasLength(name)) {
-            products.addAll(productService.find(name));
+    /**
+     * Search product in local and Open Food Fact databases
+     *
+     * @param searchedTerm wanted product name
+     * @return found products
+     */
+    public List<ProductDTO> find(String searchedTerm) {
+        if (searchedTerm == null) {
+            throw new IllegalArgumentException("searched term must not be null");
         }
-        products.addAll(openFoodFactClient.search(name));
-        return products.stream().map(ProductConverter::toDto).collect(Collectors.toList());
+        List<Product> products = new ArrayList<>();
+
+        if (searchedTerm.isEmpty()) {
+            return ProductConverter.toDto(products);
+        }
+
+        List<Product> results = openFoodFactClient.search(searchedTerm);
+        if (!CollectionUtils.isEmpty(results)) {
+            log.debug("{} Open food fact results found for searched term: {}", results.size(), searchedTerm);
+            products.addAll(results);
+        }
+        results = productService.find(searchedTerm);
+        if (!CollectionUtils.isEmpty(results)) {
+            log.debug("{} db results found for searched term: {}", results.size(), searchedTerm);
+            products.addAll(results);
+        }
+        return ProductConverter.toDto(products);
     }
 
 
+    /**
+     * Search product by bar code
+     * use Open Food Fact database
+     *
+     * @param barCode product bar code
+     * @return found product
+     */
     public ProductDTO searchByCode(String barCode) {
+        log.debug("Search product with bar code: {}", barCode);
         return ProductConverter.toDto(openFoodFactClient.searchByCode(barCode));
     }
 
     @PostConstruct
-    public void updateProduct() {
+    public void updateProducts() {
         try {
             List<Product> products = productService.findAll();
             products.forEach(product -> {

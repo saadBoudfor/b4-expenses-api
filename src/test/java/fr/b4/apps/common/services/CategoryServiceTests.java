@@ -14,7 +14,6 @@ import org.springframework.test.context.TestPropertySource;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-@TestPropertySource(locations = "classpath:application.properties")
 public class CategoryServiceTests {
 
     @Mock

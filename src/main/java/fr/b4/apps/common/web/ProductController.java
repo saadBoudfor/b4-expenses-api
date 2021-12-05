@@ -1,6 +1,6 @@
 package fr.b4.apps.common.web;
 
-import fr.b4.apps.common.ProductProcess;
+import fr.b4.apps.common.process.ProductProcess;
 import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.services.ProductService;

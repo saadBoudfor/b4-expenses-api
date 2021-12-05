@@ -12,6 +12,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -19,6 +21,13 @@ public class ProductConverter {
     public static Product valueOf(String str) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(str, Product.class);
+    }
+
+    public static List<ProductDTO> toDto(@Nullable List<Product> products) {
+        if (CollectionUtils.isEmpty(products)) {
+            return new ArrayList<>();
+        }
+        return products.stream().map(ProductConverter::toDto).collect(Collectors.toList());
     }
 
     public static ProductDTO toDto(@Nullable Product product) {

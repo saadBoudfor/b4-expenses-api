@@ -1,7 +1,6 @@
 package fr.b4.apps.common.services;
 
 import fr.b4.apps.DataGenerator;
-import fr.b4.apps.common.ProductProcess;
 import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.repositories.ProductRepository;
@@ -9,7 +8,6 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -23,7 +21,6 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-@TestPropertySource(locations = "classpath:application.properties")
 public class ProductServiceTests {
     @Mock
     ProductRepository productRepository;
