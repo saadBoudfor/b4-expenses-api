@@ -86,10 +86,10 @@ public class ProductProcess {
                     log.info("check for local product update: {} ({})", product.getName(), product.getQrCode());
                     Product found = openFoodFactClient.searchByCode(product.getQrCode());
                     if (!ObjectUtils.isEmpty(found)) {
-                        log.info("Product {} updated", found.getQrCode());
                         updateNutrimentLevels(found, product);
                         updateNutrimentScore(found, product);
                         productService.save(product);
+                        log.info("Product {} updated", found.getQrCode());
                     }
                 }
             });

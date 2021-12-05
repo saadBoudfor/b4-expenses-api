@@ -130,4 +130,45 @@ public class ProductProcessTests {
         verify(openFoodFactClient, times(1)).searchByCode("12345");
     }
 
+    @Test
+    public void shouldUpdateProductSuccess() {
+        when(productService.findAll()).thenReturn(DataGenerator.generateProducts(6));
+        when(openFoodFactClient.searchByCode(any())).thenReturn(DataGenerator.generateProduct());
+
+        ProductProcess productProcess = new ProductProcess(productService, openFoodFactClient, nutrientLevelsRepository);
+        productProcess.updateProducts();
+
+        verify(openFoodFactClient, times(6)).searchByCode(any());
+        verify(productService, times(6)).save(any());
+        verify(nutrientLevelsRepository, never()).save(any());
+    }
+
+    @Test
+    public void shouldUpdateProductWithNutrimentSuccess() {
+        when(productService.findAll()).thenReturn(DataGenerator.generateProducts(6));
+        Product found = DataGenerator.generateProduct();
+        found.setNutrientLevels(DataGenerator.generateNutrientLevels());
+        when(openFoodFactClient.searchByCode(any())).thenReturn(found);
+
+        ProductProcess productProcess = new ProductProcess(productService, openFoodFactClient, nutrientLevelsRepository);
+        productProcess.updateProducts();
+
+        verify(openFoodFactClient, times(6)).searchByCode(any());
+        verify(productService, times(6)).save(any());
+        verify(nutrientLevelsRepository, times(6)).save(any());
+    }
+
+    @Test
+    public void shouldNotUpdateProductsWithoutQrCode() {
+        when(productService.findAll()).thenReturn(DataGenerator.generateProducts(6));
+        when(openFoodFactClient.searchByCode(any())).thenReturn(null);
+
+        ProductProcess productProcess = new ProductProcess(productService, openFoodFactClient, nutrientLevelsRepository);
+        productProcess.updateProducts();
+
+        verify(openFoodFactClient, times(6)).searchByCode(any());
+        verify(productService, never()).save(any());
+        verify(nutrientLevelsRepository, never()).save(any());
+    }
+
 }

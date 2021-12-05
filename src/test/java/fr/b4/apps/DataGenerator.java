@@ -191,4 +191,13 @@ public class DataGenerator {
         }
         return names;
     }
+
+    public static NutrientLevels generateNutrientLevels() {
+        NutrientLevels nutrientLevels = new NutrientLevels();
+        nutrientLevels.setSugars(faker.number().numberBetween(1,4568) + "");
+        nutrientLevels.setSalt(faker.number().numberBetween(1,4568) + "");
+        nutrientLevels.setSaturatedFat(faker.number().numberBetween(1,4568) + "");
+        nutrientLevels.setFat(faker.number().numberBetween(1,4568) + "");
+        return nutrientLevels;
+    }
 }
