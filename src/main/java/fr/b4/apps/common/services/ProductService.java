@@ -35,76 +35,27 @@ public class ProductService {
     private String productsPhotoDir;
 
     private final ProductRepository productRepository;
-    private final OpenFoodFactClient openFoodFactClient;
-    private final NutrientLevelsRepository nutrientLevelsRepository;
 
-    public ProductService(ProductRepository productRepository,
-                          OpenFoodFactClient openFoodFactClient,
-                          NutrientLevelsRepository nutrientLevelsRepository) {
+
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.openFoodFactClient = openFoodFactClient;
-        this.nutrientLevelsRepository = nutrientLevelsRepository;
     }
 
-    @PostConstruct
-    public void updateProduct() {
-        try {
-            List<Product> products = productRepository.findAll();
-            products.forEach(product -> {
-                if (ObjectUtils.isEmpty(product.getQrCode())) {
-                    log.warn("cannot update product {}, barCode missing", product.getName());
-                } else {
-                    log.info("check for local product update: {} ({})", product.getName(), product.getQrCode());
-                    Product found = openFoodFactClient.searchByCode(product.getQrCode());
-                    if (!ObjectUtils.isEmpty(found)) {
-                        log.info("Product {} updated", found.getQrCode());
-                        updateNutrimentLevels(found, product);
-                        updateNutrimentScore(found, product);
-                        productRepository.save(product);
-                    }
-                }
-            });
-        }catch (ResourceAccessException exception) {
-            log.error("failed perform search request on Open Food Fact API. Error: {}", exception.getMessage());
+
+    public List<ProductDTO> findAllDTO() {
+        return findAll().stream().map(ProductConverter::toDto).collect(Collectors.toList());
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> find(String name) {
+        if (StringUtils.hasLength(name)) {
+            return productRepository.findByNameContains(name);
+        } else {
+            throw new IllegalArgumentException("product name must not be empty");
         }
-    }
-
-    private void updateNutrimentScore(Product found, Product product) {
-        product.setScore(found.getScore());
-        product.setBrand(found.getBrand());
-        product.setCalories(found.getCalories());
-        product.setDataPer(found.getDataPer());
-        product.setQuantity(found.getQuantity());
-    }
-
-    private void updateNutrimentLevels(Product found, Product product) {
-        if(!ObjectUtils.isEmpty(found.getNutrientLevels())) {
-            NutrientLevels saved = nutrientLevelsRepository.save(found.getNutrientLevels());
-            product.setNutrientLevels(saved);
-        }
-    }
-
-    public List<ProductDTO> getAllFromDB() {
-        return productRepository.findAll().stream().map(ProductConverter::toDto).collect(Collectors.toList());
-    }
-
-    public List<ProductDTO> find(String name) {
-        log.info("search product {}", name);
-        List<Product> products = new ArrayList<>();
-        if (StringUtils.hasLength(name))
-            execLocalSearch(name, products);
-        products.addAll(openFoodFactClient.search(name));
-        return products.stream().map(ProductConverter::toDto).collect(Collectors.toList());
-    }
-
-    private void execLocalSearch(String name, List<Product> products) {
-        List<Product> localSearchResult = productRepository.findByNameContains(name);
-        if (!CollectionUtils.isEmpty(localSearchResult))
-            products.addAll(localSearchResult);
-    }
-
-    public ProductDTO searchByCode(String barCode) {
-        return ProductConverter.toDto(openFoodFactClient.searchByCode(barCode));
     }
 
     public Product save(Product product) {
@@ -119,4 +70,5 @@ public class ProductService {
         }
         return save(product);
     }
+
 }

@@ -1,5 +1,6 @@
 package fr.b4.apps.common.web;
 
+import fr.b4.apps.common.ProductProcess;
 import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.services.ProductService;
@@ -20,19 +21,22 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final ProductProcess productProcess;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,
+                             ProductProcess productProcess) {
         this.productService = productService;
+        this.productProcess = productProcess;
     }
 
     @GetMapping("/{name}")
     public List<ProductDTO> searchByTerm(@PathVariable(value = "name", required = true) String name) {
-        return productService.find(name);
+        return productProcess.find(name);
     }
 
     @GetMapping("/code/{code-bar}")
     public ResponseEntity<Object> searchByBarCode(@PathVariable(value = "code-bar", required = true) String codeBar) {
-        ProductDTO found = productService.searchByCode(codeBar);
+        ProductDTO found = productProcess.searchByCode(codeBar);
         if (ObjectUtils.isEmpty(found))
             return ResponseEntity.status(404).body(new MessageDTO("Product unknonwn"));
         return ResponseEntity.ok(found);
@@ -40,8 +44,9 @@ public class ProductController {
 
     @GetMapping("/last")
     public List<ProductDTO> getAllFromDB() {
-        return productService.getAllFromDB();
+        return productService.findAllDTO();
     }
+
 
     @PostMapping
     public Product save(@RequestParam(value = "file", required = false) MultipartFile file,
