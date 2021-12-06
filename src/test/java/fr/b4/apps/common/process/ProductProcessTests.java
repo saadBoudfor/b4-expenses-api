@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +170,24 @@ public class ProductProcessTests {
         verify(openFoodFactClient, times(6)).searchByCode(any());
         verify(productService, never()).save(any());
         verify(nutrientLevelsRepository, never()).save(any());
+    }
+
+    @Test
+    public void shouldHandleOFClientHttpErrorWhenUpdateProducts() {
+        List<Product> products = DataGenerator.generateProducts(6);
+        when(productService.findAll()).thenReturn(products);
+
+        when(openFoodFactClient.searchByCode(products.get(0).getQrCode()))
+                .thenThrow(new ResourceAccessException("random error when call Open Food Fact Server"));
+        for (int i = 1; i < 6; i++) {
+            when(openFoodFactClient.searchByCode(products.get(i).getQrCode())).thenReturn(DataGenerator.generateProduct());
+        }
+
+        ProductProcess productProcess = new ProductProcess(productService, openFoodFactClient, nutrientLevelsRepository);
+        productProcess.updateProducts();
+
+        verify(openFoodFactClient, times(6)).searchByCode(any());
+        verify(productService, times(5)).save(any());
     }
 
 }

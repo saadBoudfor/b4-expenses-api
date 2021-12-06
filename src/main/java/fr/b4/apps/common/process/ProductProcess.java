@@ -77,9 +77,10 @@ public class ProductProcess {
 
     @PostConstruct
     public void updateProducts() {
-        try {
-            List<Product> products = productService.findAll();
-            products.forEach(product -> {
+
+        List<Product> products = productService.findAll();
+        products.forEach(product -> {
+            try {
                 if (ObjectUtils.isEmpty(product.getQrCode())) {
                     log.warn("cannot update product {}, barCode missing", product.getName());
                 } else {
@@ -92,10 +93,11 @@ public class ProductProcess {
                         log.info("Product {} updated", found.getQrCode());
                     }
                 }
-            });
-        } catch (ResourceAccessException exception) {
-            log.error("failed perform search request on Open Food Fact API. Error: {}", exception.getMessage());
-        }
+            } catch (ResourceAccessException exception) {
+                log.error("failed perform search request on Open Food Fact API. Error: {}", exception.getMessage());
+            }
+        });
+
     }
 
     private static void updateNutrimentScore(Product found, Product product) {
