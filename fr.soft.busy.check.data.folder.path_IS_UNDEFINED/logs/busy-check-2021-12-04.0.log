@@ -1,0 +1,222 @@
+2021-12-04 09:36:02.347  INFO 15912 --- [main] fr.b4.apps.ExpensesApplication           : Starting ExpensesApplication using Java 11.0.11 on LAPTOP-6490FR with PID 15912 (C:\work\perso\b4-expenses\b4-expense-api\target\classes started by SaadBOUDFOR in C:\work\perso\b4-expenses\b4-expense-api)
+2021-12-04 09:36:02.362 DEBUG 15912 --- [main] fr.b4.apps.ExpensesApplication           : Running with Spring Boot v2.5.4, Spring v5.3.9
+2021-12-04 09:36:02.397  INFO 15912 --- [main] fr.b4.apps.ExpensesApplication           : The following profiles are active: dev
+2021-12-04 09:36:03.994  INFO 15912 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-12-04 09:36:04.128  INFO 15912 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 118 ms. Found 10 JPA repository interfaces.
+2021-12-04 09:36:05.455  INFO 15912 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2021-12-04 09:36:05.474  INFO 15912 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-12-04 09:36:05.474  INFO 15912 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.52]
+2021-12-04 09:36:05.692  INFO 15912 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-12-04 09:36:05.693  INFO 15912 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3219 ms
+2021-12-04 09:36:06.008  INFO 15912 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-12-04 09:36:06.101  INFO 15912 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-12-04 09:36:06.333  INFO 15912 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-12-04 09:36:06.508  INFO 15912 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-12-04 09:36:07.098  INFO 15912 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-12-04 09:36:07.122  INFO 15912 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-12-04 09:36:08.693  INFO 15912 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-12-04 09:36:08.705  INFO 15912 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 09:36:09.113  INFO 15912 --- [main] fr.b4.apps.ExpensesApplication           : B4 expense API version: 1.0.1
+2021-12-04 09:36:09.814  WARN 15912 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 09:36:09.814  WARN 15912 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 09:36:09.815  WARN 15912 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 09:36:09.815  WARN 15912 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 09:36:09.815  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 09:36:10.346  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 09:36:10.403  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nestlet (45498464)
+2021-12-04 09:36:10.458  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Lactel (464894648)
+2021-12-04 09:36:10.524  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: ezfezf (fefzfe)
+2021-12-04 09:36:10.691  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product  updated
+2021-12-04 09:36:10.742  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Odigo (56456489464)
+2021-12-04 09:36:10.785  WARN 15912 --- [main] f.b.apps.common.services.ProductService  : cannot update product café insoluble intense, barCode missing
+2021-12-04 09:36:10.785  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Café soluble (312456879)
+2021-12-04 09:36:10.824  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Prince Chocolat (7622210449283)
+2021-12-04 09:36:11.114  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 7622210449283 updated
+2021-12-04 09:36:11.245  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chocapic (7613034626844)
+2021-12-04 09:36:11.486  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 7613034626844 updated
+2021-12-04 09:36:11.570  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nocciolata Pâte à tartiner au cacao et noisettes (8001505005592)
+2021-12-04 09:36:11.701  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 8001505005592 updated
+2021-12-04 09:36:11.739  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Biscuit lait chocolat (3175680011534)
+2021-12-04 09:36:11.932  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011534 updated
+2021-12-04 09:36:11.966  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: NESQUIK Poudre Cacaotée boîte (3033710065066)
+2021-12-04 09:36:12.209  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065066 updated
+2021-12-04 09:36:12.255  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Sésame (3175680011480)
+2021-12-04 09:36:12.388  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011480 updated
+2021-12-04 09:36:12.434  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nesquik (3033710065967)
+2021-12-04 09:36:12.684  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065967 updated
+2021-12-04 09:36:12.757  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Quaker Cruesli Mélange de noix (3168930010265)
+2021-12-04 09:36:12.962  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3168930010265 updated
+2021-12-04 09:36:13.036  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella (3017620422003)
+2021-12-04 09:36:13.426  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3017620422003 updated
+2021-12-04 09:36:13.511  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella biscuits (8000500310427)
+2021-12-04 09:36:13.668  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 8000500310427 updated
+2021-12-04 09:36:13.741  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Eau de source (3274080005003)
+2021-12-04 09:36:13.966  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 09:36:14.043  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Muesli Raisin, Figue, Abricot (3229820129488)
+2021-12-04 09:36:14.190  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3229820129488 updated
+2021-12-04 09:36:14.245  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Bezig met laden… (3274080005003)
+2021-12-04 09:36:14.493  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 09:36:14.566  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chips saveur aïoli (3497917000914)
+2021-12-04 09:36:14.635  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3497917000914 updated
+2021-12-04 09:36:14.668  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Caramel latte (8594002789688)
+2021-12-04 09:36:14.733  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 8594002789688 updated
+2021-12-04 09:36:14.766  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Mais doux en grains (20187897)
+2021-12-04 09:36:14.873  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 20187897 updated
+2021-12-04 09:36:14.904  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Cacahuètes enrobées goût salé (3250391546268)
+2021-12-04 09:36:14.962  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3250391546268 updated
+2021-12-04 09:36:14.992  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Frites bistrot (3760032004816)
+2021-12-04 09:36:15.039  INFO 15912 --- [main] f.b.apps.common.services.ProductService  : Product 3760032004816 updated
+2021-12-04 09:36:15.478  WARN 15912 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-12-04 09:36:16.039  INFO 15912 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2021-12-04 09:36:16.472  INFO 15912 --- [main] fr.b4.apps.ExpensesApplication           : Started ExpensesApplication in 15.444 seconds (JVM running for 16.551)
+2021-12-04 09:38:22.853  INFO 15912 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 09:38:22.855  INFO 15912 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-12-04 09:38:22.887  INFO 15912 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-12-04 17:14:14.845  INFO 2296 --- [main] fr.b4.apps.ExpensesApplication           : Starting ExpensesApplication using Java 11.0.11 on LAPTOP-6490FR with PID 2296 (C:\work\perso\b4-expenses\b4-expense-api\target\classes started by SaadBOUDFOR in C:\work\perso\b4-expenses\b4-expense-api)
+2021-12-04 17:14:14.850 DEBUG 2296 --- [main] fr.b4.apps.ExpensesApplication           : Running with Spring Boot v2.5.4, Spring v5.3.9
+2021-12-04 17:14:14.850  INFO 2296 --- [main] fr.b4.apps.ExpensesApplication           : The following profiles are active: dev
+2021-12-04 17:14:16.290  INFO 2296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-12-04 17:14:16.432  INFO 2296 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 127 ms. Found 10 JPA repository interfaces.
+2021-12-04 17:14:17.824  INFO 2296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2021-12-04 17:14:17.846  INFO 2296 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-12-04 17:14:17.847  INFO 2296 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.52]
+2021-12-04 17:14:18.021  INFO 2296 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-12-04 17:14:18.021  INFO 2296 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3108 ms
+2021-12-04 17:14:18.427  INFO 2296 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-12-04 17:14:18.516  INFO 2296 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-12-04 17:14:18.699  INFO 2296 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-12-04 17:14:18.892  INFO 2296 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-12-04 17:14:19.441  INFO 2296 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-12-04 17:14:19.468  INFO 2296 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-12-04 17:14:20.917  INFO 2296 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-12-04 17:14:20.928  INFO 2296 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 17:14:21.365  INFO 2296 --- [main] fr.b4.apps.ExpensesApplication           : B4 expense API version: 1.0.1
+2021-12-04 17:14:21.933  WARN 2296 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 17:14:21.934  WARN 2296 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 17:14:21.934  WARN 2296 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 17:14:21.934  WARN 2296 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 17:14:21.934  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 17:14:22.465  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 17:14:22.532  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nestlet (45498464)
+2021-12-04 17:14:22.593  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Lactel (464894648)
+2021-12-04 17:14:22.730  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: ezfezf (fefzfe)
+2021-12-04 17:14:22.872  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product  updated
+2021-12-04 17:14:22.924  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Odigo (56456489464)
+2021-12-04 17:14:22.973  WARN 2296 --- [main] f.b.apps.common.services.ProductService  : cannot update product café insoluble intense, barCode missing
+2021-12-04 17:14:22.974  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Café soluble (312456879)
+2021-12-04 17:14:23.026  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Prince Chocolat (7622210449283)
+2021-12-04 17:14:23.276  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 7622210449283 updated
+2021-12-04 17:14:23.372  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chocapic (7613034626844)
+2021-12-04 17:14:23.549  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 7613034626844 updated
+2021-12-04 17:14:23.589  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nocciolata Pâte à tartiner au cacao et noisettes (8001505005592)
+2021-12-04 17:14:23.731  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 8001505005592 updated
+2021-12-04 17:14:23.763  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Biscuit lait chocolat (3175680011534)
+2021-12-04 17:14:23.963  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011534 updated
+2021-12-04 17:14:23.997  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: NESQUIK Poudre Cacaotée boîte (3033710065066)
+2021-12-04 17:14:24.218  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065066 updated
+2021-12-04 17:14:24.263  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Sésame (3175680011480)
+2021-12-04 17:14:24.411  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011480 updated
+2021-12-04 17:14:24.454  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nesquik (3033710065967)
+2021-12-04 17:14:24.659  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065967 updated
+2021-12-04 17:14:24.743  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Quaker Cruesli Mélange de noix (3168930010265)
+2021-12-04 17:14:24.954  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3168930010265 updated
+2021-12-04 17:14:25.026  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella (3017620422003)
+2021-12-04 17:14:25.236  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3017620422003 updated
+2021-12-04 17:14:25.306  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella biscuits (8000500310427)
+2021-12-04 17:14:25.449  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 8000500310427 updated
+2021-12-04 17:14:25.548  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Eau de source (3274080005003)
+2021-12-04 17:14:25.782  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 17:14:25.816  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Muesli Raisin, Figue, Abricot (3229820129488)
+2021-12-04 17:14:25.957  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3229820129488 updated
+2021-12-04 17:14:26.002  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Bezig met laden… (3274080005003)
+2021-12-04 17:14:26.236  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 17:14:26.321  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chips saveur aïoli (3497917000914)
+2021-12-04 17:14:26.376  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3497917000914 updated
+2021-12-04 17:14:26.407  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Caramel latte (8594002789688)
+2021-12-04 17:14:26.469  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 8594002789688 updated
+2021-12-04 17:14:26.505  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Mais doux en grains (20187897)
+2021-12-04 17:14:26.598  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 20187897 updated
+2021-12-04 17:14:26.629  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Cacahuètes enrobées goût salé (3250391546268)
+2021-12-04 17:14:26.693  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3250391546268 updated
+2021-12-04 17:14:26.723  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Frites bistrot (3760032004816)
+2021-12-04 17:14:26.769  INFO 2296 --- [main] f.b.apps.common.services.ProductService  : Product 3760032004816 updated
+2021-12-04 17:14:27.195  WARN 2296 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-12-04 17:14:27.788  INFO 2296 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2021-12-04 17:14:28.182  INFO 2296 --- [main] fr.b4.apps.ExpensesApplication           : Started ExpensesApplication in 14.408 seconds (JVM running for 15.37)
+2021-12-04 17:14:48.812  INFO 2296 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 17:14:48.816  INFO 2296 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-12-04 17:14:48.834  INFO 2296 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-12-04 17:20:15.339  INFO 18628 --- [main] fr.b4.apps.ExpensesApplication           : Starting ExpensesApplication using Java 11.0.11 on LAPTOP-6490FR with PID 18628 (C:\work\perso\b4-expenses\b4-expense-api\target\classes started by SaadBOUDFOR in C:\work\perso\b4-expenses\b4-expense-api)
+2021-12-04 17:20:15.343 DEBUG 18628 --- [main] fr.b4.apps.ExpensesApplication           : Running with Spring Boot v2.5.4, Spring v5.3.9
+2021-12-04 17:20:15.343  INFO 18628 --- [main] fr.b4.apps.ExpensesApplication           : The following profiles are active: dev
+2021-12-04 17:20:16.688  INFO 18628 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-12-04 17:20:16.822  INFO 18628 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 117 ms. Found 10 JPA repository interfaces.
+2021-12-04 17:20:18.068  INFO 18628 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2021-12-04 17:20:18.085  INFO 18628 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-12-04 17:20:18.086  INFO 18628 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.52]
+2021-12-04 17:20:18.254  INFO 18628 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-12-04 17:20:18.255  INFO 18628 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2845 ms
+2021-12-04 17:20:18.555  INFO 18628 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-12-04 17:20:18.641  INFO 18628 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-12-04 17:20:18.818  INFO 18628 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-12-04 17:20:18.963  INFO 18628 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-12-04 17:20:19.409  INFO 18628 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-12-04 17:20:19.435  INFO 18628 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-12-04 17:20:20.801  INFO 18628 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-12-04 17:20:20.813  INFO 18628 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 17:20:21.210  INFO 18628 --- [main] fr.b4.apps.ExpensesApplication           : B4 expense API version: 1.0.1
+2021-12-04 17:20:21.735  WARN 18628 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 17:20:21.736  WARN 18628 --- [main] f.b.apps.common.services.ProductService  : cannot update product okoko, barCode missing
+2021-12-04 17:20:21.736  WARN 18628 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 17:20:21.736  WARN 18628 --- [main] f.b.apps.common.services.ProductService  : cannot update product fezfez, barCode missing
+2021-12-04 17:20:21.736  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 17:20:22.175  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: les agents peu (45454545)
+2021-12-04 17:20:22.229  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nestlet (45498464)
+2021-12-04 17:20:22.298  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Lactel (464894648)
+2021-12-04 17:20:22.368  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: ezfezf (fefzfe)
+2021-12-04 17:20:22.536  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product  updated
+2021-12-04 17:20:22.583  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Odigo (56456489464)
+2021-12-04 17:20:22.642  WARN 18628 --- [main] f.b.apps.common.services.ProductService  : cannot update product café insoluble intense, barCode missing
+2021-12-04 17:20:22.643  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Café soluble (312456879)
+2021-12-04 17:20:22.680  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Prince Chocolat (7622210449283)
+2021-12-04 17:20:22.990  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 7622210449283 updated
+2021-12-04 17:20:23.085  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chocapic (7613034626844)
+2021-12-04 17:20:23.360  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 7613034626844 updated
+2021-12-04 17:20:23.433  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nocciolata Pâte à tartiner au cacao et noisettes (8001505005592)
+2021-12-04 17:20:23.567  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 8001505005592 updated
+2021-12-04 17:20:23.599  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Biscuit lait chocolat (3175680011534)
+2021-12-04 17:20:23.798  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011534 updated
+2021-12-04 17:20:23.840  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: NESQUIK Poudre Cacaotée boîte (3033710065066)
+2021-12-04 17:20:24.062  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065066 updated
+2021-12-04 17:20:24.092  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Sésame (3175680011480)
+2021-12-04 17:20:24.221  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3175680011480 updated
+2021-12-04 17:20:24.293  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nesquik (3033710065967)
+2021-12-04 17:20:24.506  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3033710065967 updated
+2021-12-04 17:20:24.580  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Quaker Cruesli Mélange de noix (3168930010265)
+2021-12-04 17:20:24.786  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3168930010265 updated
+2021-12-04 17:20:24.859  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella (3017620422003)
+2021-12-04 17:20:25.065  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3017620422003 updated
+2021-12-04 17:20:25.139  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Nutella biscuits (8000500310427)
+2021-12-04 17:20:25.276  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 8000500310427 updated
+2021-12-04 17:20:25.320  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Eau de source (3274080005003)
+2021-12-04 17:20:25.549  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 17:20:25.620  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Muesli Raisin, Figue, Abricot (3229820129488)
+2021-12-04 17:20:25.754  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3229820129488 updated
+2021-12-04 17:20:25.808  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Bezig met laden… (3274080005003)
+2021-12-04 17:20:26.032  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3274080005003 updated
+2021-12-04 17:20:26.110  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Chips saveur aïoli (3497917000914)
+2021-12-04 17:20:26.164  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3497917000914 updated
+2021-12-04 17:20:26.195  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Caramel latte (8594002789688)
+2021-12-04 17:20:26.251  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 8594002789688 updated
+2021-12-04 17:20:26.282  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Mais doux en grains (20187897)
+2021-12-04 17:20:26.354  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 20187897 updated
+2021-12-04 17:20:26.383  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Cacahuètes enrobées goût salé (3250391546268)
+2021-12-04 17:20:26.434  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3250391546268 updated
+2021-12-04 17:20:26.465  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : check for local product update: Frites bistrot (3760032004816)
+2021-12-04 17:20:26.508  INFO 18628 --- [main] f.b.apps.common.services.ProductService  : Product 3760032004816 updated
+2021-12-04 17:20:26.921  WARN 18628 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-12-04 17:20:27.453  INFO 18628 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2021-12-04 17:20:27.873  INFO 18628 --- [main] fr.b4.apps.ExpensesApplication           : Started ExpensesApplication in 13.444 seconds (JVM running for 14.294)
+2021-12-04 17:20:42.423  INFO 18628 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-12-04 17:20:42.426  INFO 18628 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-12-04 17:20:42.444  INFO 18628 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

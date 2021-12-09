@@ -11,6 +11,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProductConverter {
     public static Product valueOf(String str) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(str, Product.class);
+
     }
 
     public static List<ProductDTO> toDto(@Nullable List<Product> products) {

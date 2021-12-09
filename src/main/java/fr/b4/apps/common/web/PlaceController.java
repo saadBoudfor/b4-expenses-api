@@ -7,6 +7,7 @@ import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URISyntaxException;
@@ -21,14 +22,16 @@ import java.util.List;
 public class PlaceController {
 
     private final PlaceService placeService;
+    private final RestTemplate restTemplate;
 
-    public PlaceController(PlaceService placeService) {
+    public PlaceController(PlaceService placeService, RestTemplate restTemplate)
+    {
         this.placeService = placeService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("addresses/{search}")
-    public Object filterAddresses(@PathVariable(value = "search", required = false) String search) throws URISyntaxException {
-        RestTemplate restTemplate = new RestTemplate();
+    public Object filterAddresses(@PathVariable(value = "search", required = false) String search) {
         ResponseEntity<Object> response
                 = restTemplate.getForEntity("https://api-adresse.data.gouv.fr/search/?q=" + URLEncoder.encode(search, StandardCharsets.UTF_8), Object.class);
         return response.getBody();
