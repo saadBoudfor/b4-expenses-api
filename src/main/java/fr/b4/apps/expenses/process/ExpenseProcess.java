@@ -2,7 +2,6 @@ package fr.b4.apps.expenses.process;
 
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
-import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.services.BudgetService;
 import fr.b4.apps.expenses.services.ExpenseService;
 import fr.b4.apps.expenses.util.converters.ExpenseConverter;

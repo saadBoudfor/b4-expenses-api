@@ -11,11 +11,13 @@ import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +59,9 @@ public class ExpenseConverter {
         dto.setPlace(expense.getPlace());
         dto.setUser(expense.getUser());
         dto.setBill(expense.getBill());
-        dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO).collect(Collectors.toList()));
+        if (!CollectionUtils.isEmpty(expense.getExpenseLines()))
+            dto.setExpenseLines(expense.getExpenseLines().stream().map(ExpenseConverter::toDTO)
+                    .collect(Collectors.toList()));
         return dto;
     }
 

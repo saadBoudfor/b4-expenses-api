@@ -20,13 +20,14 @@ public class BudgetController {
     }
 
     @PutMapping("/define")
-    public Budget saveBudget(@RequestHeader("access-token") String accessToken, @RequestBody Budget budget) {
-        userRepository.findById(Long.valueOf(accessToken)).ifPresent(budget::setUser);
-        return budgetService.saveCurrentMonthBudget(budget.getTarget(), budget.getUser());
+    public Budget saveBudget(@RequestHeader("access-token") String userID,
+                             @RequestBody Budget budget) {
+        userRepository.findById(Long.valueOf(userID)).ifPresent(budget::setUser);
+        return budgetService.defineCurrentMonthBudget(budget.getTarget(), budget.getUser());
     }
 
     @GetMapping
-    public List<Budget> getAll(String accessToken) {
+    public List<Budget> getAll(@RequestHeader("access-token") String accessToken) {
         return budgetService.getByUserID(Long.valueOf(accessToken));
     }
 

@@ -6,6 +6,7 @@ import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
+import fr.b4.apps.expenses.entities.Budget;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.openfoodfact.models.LanguagesCodes;
@@ -170,16 +171,20 @@ public class DataGenerator {
         return products;
     }
 
+    public static User generateUser() {
+        User user = new User();
+        Name fakeUser = faker.name();
+        user.setLastname(fakeUser.lastName());
+        user.setName(fakeUser.firstName());
+        user.setUsername(fakeUser.username());
+        user.setEmail(fakeUser.username() + "@gmail.com");
+        return user;
+    }
+
     public static List<User> generateUser(int number) {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            User user = new User();
-            Name fakeUser = faker.name();
-            user.setLastname(fakeUser.lastName());
-            user.setName(fakeUser.firstName());
-            user.setUsername(fakeUser.username());
-            user.setEmail(fakeUser.username() + "@gmail.com");
-            users.add(user);
+            users.add(generateUser());
         }
         return users;
     }
@@ -194,10 +199,26 @@ public class DataGenerator {
 
     public static NutrientLevels generateNutrientLevels() {
         NutrientLevels nutrientLevels = new NutrientLevels();
-        nutrientLevels.setSugars(faker.number().numberBetween(1,4568) + "");
-        nutrientLevels.setSalt(faker.number().numberBetween(1,4568) + "");
-        nutrientLevels.setSaturatedFat(faker.number().numberBetween(1,4568) + "");
-        nutrientLevels.setFat(faker.number().numberBetween(1,4568) + "");
+        nutrientLevels.setSugars(faker.number().numberBetween(1, 4568) + "");
+        nutrientLevels.setSalt(faker.number().numberBetween(1, 4568) + "");
+        nutrientLevels.setSaturatedFat(faker.number().numberBetween(1, 4568) + "");
+        nutrientLevels.setFat(faker.number().numberBetween(1, 4568) + "");
         return nutrientLevels;
+    }
+
+    public static Budget generateBudget() {
+        Budget budget = new Budget();
+        budget.setUser(generateUser());
+        budget.setTarget((float) faker.number().numberBetween(1, 6));
+        budget.setDate(LocalDate.now());
+        return budget;
+    }
+
+    public static List<Budget> generateBudgets(int num) {
+        List<Budget> budgets = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            budgets.add(generateBudget());
+        }
+        return budgets;
     }
 }

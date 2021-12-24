@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
@@ -116,17 +115,8 @@ public class ExpenseService {
         return CollectionUtils.isEmpty(results) ? new ArrayList<>() : results.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 
-    public Expense findByID(Long id) {
-        return expenseRepository.findById(id).orElse(null);
-    }
-
     public ExpenseDTO findDTOByID(Long id) {
         return ExpenseConverter.toDTO(expenseRepository.findById(id).orElse(null));
-    }
-
-
-    public List<Expense> findAll() {
-        return expenseRepository.findAll();
     }
 
     @Transactional
