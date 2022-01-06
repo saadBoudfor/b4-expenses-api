@@ -50,6 +50,7 @@ public class ExpenseService {
         this.productRepository = productRepository;
     }
 
+    // testing ...
     public Expense save(ExpenseDTO dto) {
         Expense expense = ExpenseConverter.toExpense(dto);
         if (!ObjectUtils.isEmpty(expense.getPlace()) && ObjectUtils.isEmpty(expense.getPlace().getId())) {
@@ -60,6 +61,8 @@ public class ExpenseService {
             Place savedPlace = placeRepository.save(expense.getPlace());
             expense.setPlace(savedPlace);
         }
+
+        // for oneToMany save
         for (ExpenseLine expenseLine : expense.getExpenseLines()) {
             expenseLine.setExpense(expense);
         }
@@ -69,14 +72,21 @@ public class ExpenseService {
                 .filter(this::isProductValid)
                 .forEach(this::checkProduct);
 
+        // save expense first then expense's lines
         expense = expenseRepository.save(expense);
         expenseLineRepository.saveAll(expense.getExpenseLines());
         return expenseRepository.save(expense);
     }
 
-    public ExpenseDTO updateException(Long userID, String billName) {
-        Expense expense = expenseRepository.getById(userID);
+    /**
+     * @param expenseID expense's id to update
+     * @param billName bill name
+     * @return updated expense's dto
+     */
+    public ExpenseDTO updateExpenseBill(Long expenseID, String billName) {
+        Expense expense = expenseRepository.getById(expenseID);
         expense.setBill(billName);
+        expense = expenseRepository.save(expense);
         return ExpenseConverter.toDTO(expense);
     }
 
@@ -95,30 +105,72 @@ public class ExpenseService {
         }
     }
 
-    public List<ExpenseDTO> findByUser(Long userID, Integer page, Integer size) {
-        if (ObjectUtils.isEmpty(size))
-            return expenseRepository.findByUserIdOrderByDateDesc(userID).stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
+    /**
+     * @param userID authenticated user
+     * @param page   page number
+     * @param size   number of results by page
+     * @return filtered expenses for given user /all expenses if size or page is null
+     */
+    public List<ExpenseDTO> find(Long userID, Integer page, Integer size) {
+        if (ObjectUtils.isEmpty(size) || ObjectUtils.isEmpty(page)) {
+            return findAllByUser(userID);
+        }
+        return findAllByUser(userID, page, size);
+    }
+
+    private List<ExpenseDTO> findAllByUser(Long userID, Integer page, Integer size) {
         Pageable pageable = Pageable.unpaged();
         if (!ObjectUtils.isEmpty(page) && !ObjectUtils.isEmpty(size)) {
             pageable = PageRequest.of(page, size);
         }
         List<Expense> results = expenseRepository.findByUserIdOrderByDateDesc(userID, pageable);
-        return CollectionUtils.isEmpty(results) ? new ArrayList<>() : results.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(results)) {
+            return new ArrayList<>();
+        }
+        return results.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 
+    private List<ExpenseDTO> findAllByUser(Long userID) {
+        List<Expense> results = expenseRepository.findByUserIdOrderByDateDesc(userID);
+        if (CollectionUtils.isEmpty(results)) {
+            return new ArrayList<>();
+        }
+        return results.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * @param userID given user's id
+     * @return top 5 user's expenses
+     */
     public List<ExpenseDTO> findTop5ByUser(Long userID) {
-        return expenseRepository.findTop5ByUserIdOrderByDateDesc(userID).stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
+        List<Expense> found = expenseRepository.findTop5ByUserIdOrderByDateDesc(userID);
+        if (CollectionUtils.isEmpty(found)) {
+            return new ArrayList<>();
+        }
+        return found.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 
+
+    /**
+     * filter expenses by place for give user
+     */
     public List<ExpenseDTO> findByPlaceID(Long userID, Long placeId) {
         List<Expense> results = expenseRepository.findByUserIdAndPlaceId(userID, placeId);
         return CollectionUtils.isEmpty(results) ? new ArrayList<>() : results.stream().map(ExpenseConverter::toDTO).collect(Collectors.toList());
     }
 
+    /**
+     * find expense by ID
+     */
     public ExpenseDTO findDTOByID(Long id) {
         return ExpenseConverter.toDTO(expenseRepository.findById(id).orElse(null));
     }
 
+    /**
+     * delete expense and all it's expense lines
+     *
+     * @param expenseID expense's id to delete
+     */
     @Transactional
     public void delete(Long expenseID) {
         Integer isDeleted = expenseLineRepository.deleteAllByExpenseId(expenseID);
@@ -129,6 +181,12 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * this function does not return current user target (TODO: check if target is required)
+     *
+     * @param userID authenticated user
+     * @return expenses stats
+     */
     public ExpenseBasicStatsDTO getExpenseStats(Long userID) {
         final LocalDate firstDayOfCurrentWeek = getFistDayOfCurrentWeek();
         final LocalDate firstDayOfCurrentMonth = getFistDayOfCurrentMonth();
@@ -137,7 +195,14 @@ public class ExpenseService {
         return basicStatsDTO;
     }
 
-    public ExpenseBasicStatsDTO getExpenseStatsByPlace(Long userID, PlaceType placeType) {
+    /**
+     * this function does not return current user target (TODO: check if target is required)
+     *
+     * @param userID    authenticated user
+     * @param placeType filter
+     * @return expenses stats filtered by place type (by restaurant/store)
+     */
+    public ExpenseBasicStatsDTO getExpenseStats(Long userID, PlaceType placeType) {
         final LocalDate firstDayOfCurrentWeek = getFistDayOfCurrentWeek();
         final LocalDate firstDayOfCurrentMonth = getFistDayOfCurrentMonth();
         final ExpenseBasicStatsDTO basicStatsDTO = new ExpenseBasicStatsDTO();
@@ -145,6 +210,11 @@ public class ExpenseService {
         return basicStatsDTO;
     }
 
+    /**
+     * Get NutrientStats for all users
+     * return empty list if no stats found
+     * TODO: get stats only for authenticated
+     */
     public NutrientStatRecapDTO getNutrientStats() {
         List<Object[]> rawData = expenseLineRepository.getNutrientStats();
         return extractStats(rawData);

@@ -63,13 +63,13 @@ public class ReportingServiceTests {
         reportFile.createNewFile();
 
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Mockito.when(expenseService.findByUser(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
+        Mockito.when(expenseService.find(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
         Mockito.doNothing().when(emailSender).send(any(MimeMessage.class));
         ReportingService reportingService = new ReportingService(expenseProcess, expenseService, userRepository, emailSender);
 
         reportingService.exportExcel();
 
-        Mockito.verify(expenseService).findByUser(users.get(0).getId(), 0, null);
+        Mockito.verify(expenseService).find(users.get(0).getId(), 0, null);
         Mockito.verify(expenseProcess).getBasicStats(any());
         Mockito.verify(emailSender).createMimeMessage();
         Assertions.assertDoesNotThrow(reportingService::exportExcel);
@@ -84,11 +84,11 @@ public class ReportingServiceTests {
         List<Expense> expenses = DataGenerator.generateExpenses(1);
         expenses.get(0).setExpenseLines(DataGenerator.generateExpenseLines(1));
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Mockito.when(expenseService.findByUser(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
+        Mockito.when(expenseService.find(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
         Mockito.doThrow(new MailSendException("ok")).when(emailSender).send(any(MimeMessage.class));
         ReportingService reportingService = new ReportingService(expenseProcess, expenseService, userRepository, emailSender);
         Assertions.assertDoesNotThrow(reportingService::exportExcel);
-        Mockito.verify(expenseService).findByUser(users.get(0).getId(), 0, null);
+        Mockito.verify(expenseService).find(users.get(0).getId(), 0, null);
     }
 
     @Test
@@ -98,11 +98,11 @@ public class ReportingServiceTests {
         expenses.get(0).setExpenseLines(DataGenerator.generateExpenseLines(1));
         Workbook workbook = Mockito.mock(Workbook.class);
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Mockito.when(expenseService.findByUser(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
+        Mockito.when(expenseService.find(any(), any(), any())).thenReturn(ExpenseConverter.toDTO(expenses));
         Mockito.doNothing().when(emailSender).send(any(MimeMessage.class));
 
         ReportingService reportingService = new ReportingService(expenseProcess, expenseService, userRepository, emailSender);
         Assertions.assertDoesNotThrow(reportingService::exportExcel);
-        Mockito.verify(expenseService).findByUser(users.get(0).getId(), 0, null);
+        Mockito.verify(expenseService).find(users.get(0).getId(), 0, null);
     }
 }

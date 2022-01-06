@@ -49,7 +49,7 @@ public class ExpenseControllerTests {
     public void shouldGetRestaurantStatsSuccess() {
         // Given
         ExpenseBasicStatsDTO expenseBasicStatsDTO = DataGenerator.generateBasicStats();
-        when(expenseService.getExpenseStatsByPlace(5L, PlaceType.RESTAURANT)).thenReturn(expenseBasicStatsDTO);
+        when(expenseService.getExpenseStats(5L, PlaceType.RESTAURANT)).thenReturn(expenseBasicStatsDTO);
 
         // When
         ExpenseController expenseController = new ExpenseController(expenseProcess, expenseService);
@@ -57,14 +57,14 @@ public class ExpenseControllerTests {
 
         // Then
         Assertions.assertEquals(res, expenseBasicStatsDTO);
-        verify(expenseService, times(1)).getExpenseStatsByPlace(any(), any());
+        verify(expenseService, times(1)).getExpenseStats(any(), any());
     }
 
     @Test
     public void shouldGetNutrientStatSuccess() {
         // Given
         ExpenseBasicStatsDTO expenseBasicStatsDTO = DataGenerator.generateBasicStats();
-        when(expenseService.getExpenseStatsByPlace(5L, PlaceType.STORE)).thenReturn(expenseBasicStatsDTO);
+        when(expenseService.getExpenseStats(5L, PlaceType.STORE)).thenReturn(expenseBasicStatsDTO);
 
         // When
         ExpenseController expenseController = new ExpenseController(expenseProcess, expenseService);
@@ -72,14 +72,14 @@ public class ExpenseControllerTests {
 
         // Then
         Assertions.assertEquals(res, expenseBasicStatsDTO);
-        verify(expenseService, times(1)).getExpenseStatsByPlace(any(), any());
+        verify(expenseService, times(1)).getExpenseStats(any(), any());
     }
 
     @Test
     public void shouldGetAllSuccess() {
         // Given
         List<ExpenseDTO> expenseDTOList = ExpenseConverter.toDTO(DataGenerator.generateExpenses(10));
-        when(expenseService.findByUser(5L, 1, 1)).thenReturn(expenseDTOList);
+        when(expenseService.find(5L, 1, 1)).thenReturn(expenseDTOList);
 
         // When
         ExpenseController expenseController = new ExpenseController(expenseProcess, expenseService);
@@ -88,7 +88,7 @@ public class ExpenseControllerTests {
 
         // Then
         Assertions.assertEquals(res, expenseDTOList);
-        verify(expenseService, times(1)).findByUser(any(), any(), any());
+        verify(expenseService, times(1)).find(any(), any(), any());
     }
 
     @Test
@@ -131,7 +131,9 @@ public class ExpenseControllerTests {
         MultipartFile multipartFile = new MockMultipartFile("test.txt", "test.txt", "text/plain", input.readAllBytes());
 
         ExpenseDTO expenseDTO = ExpenseConverter.toDTO(DataGenerator.generateExpenses(1).get(0));
-        when(expenseProcess.addBill("{id: 4L}", multipartFile)).thenReturn(expenseDTO);
+        ExpenseDTO dto = new ExpenseDTO();
+        dto.setId(4L);
+        when(expenseProcess.save(dto, multipartFile)).thenReturn(expenseDTO);
 
         // When
         ExpenseController expenseController = new ExpenseController(expenseProcess, expenseService);

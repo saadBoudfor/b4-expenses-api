@@ -11,6 +11,7 @@ import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
+import fr.b4.apps.openfoodfact.models.OFProduct;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigInteger;
@@ -102,6 +103,7 @@ public class DataGenerator {
         return expensePlaceDTOS;
     }
 
+
     public List<Expense> generateExpenses(int num) {
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < num; i++) {
@@ -121,6 +123,27 @@ public class DataGenerator {
             expense.setExpenseLines(generateExpenseLines(faker.number().numberBetween(1, 12)));
         });
         return expenses;
+    }
+
+    public OFProduct generateOneOFProduct() {
+        OFProduct ofProduct = new OFProduct();
+        ofProduct.setProductName(faker.food().ingredient());
+        ofProduct.setImageFrontUrl(faker.letterify("one of product"));
+        ofProduct.setCode(faker.code().asin());
+        ofProduct.setProductQuantity(faker.number().numberBetween(1, 85) + "");
+        ofProduct.setQuantity(faker.number().numberBetween(1, 85) + "L");
+        ofProduct.setBrands(faker.commerce().productName());
+        ofProduct.setNutritionDataPer((faker.number().numberBetween(1, 85) + " cal/100g"));
+        ofProduct.setNutritionGrades("E");
+        return ofProduct;
+    }
+
+    public List<OFProduct> generateOFProducts(int num) {
+        List<OFProduct> products = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            products.add(generateOneOFProduct());
+        }
+        return products;
     }
 
     public List<Object[]> generateExpensePlaceRawData(int num) {

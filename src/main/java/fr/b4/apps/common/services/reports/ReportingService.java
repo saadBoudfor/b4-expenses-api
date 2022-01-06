@@ -10,7 +10,6 @@ import fr.b4.apps.expenses.services.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailSendException;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.mail.MessagingException;
-import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,7 +56,7 @@ public class ReportingService {
     public void exportExcel() {
 
         userRepository.findAll().forEach(user -> {
-            List<ExpenseDTO> expenses = expenseService.findByUser(user.getId(), 0, null);
+            List<ExpenseDTO> expenses = expenseService.find(user.getId(), 0, null);
             if (!CollectionUtils.isEmpty(expenses)) {
                 Workbook workbook = new XSSFWorkbook();
                 Sheet sheet = workbook.createSheet("Dépenses");

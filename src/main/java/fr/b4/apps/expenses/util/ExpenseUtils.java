@@ -3,6 +3,8 @@ package fr.b4.apps.expenses.util;
 import fr.b4.apps.expenses.dto.NutrientStatDTO;
 import fr.b4.apps.expenses.dto.NutrientStatRecapDTO;
 import lombok.experimental.UtilityClass;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -29,6 +31,9 @@ public class ExpenseUtils {
     public static NutrientStatRecapDTO extractStats(List<Object[]> data) {
         NutrientStatRecapDTO nutrientStatRecapDTO = new NutrientStatRecapDTO();
         List<NutrientStatDTO> list = new ArrayList<>();
+        if (CollectionUtils.isEmpty(data)) {
+            return nutrientStatRecapDTO;
+        }
         for (Object[] item : data) {
             NutrientStatDTO dto = new NutrientStatDTO();
             dto.setLabel((String) item[0]);

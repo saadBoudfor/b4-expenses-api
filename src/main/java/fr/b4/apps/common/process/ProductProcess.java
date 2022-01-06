@@ -3,6 +3,7 @@ package fr.b4.apps.common.process;
 import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.NutrientLevels;
 import fr.b4.apps.common.entities.Product;
+import fr.b4.apps.common.exceptions.ResourceNotFoundException;
 import fr.b4.apps.common.repositories.NutrientLevelsRepository;
 import fr.b4.apps.common.services.ProductService;
 import fr.b4.apps.common.util.converters.ProductConverter;
@@ -93,7 +94,7 @@ public class ProductProcess {
                         log.info("Product {} updated", found.getQrCode());
                     }
                 }
-            } catch (ResourceAccessException exception) {
+            } catch (ResourceAccessException | ResourceNotFoundException exception) {
                 log.error("failed perform search request on Open Food Fact API. Error: {}", exception.getMessage());
             }
         });

@@ -27,7 +27,10 @@ public class ExpenseConverter {
         Expense expense = new Expense();
         expense.setName(dto.getName());
         expense.setDate(dto.getDate());
-        expense.setExpenseLines(dto.getExpenseLines().stream().map(ExpenseConverter::toExpenseLine).collect(Collectors.toList()));
+        if (!CollectionUtils.isEmpty(dto.getExpenseLines())) {
+            expense.setExpenseLines(dto.getExpenseLines()
+                    .stream().map(ExpenseConverter::toExpenseLine).collect(Collectors.toList()));
+        }
         expense.setComment(dto.getComment());
         expense.setAuthor(dto.getAuthor());
         expense.setPlace(dto.getPlace());

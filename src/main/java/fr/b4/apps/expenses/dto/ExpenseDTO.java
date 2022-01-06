@@ -8,10 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.Place;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@ToString
 @Data
 public class ExpenseDTO {
     private Long id;
