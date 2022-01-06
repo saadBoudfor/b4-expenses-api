@@ -9,9 +9,7 @@ import fr.b4.apps.common.repositories.ProductRepository;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.NutrientStatRecapDTO;
-import fr.b4.apps.expenses.entities.Budget;
 import fr.b4.apps.expenses.entities.Expense;
-import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.expenses.repositories.ExpenseLineRepository;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import fr.b4.apps.expenses.services.ExpenseService;
@@ -338,11 +336,11 @@ public class ExpenseServiceTests {
             return (Expense) args[0];
         });
 
-        when(expenseLineRepository.save(any())).then((Answer<ExpenseLine>) invocationOnMock -> {
-            Object[] args = invocationOnMock.getArguments();
-            ((Expense) args[0]).setId(new Random().nextLong());
-            return (ExpenseLine) args[0];
-        });
+//        when(expenseLineRepository.save(any())).then((Answer<ExpenseLine>) invocationOnMock -> {
+//            Object[] args = invocationOnMock.getArguments();
+//            ((Expense) args[0]).setId(new Random().nextLong());
+//            return (ExpenseLine) args[0];
+//        });
 
         when(productRepository.save(any())).then((Answer<Product>) invocationOnMock -> {
             Object[] args = invocationOnMock.getArguments();

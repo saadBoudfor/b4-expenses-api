@@ -137,7 +137,7 @@ public class ExpenseControllerTests {
 
         // When
         ExpenseController expenseController = new ExpenseController(expenseProcess, expenseService);
-        ExpenseDTO saved = expenseController.save(multipartFile, "{id: 4L}");
+        ExpenseDTO saved = expenseController.save(multipartFile, "{\"id\": 4}");
 
         // Then
         Assertions.assertEquals(saved, expenseDTO);
