@@ -1,0 +1,13 @@
+package fr.b4.apps.stores.dto;
+
+import fr.b4.apps.clients.entities.User;
+import fr.b4.apps.expenses.dto.ExpenseDTO;
+import lombok.Data;
+
+@Data
+public class ItemDTO {
+    private Long id;
+    private ExpenseDTO expense;
+    private BucketDTO location;
+    private User author;
+}
