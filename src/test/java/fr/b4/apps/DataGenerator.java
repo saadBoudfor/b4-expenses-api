@@ -13,6 +13,7 @@ import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
 import fr.b4.apps.openfoodfact.models.OFProduct;
 import fr.b4.apps.stores.dto.StoreDTO;
+import fr.b4.apps.stores.entities.Store;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigInteger;
@@ -198,6 +199,7 @@ public class DataGenerator {
     public static User generateUser() {
         User user = new User();
         Name fakeUser = faker.name();
+        user.setId((long) faker.number().numberBetween(1, 6));
         user.setLastname(fakeUser.lastName());
         user.setName(fakeUser.firstName());
         user.setUsername(fakeUser.username());
@@ -246,7 +248,7 @@ public class DataGenerator {
         return budgets;
     }
 
-    public static StoreDTO generateStore() {
+    public static StoreDTO generateStoreDTO() {
         StoreDTO store = new StoreDTO();
         store.setId((long) faker.number().numberBetween(1, 6));
         store.setName(faker.pokemon().name());
@@ -254,11 +256,27 @@ public class DataGenerator {
         return store;
     }
 
-    public static List<StoreDTO> generateStore(int num) {
+    public static List<StoreDTO> generateStoreDTO(int num) {
         List<StoreDTO> budgets = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            budgets.add(generateStore());
+            budgets.add(generateStoreDTO());
         }
         return budgets;
+    }
+
+    public static Store generateStore() {
+        Store store = new Store();
+        store.setId((long) faker.number().numberBetween(1, 6));
+        store.setName(faker.pokemon().name());
+        store.setOwner(generateUser());
+        return store;
+    }
+
+    public static List<Store> generateStore(int num) {
+        List<Store> stores = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            stores.add(generateStore());
+        }
+        return stores;
     }
 }

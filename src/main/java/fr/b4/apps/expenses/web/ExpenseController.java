@@ -76,7 +76,7 @@ public class ExpenseController {
 
     @PostMapping
     public ExpenseDTO save(@RequestParam(value = "file", required = false) MultipartFile file,
-                           @RequestParam(value = "expense") String expenseStr) {
+                           @RequestParam(value = "expense") String expenseStr) throws BadRequestException {
         try {
             ExpenseDTO expense = ExpenseConverter.valueOf(expenseStr);
             return expenseProcess.save(expense, file);
@@ -94,7 +94,7 @@ public class ExpenseController {
 
     @PutMapping("/{expenseID}")
     public ExpenseDTO addBill(@PathVariable(value = "expenseID") Long expenseID,
-                              @RequestParam(value = "file") MultipartFile expenseBill) {
+                              @RequestParam(value = "file") MultipartFile expenseBill) throws BadRequestException {
         try {
             return expenseProcess.addBill(expenseID, expenseBill);
         } catch (IOException exception) {

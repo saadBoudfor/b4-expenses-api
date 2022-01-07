@@ -3,9 +3,6 @@ package fr.b4.apps.stores.web;
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.exceptions.ResourceNotFoundException;
-import fr.b4.apps.expenses.dto.ExpenseDTO;
-import fr.b4.apps.expenses.entities.Expense;
-import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import fr.b4.apps.stores.dto.StoreDTO;
 import fr.b4.apps.stores.services.StoresService;
 import org.junit.Test;
@@ -29,7 +26,7 @@ public class StoresControllerTests {
     @Test
     public void shouldAddNewStoreSuccess() {
         // Given
-        StoreDTO store = DataGenerator.generateStore();
+        StoreDTO store = DataGenerator.generateStoreDTO();
         when(storesService.save(any())).then((Answer<StoreDTO>) invocationOnMock -> {
             Object[] args = invocationOnMock.getArguments();
             return (StoreDTO) args[0];
@@ -50,7 +47,7 @@ public class StoresControllerTests {
 
         // Then
         StoresController controller = new StoresController(storesService);
-        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStore()));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStoreDTO()));
     }
 
     @Test
@@ -66,7 +63,7 @@ public class StoresControllerTests {
     @Test
     public void shouldUpdateStoreSuccess() {
         // Given
-        StoreDTO store = DataGenerator.generateStore();
+        StoreDTO store = DataGenerator.generateStoreDTO();
         when(storesService.update(any())).then((Answer<StoreDTO>) invocationOnMock -> {
             Object[] args = invocationOnMock.getArguments();
             return (StoreDTO) args[0];
@@ -87,7 +84,7 @@ public class StoresControllerTests {
 
         // Then
         StoresController controller = new StoresController(storesService);
-        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStore()));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStoreDTO()));
     }
 
     @Test
@@ -104,7 +101,7 @@ public class StoresControllerTests {
     @Test
     public void getStoreWithIDSuccess() {
         // Given
-        StoreDTO store = DataGenerator.generateStore();
+        StoreDTO store = DataGenerator.generateStoreDTO();
         when(storesService.getByID(5L)).thenReturn(store);
 
         // When
@@ -135,7 +132,7 @@ public class StoresControllerTests {
     @Test
     public void getStoreWithUserIDSuccess() {
         // Given
-        List<StoreDTO> stores = DataGenerator.generateStore(6);
+        List<StoreDTO> stores = DataGenerator.generateStoreDTO(6);
         when(storesService.getByUserID(5L)).thenReturn(stores);
 
         // When

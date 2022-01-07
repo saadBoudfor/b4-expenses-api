@@ -2,6 +2,7 @@ package fr.b4.apps.expenses.web;
 
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.entities.PlaceType;
+import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.process.ExpenseProcess;
@@ -123,7 +124,7 @@ public class ExpenseControllerTests {
     }
 
     @Test
-    public void shouldSaveExpenseSuccess() throws IOException {
+    public void shouldSaveExpenseSuccess() throws IOException, BadRequestException {
         // Given
         File file = new File("test.txt");
         file.createNewFile();
@@ -157,7 +158,7 @@ public class ExpenseControllerTests {
     }
 
     @Test
-    public void shouldAddBillSuccess() throws IOException {
+    public void shouldAddBillSuccess() throws IOException, BadRequestException {
         // Given
         File file = new File("test.txt");
         file.createNewFile();
