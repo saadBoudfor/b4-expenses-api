@@ -12,6 +12,7 @@ import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
 import fr.b4.apps.openfoodfact.models.OFProduct;
+import fr.b4.apps.stores.dto.BucketDTO;
 import fr.b4.apps.stores.dto.StoreDTO;
 import fr.b4.apps.stores.entities.Store;
 import lombok.experimental.UtilityClass;
@@ -278,5 +279,22 @@ public class DataGenerator {
             stores.add(generateStore());
         }
         return stores;
+    }
+
+    public static BucketDTO generateBucket() {
+        BucketDTO dto = new BucketDTO();
+        dto.setId((long) faker.number().numberBetween(1, 6));
+        dto.setName(faker.pokemon().name());
+        dto.setStore(generateStoreDTO());
+        dto.setOwner(generateUser());
+        return dto;
+    }
+
+    public static List<BucketDTO> generateBucket(int num) {
+        List<BucketDTO> buckets = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            buckets.add(generateBucket());
+        }
+        return buckets;
     }
 }

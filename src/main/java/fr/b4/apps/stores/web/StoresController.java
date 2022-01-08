@@ -32,7 +32,7 @@ public class StoresController {
     }
 
     @PutMapping
-    public StoreDTO updateStore(StoreDTO storeDTO) {
+    public StoreDTO updateStore(@RequestBody StoreDTO storeDTO) {
         log.info("update Store: {}", storeDTO);
         if (ObjectUtils.isEmpty(storeDTO) || ObjectUtils.isEmpty(storeDTO.getId())) {
             throw new IllegalArgumentException("store and store id must not be empty");
@@ -41,7 +41,7 @@ public class StoresController {
     }
 
     @GetMapping("/{id}")
-    public StoreDTO get(@RequestParam("id") Long id) {
+    public StoreDTO get(@PathVariable("id") Long id) {
         log.debug("Get store {} information", id);
         if (ObjectUtils.isEmpty(id) || id <= 0) {
             throw new IllegalArgumentException("invalid store id");
@@ -50,7 +50,7 @@ public class StoresController {
     }
 
     @GetMapping("/all/{userID}")
-    public List<StoreDTO> getByUserID(@RequestParam("userID") Long id) {
+    public List<StoreDTO> getByUserID(@PathVariable("userID") Long id) {
         log.debug("Get user {} stores", id);
         if (ObjectUtils.isEmpty(id) || id <= 0) {
             throw new IllegalArgumentException("invalid user id");
@@ -59,7 +59,7 @@ public class StoresController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@RequestParam("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         log.debug("Get user {} stores", id);
         if (ObjectUtils.isEmpty(id) || id <= 0) {
             throw new IllegalArgumentException("invalid user id");
