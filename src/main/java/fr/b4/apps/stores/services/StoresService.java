@@ -49,7 +49,7 @@ public class StoresService {
             throw new BadRequestException("store's owner missing");
         }
 
-        if (!userRepository.existsById(storeDTO.getId())) {
+        if (!userRepository.existsById(storeDTO.getOwner().getId())) {
             log.error("store's owner is unknown");
             throw new BadRequestException("store's owner is unknown");
         }
