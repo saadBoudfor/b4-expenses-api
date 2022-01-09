@@ -14,6 +14,7 @@ import fr.b4.apps.openfoodfact.models.OFCategory;
 import fr.b4.apps.openfoodfact.models.OFProduct;
 import fr.b4.apps.stores.dto.BucketDTO;
 import fr.b4.apps.stores.dto.StoreDTO;
+import fr.b4.apps.stores.entities.Bucket;
 import fr.b4.apps.stores.entities.Store;
 import lombok.experimental.UtilityClass;
 
@@ -281,7 +282,7 @@ public class DataGenerator {
         return stores;
     }
 
-    public static BucketDTO generateBucket() {
+    public static BucketDTO generateBucketDTO() {
         BucketDTO dto = new BucketDTO();
         dto.setId((long) faker.number().numberBetween(1, 6));
         dto.setName(faker.pokemon().name());
@@ -290,8 +291,26 @@ public class DataGenerator {
         return dto;
     }
 
-    public static List<BucketDTO> generateBucket(int num) {
+    public static List<BucketDTO> generateBucketDTO(int num) {
         List<BucketDTO> buckets = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            buckets.add(generateBucketDTO());
+        }
+        return buckets;
+    }
+
+
+    public static Bucket generateBucket() {
+        Bucket bucket= new Bucket();
+        bucket.setId((long) faker.number().numberBetween(1, 6));
+        bucket.setName(faker.pokemon().name());
+        bucket.setStore(generateStore());
+        bucket.setOwner(generateUser());
+        return bucket;
+    }
+
+    public static List<Bucket> generateBucket(int num) {
+        List<Bucket> buckets = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             buckets.add(generateBucket());
         }
