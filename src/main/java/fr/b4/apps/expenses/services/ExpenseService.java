@@ -50,7 +50,6 @@ public class ExpenseService {
         this.productRepository = productRepository;
     }
 
-    // testing ...
     public Expense save(ExpenseDTO dto) {
         Expense expense = ExpenseConverter.toExpense(dto);
         if (!ObjectUtils.isEmpty(expense.getPlace()) && ObjectUtils.isEmpty(expense.getPlace().getId())) {

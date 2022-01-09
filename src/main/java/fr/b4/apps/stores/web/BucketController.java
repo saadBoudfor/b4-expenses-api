@@ -60,7 +60,7 @@ public class BucketController {
             throws BadRequestException, IllegalArgumentException {
 
         if (ObjectUtils.isEmpty(storeID) && ObjectUtils.isEmpty(userId)) {
-            log.error("Must define at least on filter by store or by user (store: {}, userId: {})", storeID, userId);
+            log.error("Must define at least on filter by store or user (store: {}, user: {})", storeID, userId);
             throw new BadRequestException("Must define at least on filter by store or by user");
         } else {
             if (ObjectUtils.isNotEmpty(storeID) && storeID <= 0) {

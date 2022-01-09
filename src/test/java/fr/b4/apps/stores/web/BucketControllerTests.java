@@ -208,7 +208,7 @@ public class BucketControllerTests {
         List<BucketDTO> buckets = DataGenerator.generateBucketDTO(6);
         when(bucketService.filterByUserId(5L)).thenReturn(buckets);
 
-        // WHen
+        // When
         BucketController controller = new BucketController(bucketService);
         List<BucketDTO> found = controller.get(null, 5L);
 

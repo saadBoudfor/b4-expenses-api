@@ -24,4 +24,7 @@ public class Item {
 
     @ManyToOne
     private User author;
+
+    private Float quantity;
+    private Float remaining;
 }
