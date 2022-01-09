@@ -10,21 +10,24 @@ import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class ExpenseConverter {
     public static Expense toExpense(ExpenseDTO dto) {
+        if (ObjectUtils.isEmpty(dto)) {
+            return null;
+        }
         Expense expense = new Expense();
+        expense.setId(dto.getId());
         expense.setName(dto.getName());
         expense.setDate(dto.getDate());
         if (!CollectionUtils.isEmpty(dto.getExpenseLines())) {
