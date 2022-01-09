@@ -34,7 +34,7 @@ public class BucketController {
     }
 
     @PutMapping
-    public BucketDTO update(BucketDTO bucket) {
+    public BucketDTO update(@RequestBody BucketDTO bucket) {
         if (ObjectUtils.isEmpty(bucket.getId())) {
             log.error("Bucket's id must not be null");
             throw new BadRequestException("Bucket's id must not be null");

@@ -27,7 +27,7 @@ public class BucketControllerTests {
     @Test
     public void shouldAddBucketSuccess() {
         // Given
-        BucketDTO dto = DataGenerator.generateBucket();
+        BucketDTO dto = DataGenerator.generateBucketDTO();
         dto.setId(null);
 
         when(bucketService.save(any())).then((Answer<BucketDTO>) invocationOnMock -> {
@@ -49,23 +49,23 @@ public class BucketControllerTests {
     @Test
     public void shouldThrowBadRequestExceptionIfRequiredFieldMissing() {
         // Given
-        BucketDTO dto1 = DataGenerator.generateBucket();
+        BucketDTO dto1 = DataGenerator.generateBucketDTO();
         dto1.setId(null);
         dto1.setOwner(null);
 
-        BucketDTO dto2 = DataGenerator.generateBucket();
+        BucketDTO dto2 = DataGenerator.generateBucketDTO();
         dto2.setId(null);
         dto2.setName(null);
 
-        BucketDTO dto3 = DataGenerator.generateBucket();
+        BucketDTO dto3 = DataGenerator.generateBucketDTO();
         dto3.setId(null);
         dto3.setStore(null);
 
-        BucketDTO dto4 = DataGenerator.generateBucket();
+        BucketDTO dto4 = DataGenerator.generateBucketDTO();
         dto4.setId(null);
         dto4.getOwner().setId(null);
 
-        BucketDTO dto5 = DataGenerator.generateBucket();
+        BucketDTO dto5 = DataGenerator.generateBucketDTO();
         dto5.setId(null);
         dto5.getStore().setId(null);
 
@@ -81,7 +81,7 @@ public class BucketControllerTests {
 
     @Test
     public void shouldThrowExceptionIfAddBackedWithId() {
-        BucketDTO dto = DataGenerator.generateBucket();
+        BucketDTO dto = DataGenerator.generateBucketDTO();
 
         // Then
         BucketController controller = new BucketController(bucketService);
@@ -92,7 +92,7 @@ public class BucketControllerTests {
     @Test
     public void shouldUpdateBucketSuccess() {
         // Given
-        BucketDTO dto = DataGenerator.generateBucket();
+        BucketDTO dto = DataGenerator.generateBucketDTO();
 
         when(bucketService.update(any())).then((Answer<BucketDTO>) invocationOnMock -> {
             Object[] args = invocationOnMock.getArguments();
@@ -112,23 +112,23 @@ public class BucketControllerTests {
     @Test
     public void shouldThrowBadRequestExceptionIfUpdateWithRequiredFieldMissing() {
         // Given
-        BucketDTO dto1 = DataGenerator.generateBucket();
+        BucketDTO dto1 = DataGenerator.generateBucketDTO();
         dto1.setId(null);
         dto1.setOwner(null);
 
-        BucketDTO dto2 = DataGenerator.generateBucket();
+        BucketDTO dto2 = DataGenerator.generateBucketDTO();
         dto2.setId(null);
         dto2.setName(null);
 
-        BucketDTO dto3 = DataGenerator.generateBucket();
+        BucketDTO dto3 = DataGenerator.generateBucketDTO();
         dto3.setId(null);
         dto3.setStore(null);
 
-        BucketDTO dto4 = DataGenerator.generateBucket();
+        BucketDTO dto4 = DataGenerator.generateBucketDTO();
         dto4.setId(null);
         dto4.getOwner().setId(null);
 
-        BucketDTO dto5 = DataGenerator.generateBucket();
+        BucketDTO dto5 = DataGenerator.generateBucketDTO();
         dto5.setId(null);
         dto5.getStore().setId(null);
 
@@ -145,7 +145,7 @@ public class BucketControllerTests {
 
     @Test
     public void shouldThrowExceptionIfAddUpdateBackedWithNullId() {
-        BucketDTO dto = DataGenerator.generateBucket();
+        BucketDTO dto = DataGenerator.generateBucketDTO();
         dto.setId(null);
 
         // Then
@@ -190,7 +190,7 @@ public class BucketControllerTests {
     @Test
     public void shouldFilterByStoreSuccess() {
         // Given
-        List<BucketDTO> buckets = DataGenerator.generateBucket(6);
+        List<BucketDTO> buckets = DataGenerator.generateBucketDTO(6);
         when(bucketService.filterByStoreId(5L)).thenReturn(buckets);
 
         // WHen
@@ -205,7 +205,7 @@ public class BucketControllerTests {
     @Test
     public void shouldFilterByUserSuccess() {
         // Given
-        List<BucketDTO> buckets = DataGenerator.generateBucket(6);
+        List<BucketDTO> buckets = DataGenerator.generateBucketDTO(6);
         when(bucketService.filterByUserId(5L)).thenReturn(buckets);
 
         // WHen
