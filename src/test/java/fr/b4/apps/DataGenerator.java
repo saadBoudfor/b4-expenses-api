@@ -5,6 +5,7 @@ import com.github.javafaker.Name;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
+import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.dto.ExpensePlaceDTO;
 import fr.b4.apps.expenses.entities.Budget;
 import fr.b4.apps.expenses.entities.Expense;
@@ -13,6 +14,7 @@ import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
 import fr.b4.apps.openfoodfact.models.OFProduct;
 import fr.b4.apps.stores.dto.BucketDTO;
+import fr.b4.apps.stores.dto.ItemDTO;
 import fr.b4.apps.stores.dto.StoreDTO;
 import fr.b4.apps.stores.entities.Bucket;
 import fr.b4.apps.stores.entities.Store;
@@ -107,15 +109,29 @@ public class DataGenerator {
         return expensePlaceDTOS;
     }
 
+    public Expense generateExpense() {
+        Expense expense = new Expense();
+        expense.setPlace(generateOnePlace(PlaceType.RESTAURANT));
+        expense.setName("shopping with " + faker.artist().name());
+        expense.setDate(convertToLocalDateViaInstant(faker.date().birthday(5, 80)));
+        return expense;
+    }
+
+    public ExpenseDTO generateExpenseDTO(boolean withId) {
+        ExpenseDTO expense = new ExpenseDTO();
+        if (withId) {
+            expense.setId((long) faker.number().numberBetween(1, 6));
+        }
+        expense.setPlace(generateOnePlace(PlaceType.RESTAURANT));
+        expense.setName("shopping with " + faker.artist().name());
+        expense.setDate(convertToLocalDateViaInstant(faker.date().birthday(5, 80)));
+        return expense;
+    }
 
     public List<Expense> generateExpenses(int num) {
         List<Expense> expenses = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            Expense expense = new Expense();
-            expense.setPlace(generateOnePlace(PlaceType.RESTAURANT));
-            expense.setName("shopping with " + faker.artist().name());
-            expense.setDate(convertToLocalDateViaInstant(faker.date().birthday(5, 80)));
-            expenses.add(expense);
+            expenses.add(generateExpense());
         }
         return expenses;
     }
@@ -301,7 +317,7 @@ public class DataGenerator {
 
 
     public static Bucket generateBucket() {
-        Bucket bucket= new Bucket();
+        Bucket bucket = new Bucket();
         bucket.setId((long) faker.number().numberBetween(1, 6));
         bucket.setName(faker.pokemon().name());
         bucket.setStore(generateStore());
@@ -315,5 +331,26 @@ public class DataGenerator {
             buckets.add(generateBucket());
         }
         return buckets;
+    }
+
+    public static ItemDTO generateItemDTO(boolean withId) {
+        ItemDTO item = new ItemDTO();
+        if (withId) {
+            item.setId((long) faker.number().numberBetween(1, 6));
+        }
+        item.setAuthor(generateUser());
+        item.setExpense(generateExpenseDTO(true));
+        item.setLocation(generateBucketDTO());
+        item.setQuantity(faker.number().numberBetween(100,200) + 0f);
+        item.setRemaining(faker.number().numberBetween(1,100) + 0f);
+        return item;
+    }
+
+    public static List<ItemDTO> generateItemDTO(int num) {
+        List<ItemDTO> itemDTOS = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            itemDTOS.add(generateItemDTO(true));
+        }
+        return itemDTOS;
     }
 }

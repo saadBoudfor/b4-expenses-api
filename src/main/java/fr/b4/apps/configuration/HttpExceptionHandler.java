@@ -1,10 +1,7 @@
 package fr.b4.apps.configuration;
 
 
-import fr.b4.apps.common.exceptions.BadRequestException;
-import fr.b4.apps.common.exceptions.ResourceNotFoundException;
-import fr.b4.apps.common.exceptions.ResourceUpdateFailedException;
-import fr.b4.apps.common.exceptions.ThirdPartyException;
+import fr.b4.apps.common.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.NestedServletException;
@@ -40,6 +37,10 @@ public class HttpExceptionHandler implements Filter {
 
             if (exception.getCause() instanceof ResourceUpdateFailedException) {
                 setResponse(httpResponse, exception.getCause().getMessage(), 501);
+            }
+
+            if (exception.getCause() instanceof ForbiddenException) {
+                setResponse(httpResponse, exception.getCause().getMessage(), 401);
             }
         }
     }
