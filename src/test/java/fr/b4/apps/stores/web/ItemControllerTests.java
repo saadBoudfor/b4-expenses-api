@@ -141,7 +141,7 @@ public class ItemControllerTests {
     public void shouldFilterByBucketSuccess() {
         // Given
         List<ItemDTO> items = DataGenerator.generateItemDTO(6);
-        when(itemService.filterByBucketId(5L)).thenReturn(items);
+        when(itemService.filterByLocationId(5L)).thenReturn(items);
 
         // WHen
         ItemController controller = new ItemController(itemService, itemProcess);
@@ -156,7 +156,7 @@ public class ItemControllerTests {
     public void shouldFilterByUserSuccess() {
         // Given
         List<ItemDTO> items = DataGenerator.generateItemDTO(6);
-        when(itemService.filterByUserId(5L)).thenReturn(items);
+        when(itemService.filterByAuthorId(5L)).thenReturn(items);
 
         // WHen
         ItemController controller = new ItemController(itemService, itemProcess);

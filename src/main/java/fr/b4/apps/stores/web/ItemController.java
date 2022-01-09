@@ -65,10 +65,10 @@ public class ItemController {
             }
 
             if (ObjectUtils.isNotEmpty(bucketId)) {
-                return itemService.filterByBucketId(bucketId);
+                return itemService.filterByLocationId(bucketId);
             } else {
                 assert ObjectUtils.isNotEmpty(userId);
-                return itemService.filterByUserId(userId);
+                return itemService.filterByAuthorId(userId);
             }
         }
     }

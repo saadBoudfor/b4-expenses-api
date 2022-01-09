@@ -17,6 +17,7 @@ import fr.b4.apps.stores.dto.BucketDTO;
 import fr.b4.apps.stores.dto.ItemDTO;
 import fr.b4.apps.stores.dto.StoreDTO;
 import fr.b4.apps.stores.entities.Bucket;
+import fr.b4.apps.stores.entities.Item;
 import fr.b4.apps.stores.entities.Store;
 import lombok.experimental.UtilityClass;
 
@@ -341,8 +342,8 @@ public class DataGenerator {
         item.setAuthor(generateUser());
         item.setExpense(generateExpenseDTO(true));
         item.setLocation(generateBucketDTO());
-        item.setQuantity(faker.number().numberBetween(100,200) + 0f);
-        item.setRemaining(faker.number().numberBetween(1,100) + 0f);
+        item.setQuantity(faker.number().numberBetween(100, 200) + 0f);
+        item.setRemaining(faker.number().numberBetween(1, 100) + 0f);
         return item;
     }
 
@@ -353,4 +354,26 @@ public class DataGenerator {
         }
         return itemDTOS;
     }
+
+    public static Item generateItem(boolean withId) {
+        Item item = new Item();
+        if (withId) {
+            item.setId((long) faker.number().numberBetween(1, 6));
+        }
+        item.setAuthor(generateUser());
+        item.setExpense(generateExpense());
+        item.setLocation(generateBucket());
+        item.setQuantity(faker.number().numberBetween(100, 200) + 0f);
+        item.setRemaining(faker.number().numberBetween(1, 100) + 0f);
+        return item;
+    }
+
+    public static List<Item> generateItem(int num) {
+        List<Item> itemDTOS = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            itemDTOS.add(generateItem(true));
+        }
+        return itemDTOS;
+    }
+
 }
