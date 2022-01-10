@@ -2,12 +2,14 @@ package fr.b4.apps.stores.web;
 
 import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.exceptions.ForbiddenException;
+import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.stores.dto.ItemDTO;
 import fr.b4.apps.stores.process.ItemProcess;
 import fr.b4.apps.stores.services.ItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -95,7 +97,7 @@ public class ItemController {
             invalidField.add("author");
         }
 
-        if (ObjectUtils.isEmpty(item.getExpense()) || ObjectUtils.isEmpty(item.getExpense().getName())) {
+        if (isExpenseInvalid(item.getExpense())) {
             log.error("required expense (or expense name) missing or invalid");
             invalidField.add("expense");
         }
@@ -114,6 +116,12 @@ public class ItemController {
             throw new BadRequestException("The following required fields are missing or invalid: "
                     + String.join(", ", invalidField));
         }
+    }
+
+    private boolean isExpenseInvalid(ExpenseDTO expense) {
+        final boolean isNewExpenseWithoutName = expense != null
+                && expense.getId() == null && StringUtils.isEmpty(expense.getName());
+        return ObjectUtils.isEmpty(expense) || isNewExpenseWithoutName;
     }
 
 }

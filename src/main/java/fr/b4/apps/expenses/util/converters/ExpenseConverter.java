@@ -11,7 +11,6 @@ import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.entities.ExpenseLine;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigInteger;
@@ -54,7 +53,7 @@ public class ExpenseConverter {
         return expenseLine;
     }
 
-    public static ExpenseDTO toDTO(@Nullable Expense expense) {
+    public static ExpenseDTO toDTO(Expense expense) {
         if (ObjectUtils.isEmpty(expense)) {
             return null;
         } else {
