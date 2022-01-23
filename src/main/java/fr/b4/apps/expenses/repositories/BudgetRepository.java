@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
     public List<Budget> getBudgetByDateAndUserId(LocalDate date, Long user);
-    public List<Budget> getByUserId(Long userID);
+    public List<Budget> getByUserIdOrderByDateDesc(Long userID);
 }

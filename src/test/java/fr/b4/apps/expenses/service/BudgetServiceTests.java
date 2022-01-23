@@ -27,7 +27,7 @@ public class BudgetServiceTests {
     public void shouldGetCurrentBudgetByUsersSuccess() {
         // given
         List<Budget> budgets = DataGenerator.generateBudgets(8);
-        when(budgetRepositoryMock.getByUserId(4L)).thenReturn(budgets);
+        when(budgetRepositoryMock.getByUserIdOrderByDateDesc(4L)).thenReturn(budgets);
 
         // when
         BudgetService budgetService = new BudgetService(budgetRepositoryMock);
@@ -54,7 +54,7 @@ public class BudgetServiceTests {
     public void shouldGetCurrentBudgetForGivenUserSuccess() {
         // given
         List<Budget> budgets = DataGenerator.generateBudgets(8);
-        when(budgetRepositoryMock.getByUserId(4L)).thenReturn(budgets);
+        when(budgetRepositoryMock.getByUserIdOrderByDateDesc(4L)).thenReturn(budgets);
 
         // when
         BudgetService budgetService = new BudgetService(budgetRepositoryMock);
@@ -62,13 +62,13 @@ public class BudgetServiceTests {
 
         // then
         Assertions.assertEquals(budgets.get(0), found);
-        verify(budgetRepositoryMock, times(1)).getByUserId(anyLong());
+        verify(budgetRepositoryMock, times(1)).getByUserIdOrderByDateDesc(anyLong());
     }
 
     @Test
     public void shouldThrowResourceNotFoundExceptionIFCurrentBudgetUnknown() {
         // given
-        when(budgetRepositoryMock.getByUserId(4L)).thenReturn(null);
+        when(budgetRepositoryMock.getByUserIdOrderByDateDesc(4L)).thenReturn(null);
 
 
         // when

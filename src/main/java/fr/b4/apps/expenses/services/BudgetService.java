@@ -75,7 +75,7 @@ public class BudgetService {
             log.error("User id cannot be null or empty");
             throw new IllegalArgumentException("User id cannot be null or empty");
         }
-        return budgetRepository.getByUserId(userID);
+        return budgetRepository.getByUserIdOrderByDateDesc(userID);
     }
 
     /**

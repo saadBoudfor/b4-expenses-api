@@ -165,7 +165,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>cloud.odigo.or2.MainApplication</mainClass>
+                            <mainClass>fr.b4.apps.ExpensesApplication</mainClass>
                         </configuration>
 
                         <executions>
