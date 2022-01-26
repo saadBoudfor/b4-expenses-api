@@ -13,12 +13,12 @@ import fr.b4.apps.expenses.entities.ExpenseLine;
 import fr.b4.apps.openfoodfact.models.LanguagesCodes;
 import fr.b4.apps.openfoodfact.models.OFCategory;
 import fr.b4.apps.openfoodfact.models.OFProduct;
-import fr.b4.apps.stores.dto.BucketDTO;
-import fr.b4.apps.stores.dto.ItemDTO;
-import fr.b4.apps.stores.dto.StoreDTO;
-import fr.b4.apps.stores.entities.Bucket;
-import fr.b4.apps.stores.entities.Item;
-import fr.b4.apps.stores.entities.Store;
+import fr.b4.apps.storages.dto.BucketDTO;
+import fr.b4.apps.storages.dto.ItemDTO;
+import fr.b4.apps.storages.dto.StorageDTO;
+import fr.b4.apps.storages.entities.Bucket;
+import fr.b4.apps.storages.entities.Item;
+import fr.b4.apps.storages.entities.Storage;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigInteger;
@@ -267,36 +267,36 @@ public class DataGenerator {
         return budgets;
     }
 
-    public static StoreDTO generateStoreDTO() {
-        StoreDTO store = new StoreDTO();
+    public static StorageDTO generateStoreDTO() {
+        StorageDTO store = new StorageDTO();
         store.setId((long) faker.number().numberBetween(1, 6));
         store.setName(faker.pokemon().name());
         store.setOwner(generateUser());
         return store;
     }
 
-    public static List<StoreDTO> generateStoreDTO(int num) {
-        List<StoreDTO> budgets = new ArrayList<>();
+    public static List<StorageDTO> generateStoreDTO(int num) {
+        List<StorageDTO> budgets = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             budgets.add(generateStoreDTO());
         }
         return budgets;
     }
 
-    public static Store generateStore() {
-        Store store = new Store();
-        store.setId((long) faker.number().numberBetween(1, 6));
-        store.setName(faker.pokemon().name());
-        store.setOwner(generateUser());
-        return store;
+    public static Storage generateStore() {
+        Storage storage = new Storage();
+        storage.setId((long) faker.number().numberBetween(1, 6));
+        storage.setName(faker.pokemon().name());
+        storage.setOwner(generateUser());
+        return storage;
     }
 
-    public static List<Store> generateStore(int num) {
-        List<Store> stores = new ArrayList<>();
+    public static List<Storage> generateStore(int num) {
+        List<Storage> storages = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            stores.add(generateStore());
+            storages.add(generateStore());
         }
-        return stores;
+        return storages;
     }
 
     public static BucketDTO generateBucketDTO() {
@@ -321,7 +321,7 @@ public class DataGenerator {
         Bucket bucket = new Bucket();
         bucket.setId((long) faker.number().numberBetween(1, 6));
         bucket.setName(faker.pokemon().name());
-        bucket.setStore(generateStore());
+        bucket.setStorage(generateStore());
         bucket.setOwner(generateUser());
         return bucket;
     }
