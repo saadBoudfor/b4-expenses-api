@@ -103,7 +103,7 @@ public class BucketServiceTests {
     public void shouldFilterBucketsByStoreIdSuccess() {
         // Given
         List<Bucket> buckets = DataGenerator.generateBucket(6);
-        when(bucketRepository.findByStoreId(5L)).thenReturn(buckets);
+        when(bucketRepository.findByStorageId(5L)).thenReturn(buckets);
 
         // When
         BucketService bucketService = new BucketService(bucketRepository);

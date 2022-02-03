@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface StoragesRepository extends JpaRepository<Storage, Long> {
     List<Storage> getByOwnerId(Long id);
+
+    boolean existsByName(String name);
 }

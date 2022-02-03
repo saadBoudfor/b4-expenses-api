@@ -20,7 +20,9 @@ public class ItemConverter {
         Item item = new Item();
         item.setId(dto.getId());
         item.setExpense(ExpenseConverter.toExpense(dto.getExpense()));
-        item.setLocation(BucketConverter.toBucket(dto.getLocation()));
+        if (ObjectUtils.isNotEmpty(dto.getLocation())) {
+            item.setLocation(BucketConverter.toBucket(dto.getLocation()));
+        }
         item.setQuantity(dto.getQuantity());
         item.setRemaining(dto.getRemaining());
         item.setAuthor(dto.getAuthor());

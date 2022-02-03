@@ -2,11 +2,10 @@ package fr.b4.apps.storages.entities;
 
 import fr.b4.apps.clients.entities.User;
 import lombok.Data;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +20,20 @@ public class Storage {
 
     private String description;
 
+    @OneToMany(mappedBy = "storage")
+    private List<Bucket> buckets;
+
     @ManyToOne
     private User owner;
+
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", planUrl='" + planUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

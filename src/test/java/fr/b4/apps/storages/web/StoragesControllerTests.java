@@ -3,8 +3,11 @@ package fr.b4.apps.storages.web;
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.exceptions.ResourceNotFoundException;
+import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.storages.dto.StorageDTO;
+import fr.b4.apps.storages.process.StorageProcess;
 import fr.b4.apps.storages.services.StoragesService;
+import fr.b4.apps.storages.util.converters.BucketConverter;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -23,17 +26,21 @@ public class StoragesControllerTests {
     @Mock
     StoragesService storagesService;
 
+    @Mock
+    StorageProcess storageProcess;
+
     @Test
     public void shouldAddNewStoreSuccess() {
         // Given
         StorageDTO store = DataGenerator.generateStoreDTO();
-        when(storagesService.save(any())).then((Answer<StorageDTO>) invocationOnMock -> {
+        store.setBuckets(BucketConverter.toDTO(DataGenerator.generateBucket(1)));
+        when(storageProcess.save(any())).then((Answer<StorageDTO>) invocationOnMock -> {
             Object[] args = invocationOnMock.getArguments();
             return (StorageDTO) args[0];
         });
 
         // When
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
         StorageDTO saved = controller.addNewStore(store);
 
         // Then
@@ -43,21 +50,21 @@ public class StoragesControllerTests {
     @Test
     public void shouldNotCatchBadRequestException() {
         // Given
-        doThrow(new BadRequestException("")).when(storagesService).save(any());
+//        doThrow(new BadRequestException("")).when(storagesService).save(any());
 
         // Then
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
         Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStoreDTO()));
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionForMissingFields() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.addNewStore(null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.addNewStore(new StorageDTO()));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(null));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(new StorageDTO()));
     }
 
     @Test
@@ -70,7 +77,7 @@ public class StoragesControllerTests {
         });
 
         // When
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
         StorageDTO saved = controller.updateStore(store);
 
         // Then
@@ -80,21 +87,20 @@ public class StoragesControllerTests {
     @Test
     public void shouldNotCatchBadRequestExceptionForUpdate() {
         // Given
-        doThrow(new BadRequestException("")).when(storagesService).save(any());
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
-        StoragesController controller = new StoragesController(storagesService);
         Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(DataGenerator.generateStoreDTO()));
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionForMissingFieldsForUpdate() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.addNewStore(null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.addNewStore(new StorageDTO()));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(null));
+        Assertions.assertThrows(BadRequestException.class, () -> controller.addNewStore(new StorageDTO()));
     }
 
 
@@ -105,7 +111,7 @@ public class StoragesControllerTests {
         when(storagesService.getByID(5L)).thenReturn(store);
 
         // When
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
         StorageDTO found = controller.get(5L);
         Assertions.assertEquals(found, store);
     }
@@ -114,7 +120,7 @@ public class StoragesControllerTests {
     public void shouldNotCatchResourceNotFoundExceptionIfThrownByService() {
         // Given
         doThrow(new ResourceNotFoundException("")).when(storagesService).getByID(anyLong());
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> controller.get(5L));
     }
@@ -122,7 +128,7 @@ public class StoragesControllerTests {
     @Test
     public void shouldThrowIllegalArgumentExceptionIFIdNotValid() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(null));
@@ -136,8 +142,8 @@ public class StoragesControllerTests {
         when(storagesService.getByUserID(5L)).thenReturn(stores);
 
         // When
-        StoragesController controller = new StoragesController(storagesService);
-        List<StorageDTO>  found = controller.getByUserID(5L);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
+        List<StorageDTO> found = controller.getByUserID(5L);
         Assertions.assertEquals(found, stores);
     }
 
@@ -145,7 +151,7 @@ public class StoragesControllerTests {
     public void shouldNotCatchBadRequestExceptionIfThrownByService() {
         // Given
         doThrow(new BadRequestException("")).when(storagesService).getByUserID(anyLong());
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         Assertions.assertThrows(BadRequestException.class, () -> controller.getByUserID(5L));
     }
@@ -153,7 +159,7 @@ public class StoragesControllerTests {
     @Test
     public void shouldThrowIllegalArgumentExceptionIFUserIdNotValid() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.getByUserID(null));
@@ -163,7 +169,7 @@ public class StoragesControllerTests {
     @Test
     public void shouldDeleteStoreSuccess() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
         controller.delete(5L);
 
         verify(storagesService, times(1)).delete(5L);
@@ -172,7 +178,7 @@ public class StoragesControllerTests {
     @Test
     public void shouldThrowIllegalArgumentExceptionIFIdNotValidWhenDeletingStore() {
         // Given
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         // Then
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(null));
@@ -183,9 +189,32 @@ public class StoragesControllerTests {
     public void shouldNotCatchResourceNotFoundExceptionIfThrownByServiceWhenDelete() {
         // Given
         doThrow(new ResourceNotFoundException("")).when(storagesService).delete(anyLong());
-        StoragesController controller = new StoragesController(storagesService);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> controller.delete(5L));
     }
 
+
+    @Test
+    public void shouldReturnIfNameIsUsed() {
+        // Given
+        when(storagesService.existByName("ok")).thenReturn(true);
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
+
+        // when
+        MessageDTO response = controller.existByName("ok");
+
+        // then
+        Assertions.assertEquals(new MessageDTO(true), response);
+    }
+
+    @Test
+    public void shouldThrowExceptionIfSearchingEmptyName() {
+        // Given
+        StoragesController controller = new StoragesController(storagesService, storageProcess);
+
+        // when - then
+        MessageDTO response = controller.existByName("ok");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.existByName(""));
+    }
 }

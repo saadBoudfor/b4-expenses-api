@@ -2,7 +2,9 @@ package fr.b4.apps.storages.services;
 
 import fr.b4.apps.common.exceptions.ResourceNotFoundException;
 import fr.b4.apps.storages.dto.BucketDTO;
+import fr.b4.apps.storages.dto.StorageDTO;
 import fr.b4.apps.storages.entities.Bucket;
+import fr.b4.apps.storages.entities.Storage;
 import fr.b4.apps.storages.repositories.BucketRepository;
 import fr.b4.apps.storages.util.converters.BucketConverter;
 import lombok.NonNull;
@@ -29,6 +31,15 @@ public class BucketService {
         return BucketConverter.toDTO(saved);
     }
 
+    public List<BucketDTO> saveAll(List<BucketDTO> dtos, Storage storage) {
+        log.debug("save {} buckets for storage {}", dtos.size(), storage.getName());
+        List<Bucket> buckets = BucketConverter.toBucket(dtos);
+        buckets.forEach(bucket -> bucket.setStorage(storage));
+        buckets = bucketRepository.saveAll(buckets);
+        log.trace("saved buckets: {}", buckets);
+        return BucketConverter.toDTO(buckets);
+    }
+
     public BucketDTO update(@NonNull BucketDTO bucket) {
         Bucket found = bucketRepository.getById(bucket.getId());
         if (ObjectUtils.isEmpty(found)) {
@@ -49,7 +60,7 @@ public class BucketService {
     }
 
     public List<BucketDTO> filterByStoreId(@NonNull long id) {
-        List<Bucket> found = bucketRepository.findByStoreId(id);
+        List<Bucket> found = bucketRepository.findByStorageId(id);
         return CollectionUtils.isEmpty(found) ? new ArrayList<>() : BucketConverter.toDTO(found);
     }
 

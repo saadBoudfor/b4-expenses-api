@@ -85,6 +85,7 @@ public class StoragesService {
         if (ObjectUtils.isEmpty(storages)) {
             return new ArrayList<>();
         }
+        log.debug("load {} storages for user {}", storages, storages.get(0).getOwner().getName());
         return storages.stream().map(StoragesConverters::toDTO).collect(Collectors.toList());
     }
 
@@ -104,5 +105,9 @@ public class StoragesService {
         }
         log.warn("delete store {}", id);
         storagesRepository.deleteById(id);
+    }
+
+    public boolean existByName(String name) {
+        return storagesRepository.existsByName(name);
     }
 }

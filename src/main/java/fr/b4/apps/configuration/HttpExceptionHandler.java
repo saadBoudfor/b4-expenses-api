@@ -39,6 +39,10 @@ public class HttpExceptionHandler implements Filter {
                 setResponse(httpResponse, exception.getCause().getMessage(), 501);
             }
 
+            if (exception.getCause() instanceof ResourceNotSavedException) {
+                setResponse(httpResponse, exception.getCause().getMessage(), 501);
+            }
+
             if (exception.getCause() instanceof ForbiddenException) {
                 setResponse(httpResponse, exception.getCause().getMessage(), 401);
             }

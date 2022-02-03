@@ -55,7 +55,7 @@ public class BucketController {
     }
 
     @GetMapping
-    public List<BucketDTO> get(@RequestParam(value = "store", required = false) @Nullable Long storeID,
+    public List<BucketDTO> get(@RequestParam(value = "storage", required = false) @Nullable Long storeID,
                                @RequestParam(value = "user", required = false) @Nullable Long userId)
             throws BadRequestException, IllegalArgumentException {
 

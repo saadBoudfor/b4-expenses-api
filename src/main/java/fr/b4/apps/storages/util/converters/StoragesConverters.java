@@ -4,11 +4,12 @@ import fr.b4.apps.storages.dto.StorageDTO;
 import fr.b4.apps.storages.entities.Storage;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.util.CollectionUtils;
 
 @UtilityClass
 public class StoragesConverters {
     public static Storage toStore(StorageDTO dto) {
-        if(ObjectUtils.isEmpty(dto)) {
+        if (ObjectUtils.isEmpty(dto)) {
             return null;
         }
         Storage storage = new Storage();
@@ -21,7 +22,7 @@ public class StoragesConverters {
     }
 
     public static StorageDTO toDTO(Storage storage) {
-        if(ObjectUtils.isEmpty(storage)) {
+        if (ObjectUtils.isEmpty(storage)) {
             return null;
         }
         StorageDTO dto = new StorageDTO();
@@ -30,6 +31,9 @@ public class StoragesConverters {
         dto.setPlanUrl(storage.getPlanUrl());
         dto.setId(storage.getId());
         dto.setDescription(storage.getDescription());
+        if (!CollectionUtils.isEmpty(storage.getBuckets())) {
+            dto.setBuckets(BucketConverter.toDTO(storage.getBuckets()));
+        }
         return dto;
     }
 }

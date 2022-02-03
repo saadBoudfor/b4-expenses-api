@@ -2,6 +2,7 @@ package fr.b4.apps.storages.entities;
 
 import fr.b4.apps.clients.entities.User;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,4 +23,13 @@ public class Bucket {
 
     @ManyToOne
     private User owner;
+
+    @Override
+    public String toString() {
+        return "Bucket{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

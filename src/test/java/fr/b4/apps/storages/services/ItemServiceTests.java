@@ -5,6 +5,7 @@ import fr.b4.apps.common.exceptions.ResourceNotFoundException;
 
 import fr.b4.apps.storages.dto.ItemDTO;
 import fr.b4.apps.storages.entities.Item;
+import fr.b4.apps.storages.entities.Storage;
 import fr.b4.apps.storages.repositories.ItemRepository;
 import fr.b4.apps.storages.util.converters.ItemConverter;
 import org.junit.Test;
@@ -41,6 +42,7 @@ public class ItemServiceTests {
         ItemDTO updated = service.update(dto);
 
         // Then
+//        dto.getLocation().setStore(null); // expected
         Assertions.assertEquals(dto, updated);
         verify(itemRepository, times(1)).getById(anyLong());
         verify(itemRepository, times(1)).save(any());
