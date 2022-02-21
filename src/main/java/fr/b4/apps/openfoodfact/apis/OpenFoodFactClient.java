@@ -72,7 +72,7 @@ public class OpenFoodFactClient {
             try {
                 String url = "https://world.openfoodfacts.org/api/v2/search?code=" + barCode;
                 ResponseEntity<ProductResponse> response = restTemplate.getForEntity(url, ProductResponse.class);
-                if (ObjectUtils.isEmpty(response) ||ObjectUtils.isEmpty(response.getBody()) || ObjectUtils.isEmpty(response.getBody().getProducts())){
+                if (ObjectUtils.isEmpty(response) || ObjectUtils.isEmpty(response.getBody()) || ObjectUtils.isEmpty(response.getBody().getProducts())) {
                     log.error("Open Food Fact search: Invalid Response for barcode: {}", barCode);
                     throw new ResourceNotFoundException("Open Food Fact respond with null body");
                 }
@@ -101,12 +101,11 @@ public class OpenFoodFactClient {
         product.setName(openOFProduct.getProductName());
         product.setPhoto(openOFProduct.getImageFrontUrl());
         product.setQrCode(openOFProduct.getCode());
-        if (StringUtils.hasLength(openOFProduct.getProductQuantity()))
-            product.setQuantity(Float.valueOf(openOFProduct.getProductQuantity()));
-        product.setDisplayQuantity(openOFProduct.getQuantity());
+
         if (!ObjectUtils.isEmpty(openOFProduct.getNutriments())) {
             product.setCalories(openOFProduct.getNutriments().getEnergyKcal());
         }
+
         product.setBrand(openOFProduct.getBrands());
         product.setDataPer(openOFProduct.getNutritionDataPer());
         if (!ObjectUtils.isEmpty(openOFProduct.getCategoriesTags())) {
@@ -119,8 +118,20 @@ public class OpenFoodFactClient {
             product.setNutrientLevels(convert(openOFProduct.getNutrientLevels()));
         }
         product.setScore(openOFProduct.getNutritionGrades());
+        product.setUnit(extractUnit(openOFProduct));
+        setQuantity(product, openOFProduct);
+
         return product;
     }
+
+    private static void setQuantity(Product product, OFProduct ofProduct) {
+        product.setProductQuantity(ofProduct.getProductQuantity());
+        product.setServingQuantity(ofProduct.getServingQuantity());
+        product.setServingSize(ofProduct.getServingSize());
+
+        product.setDisplayQuantity(ofProduct.getQuantity());
+    }
+
 
     private static NutrientLevels convert(OFNutrientLevels ofNutrientLevels) {
         NutrientLevels nutrientLevels = new NutrientLevels();
@@ -129,6 +140,25 @@ public class OpenFoodFactClient {
         nutrientLevels.setSaturatedFat(ofNutrientLevels.getSaturatedFat());
         nutrientLevels.setSugars(ofNutrientLevels.getSaturatedFat());
         return nutrientLevels;
+    }
+
+    private static String extractUnit(OFProduct ofProduct) {
+
+        String[] gUnits = {"mg", "kg", "cg", "g"};
+        boolean isMLUnit = true;
+
+        if (!StringUtils.hasLength(ofProduct.getQuantity())) {
+            return null;
+        }
+
+        for (String unit : gUnits) {
+            if (ofProduct.getQuantity().toLowerCase().contains(unit)) {
+                isMLUnit = false;
+                break;
+            }
+        }
+
+        return isMLUnit ? "ml" : "g";
     }
 
 }

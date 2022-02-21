@@ -3,6 +3,7 @@ package fr.b4.apps.storages.process;
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.clients.repositories.UserRepository;
 import fr.b4.apps.common.exceptions.BadRequestException;
+import fr.b4.apps.common.services.ProductService;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
@@ -38,6 +39,9 @@ public class ItemProcessTests {
     @Mock
     ExpenseService expenseService;
 
+    @Mock
+    ProductService productService;
+
     @Test
     public void shouldSaveItemWithExistingExpenseSuccess() {
         // Given
@@ -56,7 +60,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         ItemDTO saved = process.save(dto);
 
         // Then
@@ -92,7 +96,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         ItemDTO saved = process.save(dto);
 
         // Then
@@ -118,7 +122,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 
@@ -135,7 +139,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 
@@ -151,7 +155,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 
@@ -168,7 +172,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService);
+                expenseService, productService);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 }

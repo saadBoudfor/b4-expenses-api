@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,14 +29,15 @@ public class ItemController {
         this.itemProcess = itemProcess;
     }
 
-    @PostMapping
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ItemDTO save(@RequestBody ItemDTO itemDTO) {
         if (ObjectUtils.isNotEmpty(itemDTO.getId())) {
             log.error("id must be null (trying to create new item with existing id)");
             throw new ForbiddenException("id must be null (trying to create new item with existing id)");
         }
         checkRequiredFields(itemDTO);
-        log.info("add new item \"{}\" to bucket {}", itemDTO.getExpense().getName(), itemDTO.getLocation().getId());
+        log.info("add new item \"{}\" to bucket {}", itemDTO.getProduct().getName(), itemDTO.getLocation().getId());
         return itemProcess.save(itemDTO);
     }
 
@@ -51,7 +53,8 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDTO> get(@RequestParam("user") Long userId, @RequestParam("bucket") Long bucketId) {
+    public List<ItemDTO> get(@RequestParam(value = "user", required = false) Long userId,
+                             @RequestParam(value = "bucket", required = false) Long bucketId) {
         if (ObjectUtils.isEmpty(bucketId) && ObjectUtils.isEmpty(userId)) {
             log.error("Must define at least on filter by Bucket or user (store: {}, user: {})", bucketId, userId);
             throw new BadRequestException("Must define at least on filter by Bucket or by user");
@@ -59,11 +62,6 @@ public class ItemController {
             if (ObjectUtils.isNotEmpty(bucketId) && bucketId <= 0) {
                 log.error("Bucket's id is invalid: {}", bucketId);
                 throw new IllegalArgumentException("Bucket's id is invalid");
-            }
-
-            if (ObjectUtils.isNotEmpty(userId) && userId <= 0) {
-                log.error("User's id is invalid: {}", userId);
-                throw new IllegalArgumentException("User's id is invalid");
             }
 
             if (ObjectUtils.isNotEmpty(bucketId)) {
@@ -75,13 +73,18 @@ public class ItemController {
         }
     }
 
-    @DeleteMapping("/{storeId}")
-    public void delete(@PathVariable("storeId") Long storeId) {
-        if (ObjectUtils.isEmpty(storeId) || storeId <= 0) {
-            log.error("Item's id is invalid: {}", storeId);
+    @DeleteMapping("/{itemId}")
+    public void delete(@PathVariable("itemId") Long itemId) {
+        if (ObjectUtils.isEmpty(itemId) || itemId <= 0) {
+            log.error("Item's id is invalid: {}", itemId);
             throw new IllegalArgumentException("Item's id is invalid");
         }
-        itemService.delete(storeId);
+        itemService.delete(itemId);
+    }
+
+    @GetMapping("/{itemId}")
+    public ItemDTO getById(@PathVariable("itemId") Long itemId) {
+        return itemService.getById(itemId);
     }
 
     private void checkRequiredFields(ItemDTO item) {
@@ -95,11 +98,6 @@ public class ItemController {
         if (ObjectUtils.isEmpty(item.getAuthor()) || ObjectUtils.isEmpty(item.getAuthor().getId())) {
             log.error("required author missing or invalid");
             invalidField.add("author");
-        }
-
-        if (isExpenseInvalid(item.getExpense())) {
-            log.error("required expense (or expense name) missing or invalid");
-            invalidField.add("expense");
         }
 
         if (ObjectUtils.isEmpty(item.getQuantity())) {

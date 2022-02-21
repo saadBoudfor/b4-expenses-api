@@ -1,5 +1,6 @@
 package fr.b4.apps.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.b4.apps.common.entities.ProductCategory;
 import fr.b4.apps.common.entities.Unit;
 import lombok.Data;
@@ -24,9 +25,8 @@ public class ProductDTO {
 
     private String photo;
 
-    private Unit unit;
+    private String unit;
 
-    private String displayQuantity;
 
     private String brand;
 
@@ -37,4 +37,10 @@ public class ProductDTO {
     private String score;
 
     private List<String> categories;
+
+    // Quantity
+    private String displayQuantity;
+    private String servingQuantity;
+    private String servingSize;
+    private String productQuantity;
 }

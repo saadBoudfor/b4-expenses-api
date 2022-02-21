@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 public class BucketDTO {
     private Long id;
-    private StorageDTO store;
+    private StorageDTO storage;
     private String name;
     private User owner;
 }

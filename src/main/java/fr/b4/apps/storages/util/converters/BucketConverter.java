@@ -1,6 +1,7 @@
 package fr.b4.apps.storages.util.converters;
 
 import fr.b4.apps.storages.dto.BucketDTO;
+import fr.b4.apps.storages.dto.StorageDTO;
 import fr.b4.apps.storages.entities.Bucket;
 import fr.b4.apps.storages.entities.Storage;
 import lombok.experimental.UtilityClass;
@@ -27,8 +28,16 @@ public class BucketConverter {
         dto.setId(bucket.getId());
         dto.setName(bucket.getName());
         dto.setOwner(bucket.getOwner());
-        if(!ObjectUtils.isEmpty(bucket.getStorage())) {
-            dto.setStore(StoragesConverters.toDTO(bucket.getStorage()));
+
+        Storage storage = bucket.getStorage();
+        if (!ObjectUtils.isEmpty(bucket.getStorage())) {
+            StorageDTO storageDTO = new StorageDTO();
+            storageDTO.setName(storage.getName());
+            storageDTO.setOwner(storage.getOwner());
+            storageDTO.setPlanUrl(storage.getPlanUrl());
+            storageDTO.setId(storage.getId());
+            storageDTO.setDescription(storage.getDescription());
+            dto.setStorage(storageDTO);
         }
         return dto;
     }
@@ -38,12 +47,12 @@ public class BucketConverter {
         bucket.setId(dto.getId());
         bucket.setName(dto.getName());
         bucket.setOwner(dto.getOwner());
-        if (!ObjectUtils.isEmpty(dto.getStore())) {
+        if (!ObjectUtils.isEmpty(dto.getStorage())) {
             Storage storage = new Storage();
-            storage.setId(dto.getStore().getId());
-            storage.setOwner(dto.getStore().getOwner());
-            storage.setDescription(dto.getStore().getDescription());
-            storage.setName(dto.getStore().getName());
+            storage.setId(dto.getStorage().getId());
+            storage.setOwner(dto.getStorage().getOwner());
+            storage.setDescription(dto.getStorage().getDescription());
+            storage.setName(dto.getStorage().getName());
             bucket.setStorage(storage);
         }
         return bucket;

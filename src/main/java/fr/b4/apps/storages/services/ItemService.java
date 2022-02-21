@@ -45,11 +45,15 @@ public class ItemService {
         return CollectionUtils.isEmpty(found) ? new ArrayList<>() : ItemConverter.toDTO(found);
     }
 
-    public void delete(Long storeId) {
-        if (!itemRepository.existsById(storeId)) {
-            log.error("Failed to delete Item {}. Item unknown", storeId);
-            throw new ResourceNotFoundException("Failed to delete Item " + storeId + ". Item unknown");
+    public void delete(Long itemId) {
+        if (!itemRepository.existsById(itemId)) {
+            log.error("Failed to delete Item {}. Item unknown", itemId);
+            throw new ResourceNotFoundException("Failed to delete Item " + itemId + ". Item unknown");
         }
-        itemRepository.deleteById(storeId);
+        itemRepository.deleteById(itemId);
+    }
+
+    public ItemDTO getById(Long itemId) {
+        return ItemConverter.toDTO(itemRepository.getById(itemId));
     }
 }

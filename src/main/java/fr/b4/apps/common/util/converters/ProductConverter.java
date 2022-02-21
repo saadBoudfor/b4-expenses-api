@@ -44,9 +44,15 @@ public class ProductConverter {
         dto.setCalories(product.getCalories());
         dto.setPhoto(product.getPhoto());
         dto.setUnit(product.getUnit());
-        dto.setDisplayQuantity(product.getDisplayQuantity());
         dto.setBrand(product.getBrand());
         dto.setDataPer(product.getDataPer());
+
+        // quantity:
+        dto.setDisplayQuantity(product.getDisplayQuantity());
+        dto.setProductQuantity(product.getProductQuantity());
+        dto.setServingSize(product.getServingSize());
+        dto.setServingQuantity(product.getServingQuantity());
+
         if (!ObjectUtils.isEmpty(product.getNutrientLevels())) {
             dto.setNutrientLevels(toDto(product.getNutrientLevels()));
         }
@@ -79,10 +85,16 @@ public class ProductConverter {
         product.setCalories(dto.getCalories());
         product.setPhoto(dto.getPhoto());
         product.setUnit(dto.getUnit());
-        product.setDisplayQuantity(dto.getDisplayQuantity());
         product.setBrand(dto.getBrand());
         product.setDataPer(dto.getDataPer());
         product.setComment(dto.getComment());
+
+        // quantity
+        product.setDisplayQuantity(dto.getDisplayQuantity());
+        product.setProductQuantity(dto.getProductQuantity());
+        product.setServingSize(dto.getServingSize());
+        product.setServingQuantity(dto.getServingQuantity());
+
         return product;
     }
 }

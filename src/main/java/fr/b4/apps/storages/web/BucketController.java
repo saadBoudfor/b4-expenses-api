@@ -1,15 +1,17 @@
 package fr.b4.apps.storages.web;
 
 import fr.b4.apps.common.exceptions.BadRequestException;
+import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.storages.dto.BucketDTO;
 import fr.b4.apps.storages.services.BucketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static fr.b4.apps.storages.util.validators.BucketValidator.checkBucketDTOValidity;
 
 @Slf4j
 @RequestMapping("buckets")
@@ -29,7 +31,7 @@ public class BucketController {
             throw new BadRequestException("Bucket's id must be null");
         }
         checkBucketDTOValidity(bucket);
-        log.info("create new bucket to store {} (user: {})", bucket.getStore().getId(), bucket.getOwner().getId());
+        log.info("create new bucket to store {} (user: {})", bucket.getStorage().getId(), bucket.getOwner().getId());
         return bucketService.save(bucket);
     }
 
@@ -83,18 +85,10 @@ public class BucketController {
         }
     }
 
-    private static void checkBucketDTOValidity(BucketDTO bucket) throws BadRequestException {
-        if (!StringUtils.hasLength(bucket.getName())) {
-            log.error("name cannot be empty");
-            throw new BadRequestException("name cannot be empty");
-        }
-        if (ObjectUtils.isEmpty(bucket.getStore()) || ObjectUtils.isEmpty(bucket.getStore().getId())) {
-            log.error("store (or store's id) is missing");
-            throw new BadRequestException("store (or store's id) is missing");
-        }
-        if (ObjectUtils.isEmpty(bucket.getOwner()) || ObjectUtils.isEmpty(bucket.getOwner().getId())) {
-            log.error("Owner (or Owner's id) is missing");
-            throw new BadRequestException("Owner (or Owner's id) is missing");
-        }
+    @GetMapping("/is-used")
+    public MessageDTO isNameUsed(@RequestParam("name") String name, @RequestParam("storage") Long storageId) {
+        return bucketService.isNameUsed(name, storageId);
     }
+
+
 }

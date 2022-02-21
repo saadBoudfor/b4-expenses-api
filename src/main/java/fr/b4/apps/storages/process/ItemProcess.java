@@ -2,7 +2,10 @@ package fr.b4.apps.storages.process;
 
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
+import fr.b4.apps.common.dto.ProductDTO;
+import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.exceptions.BadRequestException;
+import fr.b4.apps.common.services.ProductService;
 import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import fr.b4.apps.expenses.services.ExpenseService;
@@ -25,15 +28,17 @@ public class ItemProcess {
     private final ExpenseRepository expenseRepository;
     private final ItemRepository itemRepository;
     private final ExpenseService expenseService;
+    private final ProductService productService;
 
     public ItemProcess(BucketRepository bucketRepository,
                        UserRepository userRepository,
-                       ExpenseRepository expenseRepository, ItemRepository itemRepository, ExpenseService expenseService) {
+                       ExpenseRepository expenseRepository, ItemRepository itemRepository, ExpenseService expenseService, ProductService productService) {
         this.bucketRepository = bucketRepository;
         this.userRepository = userRepository;
         this.expenseRepository = expenseRepository;
         this.itemRepository = itemRepository;
         this.expenseService = expenseService;
+        this.productService = productService;
     }
 
     public ItemDTO save(ItemDTO itemDTO) {
@@ -56,8 +61,11 @@ public class ItemProcess {
             throw new BadRequestException("Failed to save Item: given author is unknown");
         }
 
-        item.setLocation(location);
-        item.setAuthor(author);
+        if (ObjectUtils.isNotEmpty(itemDTO.getProduct())
+                && ObjectUtils.isEmpty(itemDTO.getProduct().getId())) {
+            Product savedProduct = this.productService.save(item.getProduct());
+            item.setProduct(savedProduct);
+        }
 
         if (ObjectUtils.isNotEmpty(itemDTO.getExpense())) {
             final Expense expense;
@@ -72,10 +80,7 @@ public class ItemProcess {
                 expense = expenseService.save(itemDTO.getExpense());
             }
             item.setExpense(expense);
-        } else {
-            log.error("Failed to save Item: expense cannot be empty: {}", itemDTO);
-            throw new BadRequestException("Failed to save Item: expense cannot be empty");
-        }
+        } 
 
         Item saved = itemRepository.save(item);
         return ItemConverter.toDTO(saved);

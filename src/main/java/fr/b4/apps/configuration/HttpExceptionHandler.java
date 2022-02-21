@@ -2,6 +2,7 @@ package fr.b4.apps.configuration;
 
 
 import fr.b4.apps.common.exceptions.*;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.NestedServletException;
@@ -19,33 +20,32 @@ public class HttpExceptionHandler implements Filter {
         try {
             chain.doFilter(request, response);
         } catch (NestedServletException exception) {
-            if (exception.getCause() instanceof BadRequestException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 400);
+
+            String reason = exception.getCause().getClass().getSimpleName();
+
+            switch (reason) {
+                case "BadRequestException":
+                case "IllegalArgumentException":
+                    setResponse(httpResponse, exception.getCause().getMessage(), 400);
+                    break;
+                case "ResourceNotFoundException":
+                    setResponse(httpResponse, exception.getCause().getMessage(), 404);
+                    break;
+                case "ThirdPartyException":
+                    setResponse(httpResponse, exception.getCause().getMessage(), 502);
+                    break;
+                case "ResourceUpdateFailedException":
+                case "ResourceNotSavedException":
+                    setResponse(httpResponse, exception.getCause().getMessage(), 501);
+                    break;
+                case "ForbiddenException":
+                    setResponse(httpResponse, exception.getCause().getMessage(), 401);
+                    break;
+                default:
+                    exception.getCause().printStackTrace();
+                    setResponse(httpResponse, exception.getCause().getMessage(), 500);
             }
 
-            if (exception.getCause() instanceof IllegalArgumentException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 400);
-            }
-
-            if (exception.getCause() instanceof ResourceNotFoundException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 404);
-            }
-
-            if (exception.getCause() instanceof ThirdPartyException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 502);
-            }
-
-            if (exception.getCause() instanceof ResourceUpdateFailedException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 501);
-            }
-
-            if (exception.getCause() instanceof ResourceNotSavedException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 501);
-            }
-
-            if (exception.getCause() instanceof ForbiddenException) {
-                setResponse(httpResponse, exception.getCause().getMessage(), 401);
-            }
         }
     }
 

@@ -303,7 +303,7 @@ public class DataGenerator {
         BucketDTO dto = new BucketDTO();
         dto.setId((long) faker.number().numberBetween(1, 6));
         dto.setName(faker.pokemon().name());
-        dto.setStore(generateStoreDTO());
+        dto.setStorage(generateStoreDTO());
         dto.setOwner(generateUser());
         return dto;
     }
