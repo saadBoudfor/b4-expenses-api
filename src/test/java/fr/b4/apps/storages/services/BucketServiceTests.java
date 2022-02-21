@@ -2,6 +2,7 @@ package fr.b4.apps.storages.services;
 
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.exceptions.ResourceNotFoundException;
+import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.storages.dto.BucketDTO;
 import fr.b4.apps.storages.entities.Bucket;
 import fr.b4.apps.storages.repositories.BucketRepository;
@@ -147,5 +148,17 @@ public class BucketServiceTests {
 
         // Then
         Assertions.assertEquals(found, new ArrayList<>());
+    }
+
+    @Test
+    public void shouldCheckIfNameUsedSuccess() {
+        when(bucketRepository.existsByStorageIdAndName( 3L, "ok")).thenReturn(true);
+
+        // When
+        BucketService service = new BucketService(bucketRepository);
+        MessageDTO dto = service.isNameUsed("ok", 3L);
+
+        // Then
+        Assertions.assertEquals(dto, new MessageDTO(true));
     }
 }

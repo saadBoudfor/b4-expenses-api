@@ -25,6 +25,7 @@ public class ExpenseDTO {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
+
     private User author;
     private User user;
     private Place place;

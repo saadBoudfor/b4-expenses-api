@@ -8,4 +8,5 @@ import java.util.List;
 public interface BucketRepository extends JpaRepository<Bucket, Long> {
     List<Bucket> findByStorageId(Long id);
     List<Bucket> findByOwnerId(Long id);
+    boolean existsByStorageIdAndName(Long id, String name);
 }

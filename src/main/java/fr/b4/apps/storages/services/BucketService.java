@@ -1,8 +1,8 @@
 package fr.b4.apps.storages.services;
 
 import fr.b4.apps.common.exceptions.ResourceNotFoundException;
+import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.storages.dto.BucketDTO;
-import fr.b4.apps.storages.dto.StorageDTO;
 import fr.b4.apps.storages.entities.Bucket;
 import fr.b4.apps.storages.entities.Storage;
 import fr.b4.apps.storages.repositories.BucketRepository;
@@ -67,5 +67,9 @@ public class BucketService {
     public List<BucketDTO> filterByUserId(@NonNull long id) {
         List<Bucket> found = bucketRepository.findByOwnerId(id);
         return CollectionUtils.isEmpty(found) ? new ArrayList<>() : BucketConverter.toDTO(found);
+    }
+
+    public MessageDTO isNameUsed(String name, Long storageId) {
+        return new MessageDTO(bucketRepository.existsByStorageIdAndName(storageId, name));
     }
 }

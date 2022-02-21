@@ -28,10 +28,8 @@ public class Product {
 
     private String photo;
 
-    @ManyToOne
-    private Unit unit;
+    private String unit;
 
-    private String displayQuantity;
 
     private String brand;
 
@@ -44,4 +42,10 @@ public class Product {
 
     @ManyToMany
     private List<Category> categories;
+
+    // quantity
+    private String displayQuantity;
+    private String servingQuantity;
+    private String servingSize;
+    private String productQuantity;
 }

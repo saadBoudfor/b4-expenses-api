@@ -2,6 +2,7 @@ package fr.b4.apps.storages.web;
 
 import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.exceptions.BadRequestException;
+import fr.b4.apps.expenses.dto.MessageDTO;
 import fr.b4.apps.storages.dto.BucketDTO;
 import fr.b4.apps.storages.services.BucketService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -59,7 +60,7 @@ public class BucketControllerTests {
 
         BucketDTO dto3 = DataGenerator.generateBucketDTO();
         dto3.setId(null);
-        dto3.setStore(null);
+        dto3.setStorage(null);
 
         BucketDTO dto4 = DataGenerator.generateBucketDTO();
         dto4.setId(null);
@@ -67,7 +68,7 @@ public class BucketControllerTests {
 
         BucketDTO dto5 = DataGenerator.generateBucketDTO();
         dto5.setId(null);
-        dto5.getStore().setId(null);
+        dto5.getStorage().setId(null);
 
 
         // Then
@@ -122,7 +123,7 @@ public class BucketControllerTests {
 
         BucketDTO dto3 = DataGenerator.generateBucketDTO();
         dto3.setId(null);
-        dto3.setStore(null);
+        dto3.setStorage(null);
 
         BucketDTO dto4 = DataGenerator.generateBucketDTO();
         dto4.setId(null);
@@ -130,7 +131,7 @@ public class BucketControllerTests {
 
         BucketDTO dto5 = DataGenerator.generateBucketDTO();
         dto5.setId(null);
-        dto5.getStore().setId(null);
+        dto5.getStorage().setId(null);
 
 
         // Then
@@ -216,5 +217,17 @@ public class BucketControllerTests {
         Assertions.assertEquals(found, buckets);
     }
 
+
+    @Test
+    public void shouldCheckIfNameUsedSuccess() {
+        when(bucketService.isNameUsed("ok", 3L)).thenReturn(new MessageDTO(true));
+
+        // When
+        BucketController controller = new BucketController(bucketService);
+        MessageDTO dto = controller.isNameUsed("ok", 3L);
+
+        // Then
+        Assertions.assertEquals(dto, new MessageDTO(true));
+    }
 
 }
