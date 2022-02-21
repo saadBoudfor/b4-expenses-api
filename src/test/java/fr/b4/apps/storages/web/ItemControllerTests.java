@@ -1,7 +1,6 @@
 package fr.b4.apps.storages.web;
 
 import fr.b4.apps.DataGenerator;
-import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.exceptions.ForbiddenException;
 import fr.b4.apps.storages.dto.ItemDTO;
 
@@ -52,7 +51,7 @@ public class ItemControllerTests {
 
 
     @Test
-    public void shouldThrowBadRequestExceptionIfSaveValidItem() {
+    public void shouldThrowIllegalArgumentExceptionIfSaveValidItem() {
         // Given
         ItemDTO item1 = DataGenerator.generateItemDTO(false);
         item1.setLocation(null);
@@ -61,20 +60,14 @@ public class ItemControllerTests {
         item2.setAuthor(null);
 
         ItemDTO item3 = DataGenerator.generateItemDTO(true);
-
-        ItemDTO item4 = DataGenerator.generateItemDTO(false);
-        item4.setExpense(null);
-
         // When
         ItemController controller = new ItemController(itemService, itemProcess);
         // required location missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.save(item1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.save(item1));
         // required author missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.save(item2));
-        // required expense missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.save(item4));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.save(item2));
         // id must be null
-        Assertions.assertThrows(ForbiddenException.class, () -> controller.save(item3));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.save(item3));
 
     }
 
@@ -97,7 +90,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    public void shouldThrowBadRequestExceptionIfUpdateValidItem() {
+    public void shouldThrowIllegalArgumentExceptionIfUpdateValidItem() {
         // Given
         ItemDTO item1 = DataGenerator.generateItemDTO(true);
         item1.setLocation(null);
@@ -107,19 +100,14 @@ public class ItemControllerTests {
 
         ItemDTO item3 = DataGenerator.generateItemDTO(false);
 
-        ItemDTO item4 = DataGenerator.generateItemDTO(true);
-        item4.setExpense(null);
-
         // When
         ItemController controller = new ItemController(itemService, itemProcess);
         // required location missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.update(item1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.update(item1));
         // required author missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.update(item2));
-        // required expense missing
-        Assertions.assertThrows(BadRequestException.class, () -> controller.update(item4));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.update(item2));
         // id must not be null
-        Assertions.assertThrows(ForbiddenException.class, () -> controller.update(item3));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.update(item3));
 
     }
 
@@ -129,8 +117,8 @@ public class ItemControllerTests {
         ItemController controller = new ItemController(itemService, itemProcess);
 
         //Then
-        Assertions.assertThrows(BadRequestException.class, () -> controller.get(null, null));
-        Assertions.assertThrows(BadRequestException.class, () -> controller.get(null, null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(null, null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(null, null));
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(-5L, null));
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.get(null, -6L));
         Assertions.assertDoesNotThrow(() -> controller.get(5L, null));

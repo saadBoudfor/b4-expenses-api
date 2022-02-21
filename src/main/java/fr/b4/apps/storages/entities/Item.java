@@ -3,15 +3,14 @@ package fr.b4.apps.storages.entities;
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.expenses.entities.Expense;
+import fr.b4.apps.storages.dto.UpdateQuantity;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Entity
@@ -43,6 +42,9 @@ public class Item {
     private Integer expirationAfterDays;
     private Integer expirationAfterHours;
     private Integer expirationAfterMinutes;
+
+    @OneToMany(mappedBy = "item")
+    private List<UpdateQuantity> updateQuantityList;
 
     public void setRemaining(Float remaining) {
         String errorMessage = "";
