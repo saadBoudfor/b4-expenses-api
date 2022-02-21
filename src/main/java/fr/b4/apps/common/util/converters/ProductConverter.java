@@ -46,7 +46,7 @@ public class ProductConverter {
         dto.setUnit(product.getUnit());
         dto.setBrand(product.getBrand());
         dto.setDataPer(product.getDataPer());
-
+        dto.setQuantity(product.getQuantity());
         // quantity:
         dto.setDisplayQuantity(product.getDisplayQuantity());
         dto.setProductQuantity(product.getProductQuantity());

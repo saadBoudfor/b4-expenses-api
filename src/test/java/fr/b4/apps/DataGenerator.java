@@ -3,6 +3,7 @@ package fr.b4.apps;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import fr.b4.apps.clients.entities.User;
+import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.*;
 import fr.b4.apps.expenses.dto.ExpenseBasicStatsDTO;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
@@ -201,6 +202,19 @@ public class DataGenerator {
         return product;
     }
 
+    public static ProductDTO generateProductDTO(boolean withId) {
+        ProductDTO product = new ProductDTO();
+        if (withId) {
+            product.setId((long) faker.number().numberBetween(1, 600));
+        }
+        product.setQuantity(1f);
+        product.setDataPer("100g");
+        product.setQrCode(faker.code().ean8());
+        product.setName(faker.food().ingredient());
+        product.setCalories(faker.number().numberBetween(0, 1000));
+        return product;
+    }
+
     public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -341,6 +355,7 @@ public class DataGenerator {
         }
         item.setAuthor(generateUser());
         item.setExpense(generateExpenseDTO(true));
+        item.setProduct(generateProductDTO(true));
         item.setLocation(generateBucketDTO());
         item.setQuantity(faker.number().numberBetween(100, 200) + 0f);
         item.setRemaining(faker.number().numberBetween(1, 100) + 0f);

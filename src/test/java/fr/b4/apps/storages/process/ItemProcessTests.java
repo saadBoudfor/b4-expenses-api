@@ -110,23 +110,6 @@ public class ItemProcessTests {
     }
 
     @Test
-    public void shouldThrowBadRequestExceptionIfExpenseEmpty() {
-        // Given
-        ItemDTO dto = DataGenerator.generateItemDTO(false);
-        when(bucketRepository.getById(any())).thenReturn(DataGenerator.generateBucket());
-        when(userRepository.getById(any())).thenReturn(DataGenerator.generateUser());
-        dto.setExpense(null);
-
-        // Then
-        ItemProcess process = new ItemProcess(bucketRepository,
-                userRepository,
-                expenseRepository,
-                itemRepository,
-                expenseService, productService);
-        Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
-    }
-
-    @Test
     public void shouldThrowBadRequestExceptionIfExpenseUnknown() {
         // Given
         ItemDTO dto = DataGenerator.generateItemDTO(false);

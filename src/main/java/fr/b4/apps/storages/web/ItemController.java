@@ -1,6 +1,5 @@
 package fr.b4.apps.storages.web;
 
-import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.exceptions.ForbiddenException;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.storages.dto.ItemDTO;
@@ -34,7 +33,7 @@ public class ItemController {
     public ItemDTO save(@RequestBody ItemDTO itemDTO) {
         if (ObjectUtils.isNotEmpty(itemDTO.getId())) {
             log.error("id must be null (trying to create new item with existing id)");
-            throw new ForbiddenException("id must be null (trying to create new item with existing id)");
+            throw new IllegalArgumentException("id must be null (trying to create new item with existing id)");
         }
         checkRequiredFields(itemDTO);
         log.info("add new item \"{}\" to bucket {}", itemDTO.getProduct().getName(), itemDTO.getLocation().getId());
@@ -45,7 +44,7 @@ public class ItemController {
     public ItemDTO update(@RequestBody ItemDTO itemDTO) {
         if (ObjectUtils.isEmpty(itemDTO.getId())) {
             log.error("Failed to update item {} id is null", itemDTO);
-            throw new ForbiddenException("Failed to update. Id is missing");
+            throw new IllegalArgumentException("Failed to update. Id is missing");
         }
         checkRequiredFields(itemDTO);
         log.info("update item \"{}\"  (bucket {})", itemDTO.getExpense().getName(), itemDTO.getLocation().getId());
@@ -57,12 +56,18 @@ public class ItemController {
                              @RequestParam(value = "bucket", required = false) Long bucketId) {
         if (ObjectUtils.isEmpty(bucketId) && ObjectUtils.isEmpty(userId)) {
             log.error("Must define at least on filter by Bucket or user (store: {}, user: {})", bucketId, userId);
-            throw new BadRequestException("Must define at least on filter by Bucket or by user");
+            throw new IllegalArgumentException("Must define at least on filter by Bucket or by user");
         } else {
             if (ObjectUtils.isNotEmpty(bucketId) && bucketId <= 0) {
                 log.error("Bucket's id is invalid: {}", bucketId);
                 throw new IllegalArgumentException("Bucket's id is invalid");
             }
+
+            if (ObjectUtils.isNotEmpty(userId) && userId <= 0) {
+                log.error("User's id is invalid: {}", userId);
+                throw new IllegalArgumentException("User's id is invalid");
+            }
+
 
             if (ObjectUtils.isNotEmpty(bucketId)) {
                 return itemService.filterByLocationId(bucketId);
@@ -111,7 +116,7 @@ public class ItemController {
         }
 
         if (CollectionUtils.isNotEmpty(invalidField)) {
-            throw new BadRequestException("The following required fields are missing or invalid: "
+            throw new IllegalArgumentException("The following required fields are missing or invalid: "
                     + String.join(", ", invalidField));
         }
     }

@@ -56,11 +56,15 @@ public class ItemConverter {
         dto.setExpirationDate(item.getExpirationDate());
         dto.setAddDate(item.getAddDate());
         dto.setOpenDate(item.getOpenDate());
-        DurationDTO duration = new DurationDTO();
-        duration.setDays(item.getExpirationAfterDays());
-        duration.setHours(item.getExpirationAfterHours());
-        duration.setMinutes(item.getExpirationAfterMinutes());
-        dto.setExpirationAfter(duration);
+        if (ObjectUtils.isNotEmpty(item.getExpirationAfterDays())
+                || ObjectUtils.isNotEmpty(item.getExpirationAfterMinutes())
+                || ObjectUtils.isNotEmpty(item.getExpirationAfterHours())) {
+            DurationDTO duration = new DurationDTO();
+            duration.setDays(item.getExpirationAfterDays());
+            duration.setHours(item.getExpirationAfterHours());
+            duration.setMinutes(item.getExpirationAfterMinutes());
+            dto.setExpirationAfter(duration);
+        }
         return dto;
     }
 
