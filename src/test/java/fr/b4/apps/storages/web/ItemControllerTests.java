@@ -4,6 +4,8 @@ import fr.b4.apps.DataGenerator;
 import fr.b4.apps.common.exceptions.ForbiddenException;
 import fr.b4.apps.storages.dto.ItemDTO;
 
+import fr.b4.apps.storages.dto.UpdateQuantity;
+import fr.b4.apps.storages.dto.UpdateQuantityDTO;
 import fr.b4.apps.storages.process.ItemProcess;
 import fr.b4.apps.storages.services.ItemService;
 import org.junit.Test;
@@ -173,5 +175,26 @@ public class ItemControllerTests {
         //Then
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.delete(-4L));
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.delete(null));
+    }
+
+    @Test
+    public void shouldUpdateItemQuantitySuccess() {
+        // Given
+        UpdateQuantityDTO rq = new UpdateQuantityDTO();
+        rq.setQuantity(8.6f);
+
+        when(itemProcess.updateQuantity(any(), any())).then((Answer<UpdateQuantityDTO>) invocationOnMock -> {
+            Object[] args = invocationOnMock.getArguments();
+            ((UpdateQuantityDTO) args[1]).setId(5L);
+            return (UpdateQuantityDTO) args[1];
+        });
+
+        // When
+        ItemController controller = new ItemController(itemService, itemProcess);
+        UpdateQuantityDTO saved = controller.updateQuantity(9L, rq);
+
+        // Then
+        Assertions.assertEquals(saved.getId(), 5L);
+
     }
 }

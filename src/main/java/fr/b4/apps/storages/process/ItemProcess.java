@@ -2,7 +2,6 @@ package fr.b4.apps.storages.process;
 
 import fr.b4.apps.clients.entities.User;
 import fr.b4.apps.clients.repositories.UserRepository;
-import fr.b4.apps.common.dto.ProductDTO;
 import fr.b4.apps.common.entities.Product;
 import fr.b4.apps.common.exceptions.BadRequestException;
 import fr.b4.apps.common.services.ProductService;
@@ -10,11 +9,15 @@ import fr.b4.apps.expenses.entities.Expense;
 import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import fr.b4.apps.expenses.services.ExpenseService;
 import fr.b4.apps.storages.dto.ItemDTO;
+import fr.b4.apps.storages.dto.UpdateQuantity;
+import fr.b4.apps.storages.dto.UpdateQuantityDTO;
 import fr.b4.apps.storages.entities.Bucket;
 import fr.b4.apps.storages.entities.Item;
 import fr.b4.apps.storages.repositories.BucketRepository;
 import fr.b4.apps.storages.repositories.ItemRepository;
+import fr.b4.apps.storages.repositories.UpdateQuantityRepository;
 import fr.b4.apps.storages.util.converters.ItemConverter;
+import fr.b4.apps.storages.util.converters.UpdateQuantityConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -29,16 +32,18 @@ public class ItemProcess {
     private final ItemRepository itemRepository;
     private final ExpenseService expenseService;
     private final ProductService productService;
+    private final UpdateQuantityRepository updateQuantityRepository;
 
     public ItemProcess(BucketRepository bucketRepository,
                        UserRepository userRepository,
-                       ExpenseRepository expenseRepository, ItemRepository itemRepository, ExpenseService expenseService, ProductService productService) {
+                       ExpenseRepository expenseRepository, ItemRepository itemRepository, ExpenseService expenseService, ProductService productService, UpdateQuantityRepository updateQuantityRepository) {
         this.bucketRepository = bucketRepository;
         this.userRepository = userRepository;
         this.expenseRepository = expenseRepository;
         this.itemRepository = itemRepository;
         this.expenseService = expenseService;
         this.productService = productService;
+        this.updateQuantityRepository = updateQuantityRepository;
     }
 
     public ItemDTO save(ItemDTO itemDTO) {
@@ -84,5 +89,17 @@ public class ItemProcess {
 
         Item saved = itemRepository.save(item);
         return ItemConverter.toDTO(saved);
+    }
+
+    public UpdateQuantityDTO updateQuantity(Long itemId, UpdateQuantityDTO dto) {
+        Item item = itemRepository.getById(itemId);
+
+        UpdateQuantity updateQuantity = UpdateQuantityConverter.valueOf(dto);
+        updateQuantity.setItem(item);
+
+        UpdateQuantity saved = updateQuantityRepository.save(updateQuantity);
+        item.setRemaining(updateQuantity.getQuantity());
+        itemRepository.save(item);
+        return UpdateQuantityConverter.toDTO(saved);
     }
 }
