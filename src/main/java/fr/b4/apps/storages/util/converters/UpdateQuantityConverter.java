@@ -24,7 +24,7 @@ public class UpdateQuantityConverter {
         dto.setComment(updateQuantity.getComment());
         dto.setAuthor(updateQuantity.getAuthor());
         dto.setId(updateQuantity.getId());
-
+        dto.setUpdateTime(updateQuantity.getUpdateTime());
         return dto;
     }
 
