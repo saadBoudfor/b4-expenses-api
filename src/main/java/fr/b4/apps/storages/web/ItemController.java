@@ -3,6 +3,7 @@ package fr.b4.apps.storages.web;
 import fr.b4.apps.common.exceptions.ForbiddenException;
 import fr.b4.apps.expenses.dto.ExpenseDTO;
 import fr.b4.apps.storages.dto.ItemDTO;
+import fr.b4.apps.storages.dto.UpdateQuantityDTO;
 import fr.b4.apps.storages.process.ItemProcess;
 import fr.b4.apps.storages.services.ItemService;
 import lombok.extern.slf4j.Slf4j;
@@ -125,6 +126,12 @@ public class ItemController {
         final boolean isNewExpenseWithoutName = expense != null
                 && expense.getId() == null && StringUtils.isEmpty(expense.getName());
         return ObjectUtils.isEmpty(expense) || isNewExpenseWithoutName;
+    }
+
+    @PostMapping("/{itemId}/quantity")
+    public UpdateQuantityDTO updateQuantity(@PathVariable("itemId") long itemId,
+                                            @RequestBody UpdateQuantityDTO updateQuantityDTO) {
+        return itemProcess.updateQuantity(itemId, updateQuantityDTO);
     }
 
 }

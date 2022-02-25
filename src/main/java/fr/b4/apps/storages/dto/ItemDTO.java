@@ -12,6 +12,7 @@ import fr.b4.apps.expenses.dto.ExpenseDTO;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ItemDTO {
@@ -44,4 +45,6 @@ public class ItemDTO {
 
     @JsonProperty("expirationAfter")
     private DurationDTO expirationAfter;
+
+    private List<UpdateQuantityDTO> quantityHistory;
 }

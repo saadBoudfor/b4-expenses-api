@@ -10,9 +10,13 @@ import fr.b4.apps.expenses.repositories.ExpenseRepository;
 import fr.b4.apps.expenses.services.ExpenseService;
 import fr.b4.apps.expenses.util.converters.ExpenseConverter;
 import fr.b4.apps.storages.dto.ItemDTO;
+import fr.b4.apps.storages.dto.UpdateQuantity;
+import fr.b4.apps.storages.dto.UpdateQuantityDTO;
 import fr.b4.apps.storages.entities.Item;
 import fr.b4.apps.storages.repositories.BucketRepository;
 import fr.b4.apps.storages.repositories.ItemRepository;
+import fr.b4.apps.storages.repositories.UpdateQuantityRepository;
+import org.hibernate.sql.Update;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -42,6 +46,9 @@ public class ItemProcessTests {
     @Mock
     ProductService productService;
 
+    @Mock
+    UpdateQuantityRepository updateQuantityRepository;
+
     @Test
     public void shouldSaveItemWithExistingExpenseSuccess() {
         // Given
@@ -60,7 +67,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService, productService);
+                expenseService, productService, updateQuantityRepository);
         ItemDTO saved = process.save(dto);
 
         // Then
@@ -96,7 +103,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService, productService);
+                expenseService, productService, updateQuantityRepository);
         ItemDTO saved = process.save(dto);
 
         // Then
@@ -122,7 +129,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService, productService);
+                expenseService, productService, updateQuantityRepository);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 
@@ -138,7 +145,7 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService, productService);
+                expenseService, productService, updateQuantityRepository);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
     }
 
@@ -155,7 +162,37 @@ public class ItemProcessTests {
                 userRepository,
                 expenseRepository,
                 itemRepository,
-                expenseService, productService);
+                expenseService, productService, updateQuantityRepository);
         Assertions.assertThrows(BadRequestException.class, () -> process.save(dto));
+    }
+
+    @Test
+    public void shouldUpdateItemQuantitySuccess() {
+        Item savedItem  = DataGenerator.generateItem(true);
+        // Given
+        when(itemRepository.getById(6L)).thenReturn(savedItem);
+        when(updateQuantityRepository.save(any())).then((Answer<UpdateQuantity>) invocationOnMock -> {
+            Object[] args = invocationOnMock.getArguments();
+            ((UpdateQuantity) args[0]).setId(5L);
+            return (UpdateQuantity) args[0];
+        });
+
+        // When
+        ItemProcess process = new ItemProcess(bucketRepository,
+                userRepository,
+                expenseRepository,
+                itemRepository,
+                expenseService, productService, updateQuantityRepository);
+        UpdateQuantityDTO rq = new UpdateQuantityDTO();
+        rq.setQuantity(93.6f);
+        rq.setComment("comment");
+
+        UpdateQuantityDTO rp = process.updateQuantity(6L, rq);
+
+        // Then
+        Assertions.assertEquals(rp.getId(), 5L);
+        Assertions.assertEquals(savedItem.getRemaining(), rq.getQuantity());
+        verify(itemRepository, times(1)).save(any());
+        verify(updateQuantityRepository, times(1)).save(any());
     }
 }

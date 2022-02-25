@@ -65,6 +65,11 @@ public class ItemConverter {
             duration.setMinutes(item.getExpirationAfterMinutes());
             dto.setExpirationAfter(duration);
         }
+
+        if (!CollectionUtils.isEmpty(item.getUpdateQuantityList())) {
+            dto.setQuantityHistory(UpdateQuantityConverter.toDTO(item.getUpdateQuantityList()));
+        }
+
         return dto;
     }
 
