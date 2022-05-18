@@ -212,6 +212,7 @@ public class DataGenerator {
         product.setQrCode(faker.code().ean8());
         product.setName(faker.food().ingredient());
         product.setCalories(faker.number().numberBetween(0, 1000));
+        product.setProductCategories(new ArrayList<>());
         return product;
     }
 

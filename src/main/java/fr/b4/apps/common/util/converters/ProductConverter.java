@@ -53,6 +53,9 @@ public class ProductConverter {
         dto.setServingSize(product.getServingSize());
         dto.setServingQuantity(product.getServingQuantity());
 
+        // categories
+        dto.setProductCategories(ProductCategoryConverter.toDTO(product.getProductCategories()));
+
         if (!ObjectUtils.isEmpty(product.getNutrientLevels())) {
             dto.setNutrientLevels(toDto(product.getNutrientLevels()));
         }
@@ -94,6 +97,9 @@ public class ProductConverter {
         product.setProductQuantity(dto.getProductQuantity());
         product.setServingSize(dto.getServingSize());
         product.setServingQuantity(dto.getServingQuantity());
+
+        // categories
+        product.setProductCategories(ProductCategoryConverter.valueOf(dto.getProductCategories()));
 
         return product;
     }

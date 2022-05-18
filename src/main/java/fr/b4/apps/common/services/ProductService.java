@@ -28,10 +28,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class ProductService {
-    @Value("${working.dir}")
-    private String workingDir;
 
-    @Value("${products.photos.dir}")
+    @Value("${products.photos.dir.bill}")
     private String productsPhotoDir;
 
     private final ProductRepository productRepository;

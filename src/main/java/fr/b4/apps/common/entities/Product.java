@@ -1,8 +1,6 @@
 package fr.b4.apps.common.entities;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,8 +21,8 @@ public class Product {
 
     private Integer calories;
 
-    @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    @ManyToMany
+    private List<ProductCategory> productCategories;
 
     private String photo;
 
