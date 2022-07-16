@@ -1,8 +1,5 @@
 package fr.b4.apps.configuration;
 
-
-import fr.b4.apps.common.exceptions.*;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.NestedServletException;

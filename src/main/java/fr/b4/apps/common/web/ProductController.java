@@ -54,5 +54,11 @@ public class ProductController {
         Product product = ProductConverter.valueOf(data);
         return productService.save(product, file);
     }
+
+
+    @PutMapping
+    public ProductDTO save(@RequestBody ProductDTO product)  {
+        return productService.update(product);
+    }
 }
 
