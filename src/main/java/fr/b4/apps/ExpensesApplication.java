@@ -33,10 +33,13 @@ public class ExpensesApplication {
     @Autowired
     private OpenFoodFactClient openFoodFactClient;
 
-    @Value("${products.photos.dir}")
+    @Value("${products.photos.dir.bill}")
     private String productPhotoDir;
 
-    @Value("${expenses.photos.dir}")
+    @Value("${products.categories.photos.dir}")
+    private String productCategoryLogoDir;
+
+    @Value("${expenses.photos.dir.bill}")
     private String expensePhotoDir;
 
     @Autowired
@@ -100,6 +103,7 @@ public class ExpensesApplication {
     private void createRequirementAssetsFolders() {
         createFolder(productPhotoDir);
         createFolder(expensePhotoDir);
+        createFolder(productCategoryLogoDir);
     }
 
     private static void createFolder(String path) {

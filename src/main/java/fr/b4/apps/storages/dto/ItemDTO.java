@@ -47,4 +47,5 @@ public class ItemDTO {
     private DurationDTO expirationAfter;
 
     private List<UpdateQuantityDTO> quantityHistory;
+
 }

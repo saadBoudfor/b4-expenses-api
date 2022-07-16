@@ -20,7 +20,7 @@ import java.nio.file.Path;
 @Component
 public class ExpenseProcess {
 
-    @Value("${expenses.photos.dir}")
+    @Value("${expenses.photos.dir.bill}")
     private String expenseBillDir = "";
 
     private final BudgetService budgetService;

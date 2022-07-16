@@ -1,8 +1,5 @@
 package fr.b4.apps.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.b4.apps.common.entities.ProductCategory;
-import fr.b4.apps.common.entities.Unit;
 import lombok.Data;
 
 import java.util.List;
@@ -21,7 +18,7 @@ public class ProductDTO {
 
     private Integer calories;
 
-    private ProductCategory category;
+    private List<ProductCategoryDTO> productCategories;
 
     private String photo;
 
